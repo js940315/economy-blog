@@ -89,7 +89,7 @@ MAX_CHARS = 45      # 한 줄 최대 글자수
 MAX_LINES = 3       # 한 문단 최대 줄수
 EDITOR_HEADING = "📝 한눈에 보는 경제 노트"
 
-MARKER_RE = re.compile(r"^【\s*\d+\s*번\s*이미지\s*】$")
+MARKER_RE = re.compile(r"^【\s*\d+\s*번\s*(?:이미지|사진)\s*】$")
 SENT_RE = re.compile(r"(?<=[.!?])\s+|(?<=다\.)\s*|(?<=요\.)\s*|(?<=죠\.)\s*")
 
 
@@ -200,19 +200,29 @@ def validate(lines):
 
 
 def build_one(article, out_dir):
+    """붙여넣기 폴더에는 사람이 실제로 쓰는 것만 남긴다.
+
+    남기는 것: 본문.txt / 1번 사진.png ~ N번 사진.png
+    안 만드는 것: svg(png 변환용 중간산물), meta.json/title.html(디버깅·미리보기용)
+       → GitHub 폴더에서 헷갈리지 않도록 아예 생성하지 않는다.
+       재생성이 필요하면 articles.json 으로 언제든 다시 만들 수 있다.
+    """
     os.makedirs(out_dir, exist_ok=True)
     image_map = {}
 
     for idx, spec in enumerate(article.get("images", []), start=1):
         svg = render_image(spec)
-        svg_path = os.path.join(out_dir, f"image{idx}.svg")
-        png_path = os.path.join(out_dir, f"image{idx}.png")
-        with open(svg_path, "w", encoding="utf-8") as f:
+        tmp_svg = os.path.join(out_dir, f"_tmp{idx}.svg")
+        png_name = f"{idx}번 사진.png"
+        png_path = os.path.join(out_dir, png_name)
+        with open(tmp_svg, "w", encoding="utf-8") as f:
             f.write(svg)
-        if convert_svg_to_png(svg_path, png_path):
-            image_map[str(idx)] = f"image{idx}.png"
+        if convert_svg_to_png(tmp_svg, png_path):
+            image_map[str(idx)] = png_name
         else:
             print(f"  [경고] PNG 변환 실패: {png_path}")
+        if os.path.exists(tmp_svg):       # 중간산물 svg는 남기지 않는다
+            os.remove(tmp_svg)
 
     lines = []
     lines += to_blocks(article["intro"])
@@ -224,13 +234,8 @@ def build_one(article, out_dir):
 
     problems = validate(lines)
 
-    html = build_page_html(article["title"], lines, image_map)
-    with open(os.path.join(out_dir, "title.html"), "w", encoding="utf-8") as f:
-        f.write(html)
-    with open(os.path.join(out_dir, "body.txt"), "w", encoding="utf-8") as f:
+    with open(os.path.join(out_dir, "본문.txt"), "w", encoding="utf-8") as f:
         f.write(article["title"] + "\n" + SPACER + "\n" + "\n".join(lines))
-    with open(os.path.join(out_dir, "meta.json"), "w", encoding="utf-8") as f:
-        json.dump(article, f, ensure_ascii=False, indent=2)
 
     body_only = to_blocks(article["body_paragraphs"])
     body_len = len("".join(l for l in body_only if l != SPACER).replace(" ", ""))
