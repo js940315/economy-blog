@@ -91,7 +91,7 @@ SPACER = "⠀" * 3   # 점자 빈칸 — 네이버 붙여넣기에서 살아남�
 #   알아서 감싸기 때문에, 우리가 하드 줄바꿈을 박으면 어색한 데서 끊긴다.
 MAX_PARA_CHARS = 110
 EDITOR_HEADING = "📝 한눈에 보는 경제 노트"
-DIVIDER = "━" * 12   # 소제목 밑 구분선 (네이버·모바일에서 안 깨지는 문자)
+DIVIDER = "━" * 19   # 소제목 밑 구분선. 모바일에서 딱 한 줄로 꽉 차는 길이
 
 # 소제목·특수 이모지 문단은 flow_group으로 이어붙이지 않고 '독립 문단'으로 둔다.
 #   📌 소제목  💡 핵심 포인트  👉 독자에게 질문(댓글 유도)  💬 관점 한 문장(공유 유도)
@@ -231,6 +231,10 @@ def build_one(article, out_dir):
     lines += to_blocks(article["intro"])
     lines += [SPACER] + to_blocks(article["body_paragraphs"])
     lines += [SPACER, EDITOR_HEADING, SPACER] + to_blocks(article["editor_comment"])
+    # 여운형 질문 — 정리(경제 노트) 다음, 면책 앞. 글의 진짜 마지막 말이라
+    # 독자가 자기 상황을 떠올리며 자연스럽게 반응하게 된다. ('댓글' 요청 아님)
+    if article.get("closing_question"):
+        lines += [SPACER] + to_blocks(article["closing_question"])
     if article.get("disclaimer"):
         lines += [SPACER] + to_blocks(article["disclaimer"])
     lines += [SPACER] + [strip_markdown(h) for h in article.get("hashtags", [])]
