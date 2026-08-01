@@ -98,8 +98,6 @@ DIVIDER = "━" * 19   # 소제목 밑 구분선. 모바일에서 딱 한 줄로
 #   📝 경제 노트 헤딩  ⚠️ 주의  ✅ 체크
 HEADING_PREFIXES = ("📌", "📝")
 CALLOUT_PREFIXES = ("💡", "👉", "💬", "⚠️", "✅", "🔍")
-BOLD_MARK = "▶"   # 이 기호로 시작하는 문장 = "여기만 볼드 하세요" 표시.
-                  # 붙여넣은 뒤 그 줄만 드래그 → Ctrl+B → ▶ 기호 삭제
 
 MARKER_RE = re.compile(r"^【\s*\d+\s*번\s*(?:이미지|사진)\s*】$")
 SENT_RE = re.compile(r"(?<=[.!?])\s+|(?<=다\.)\s*|(?<=요\.)\s*|(?<=죠\.)\s*")
@@ -169,9 +167,8 @@ def to_blocks(value):
             out.append(item)
             out.append(DIVIDER)
             out.append(SPACER)
-        elif item.startswith(CALLOUT_PREFIXES) or item.startswith(BOLD_MARK) or MARKER_RE.match(item):
-            # 콜아웃(💡👉💬)·볼드마킹(▶)·이미지 마커 → 독립 문단으로 띄운다.
-            # ▶ 문장은 별도 줄이라 드래그 → Ctrl+B 하기 쉽다.
+        elif item.startswith(CALLOUT_PREFIXES) or MARKER_RE.match(item):
+            # 콜아웃(💡👉💬)·이미지 마커 → 이어붙이지 않고 독립 문단으로 띄운다
             flush()
             sep()
             out.append(item)
@@ -195,7 +192,7 @@ def validate(lines):
     for line in lines:
         if line == SPACER or line == DIVIDER:
             continue
-        if line.startswith(("#", "※", BOLD_MARK) + HEADING_PREFIXES + CALLOUT_PREFIXES) or MARKER_RE.match(line):
+        if line.startswith(("#", "※") + HEADING_PREFIXES + CALLOUT_PREFIXES) or MARKER_RE.match(line):
             continue
         # 한 문장이 워낙 길어 문단 분리로도 못 줄인 경우만 경고 (여유 +50)
         if len(line) > MAX_PARA_CHARS + 50:
