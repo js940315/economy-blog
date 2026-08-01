@@ -276,6 +276,127 @@ THUMB_STROKE = "#0a1018"
 THUMB_ACCENT = "#7dffce"     # 민트 — 숫자·종목명 강조용
 
 
+def _candle_path(seed_points, x0, y0, w, h, down=True):
+    """곤두박질(또는 급등) 라인+영역 차트 좌표를 만든다.
+
+    실제 시세를 쓰는 게 아니라 '분위기'를 그리는 것이므로,
+    down이면 우하향, 아니면 우상향으로 끝점을 몰아준다."""
+    n = len(seed_points)
+    lo, hi = min(seed_points), max(seed_points)
+    rng = (hi - lo) or 1
+    step = w / (n - 1)
+    pts = [(x0 + i * step, y0 + h - (v - lo) / rng * h) for i, v in enumerate(seed_points)]
+    return pts
+
+
+def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
+                              brand="", tagline="", logo_path=None,
+                              accent_words=None, size=1080, series=None):
+    """종목 주가 썸네일. 배경에 곤두박질/급등 차트를 깔고 카피를 얹는다.
+
+    사용자 요청: "하이닉스 관련이면 하이닉스 배경에 주식차트 150만원 밑으로
+    곤두박질 치는 이미지". 무료 CC 스톡에는 이런 장면이 없으므로 직접 그린다.
+    스톡 사진보다 정보성(종목·방향·가격)이 높고, 매일 데이터만 바꾸면 된다.
+
+    down=True  : 하락 (빨강, 우하향, ▼)
+    down=False : 상승 (파랑, 우상향, ▲)
+    """
+    accent_words = accent_words or []
+    color = "#ff4d5e" if down else "#2f80ed"
+    arrow = "▼" if down else "▲"
+    # 기본 시세 곡선 (분위기용). down이면 뒤로 갈수록 급락하는 형태
+    if series is None:
+        series = ([100, 96, 98, 90, 92, 84, 80, 70, 66, 54, 48, 40]
+                  if down else
+                  [40, 46, 44, 52, 58, 62, 70, 74, 82, 88, 94, 100])
+
+    p = [f'<svg viewBox="0 0 {size} {size}" xmlns="http://www.w3.org/2000/svg" '
+         f'font-family="Pretendard, \'Malgun Gothic\', sans-serif">']
+    p.append(
+        '<defs>'
+        f'<linearGradient id="sbg" x1="0.1" y1="0" x2="0.7" y2="1">'
+        f'<stop offset="0%" stop-color="#101826"/>'
+        f'<stop offset="100%" stop-color="#05080f"/></linearGradient>'
+        f'<linearGradient id="sarea" x1="0" y1="0" x2="0" y2="1">'
+        f'<stop offset="0%" stop-color="{color}" stop-opacity="0.5"/>'
+        f'<stop offset="100%" stop-color="{color}" stop-opacity="0"/></linearGradient>'
+        f'<linearGradient id="sscrim" x1="0" y1="0" x2="0" y2="1">'
+        f'<stop offset="0%" stop-color="#05080f" stop-opacity="0.10"/>'
+        f'<stop offset="55%" stop-color="#05080f" stop-opacity="0.35"/>'
+        f'<stop offset="100%" stop-color="#05080f" stop-opacity="0.86"/></linearGradient>'
+        '</defs>'
+    )
+    p.append(f'<rect width="{size}" height="{size}" fill="url(#sbg)"/>')
+
+    # 배경 로고 워터마크 (있을 때) — 크게, 아주 흐리게
+    if logo_path and os.path.exists(logo_path):
+        p.append(f'<g opacity="0.10">{logo_tag(logo_path, size*0.28, size*0.14, size*0.6, size*0.28)}</g>')
+
+    # 격자
+    for i in range(1, 5):
+        gy = size * i / 5
+        p.append(f'<line x1="0" y1="{gy}" x2="{size}" y2="{gy}" '
+                 f'stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>')
+
+    # 차트 영역 (화면 중앙~하단을 크게 가로지름)
+    cx, cy, cw, ch = 40, size * 0.30, size - 80, size * 0.42
+    pts = _candle_path(series, cx, cy, cw, ch, down=down)
+    line = " ".join(f"{x:.1f},{y:.1f}" for x, y in pts)
+    area = f"{pts[0][0]:.1f},{cy+ch:.1f} " + line + f" {pts[-1][0]:.1f},{cy+ch:.1f}"
+    p.append(f'<polygon points="{area}" fill="url(#sarea)"/>')
+    p.append(f'<polyline points="{line}" fill="none" stroke="{color}" '
+             f'stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>')
+    ex, ey = pts[-1]
+    p.append(f'<circle cx="{ex:.1f}" cy="{ey:.1f}" r="16" fill="{color}"/>')
+    p.append(f'<circle cx="{ex:.1f}" cy="{ey:.1f}" r="30" fill="{color}" opacity="0.3"/>')
+
+    p.append(f'<rect width="{size}" height="{size}" fill="url(#sscrim)"/>')
+
+    # 가격 + 등락률 배지 (우상단)
+    if price:
+        p.append(f'<text x="{size-44}" y="150" font-size="66" font-weight="800" '
+                 f'fill="#ffffff" text-anchor="end" letter-spacing="-1">{escape_html(price)}</text>')
+    if delta:
+        dw = 60 + len(delta) * 30
+        p.append(f'<rect x="{size-44-dw}" y="176" width="{dw}" height="60" rx="30" fill="{color}"/>')
+        p.append(f'<text x="{size-44-dw/2}" y="217" font-size="34" font-weight="700" '
+                 f'fill="#ffffff" text-anchor="middle">{arrow} {escape_html(delta)}</text>')
+
+    # 카피 2줄
+    def tspans(text):
+        if not accent_words:
+            return escape_html(text)
+        import re as _re
+        pat = "(" + "|".join(_re.escape(w) for w in accent_words) + ")"
+        parts = [x for x in _re.split(pat, text) if x]
+        return "".join(f'<tspan fill="{THUMB_ACCENT}">{escape_html(x)}</tspan>'
+                       if x in accent_words else escape_html(x) for x in parts)
+
+    fs = 92 if max(len(line1), len(line2)) <= 11 else 80
+    gap = int(fs * 1.16)
+    base_y = int(size * 0.72)
+    for i, ln in enumerate([line1, line2]):
+        if not ln:
+            continue
+        y = base_y + i * gap
+        p.append(f'<text x="62" y="{y}" font-size="{fs}" font-weight="800" '
+                 f'fill="{THUMB_INK}" stroke="{THUMB_STROKE}" stroke-width="{fs*0.17:.0f}" '
+                 f'stroke-linejoin="round" paint-order="stroke" letter-spacing="-2">'
+                 f'{tspans(ln)}</text>')
+
+    if brand:
+        bw = 34 + len(brand) * 19
+        p.append(f'<rect x="{size-38-bw}" y="{size-90}" width="{bw}" height="52" rx="26" '
+                 f'fill="#0a1018" opacity="0.72"/>')
+        p.append(f'<text x="{size-38-bw/2}" y="{size-55}" font-size="27" font-weight="700" '
+                 f'fill="#ffffff" text-anchor="middle" letter-spacing="1">{escape_html(brand)}</text>')
+    if tagline:
+        p.append(f'<text x="62" y="{size-52}" font-size="25" font-weight="600" '
+                 f'fill="#ffffff" opacity="0.70" letter-spacing="3">{escape_html(tagline)}</text>')
+    p.append("</svg>")
+    return "".join(p)
+
+
 def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
                         accent_words=None, size=1080, dim=0.0):
     """홈판 썸네일. 사진 위에 2줄 카피를 두꺼운 외곽선으로 얹는다.
