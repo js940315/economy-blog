@@ -1,0 +1,18 @@
+{
+  "_주의": "로고는 상표다. 해당 기업을 실제로 다루는 기사에만 쓴다. 기업이 이 블로그를 후원·보증하는 것처럼 보이게 쓰지 않는다.",
+  "_추가방법": "python fetch_logo.py \"회사 영문명\" --name 저장이름  → 후보가 여러 개 받아지므로 눈으로 확인하고 진짜만 남긴 뒤 이름을 정리한다",
+  "_검수기록": "2026-08-01 삼성전자·SK하이닉스 육안 확인 완료. 검색 결과에 회로기판 사진·Galaxy 제품 로고가 섞여 나왔고 전부 폐기함.",
+
+  "삼성전자": {
+    "file": "samsung_electronics.png",
+    "license": "Public domain",
+    "source": "Wikimedia Commons - File:Samsung Electronics logo (english).svg",
+    "attribution_required": false
+  },
+  "SK하이닉스": {
+    "file": "sk_hynix.png",
+    "license": "Public domain",
+    "source": "Wikimedia Commons - File:SK Hynix.svg",
+    "attribution_required": false
+  }
+}

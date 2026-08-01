@@ -84,7 +84,7 @@ CARD_GOLD = "#ffc83d"
 
 
 def build_number_card_svg(eyebrow, number, number_unit, headline_lines,
-                          delta="", direction="up", footnote=""):
+                          delta="", direction="up", footnote="", logo_path=None):
     """큰 숫자 하나를 주인공으로 세운 정사각 카드.
 
     eyebrow        : 상단 작은 라벨 (예: 2026년 7월 수출)
@@ -98,6 +98,8 @@ def build_number_card_svg(eyebrow, number, number_unit, headline_lines,
     arrow = "▲" if direction == "up" else "▼"
     # 나머지 3종 카드와 같은 배경을 써야 한 세트로 보인다
     p = [_card_open(accent)]
+    # 기업 로고 (있을 때만) — 우상단, "무슨 회사 얘기인지" 0.1초 안에 인식시킨다
+    p.append(logo_tag(logo_path, CARD_W - 88 - 300, 150, 300, 90))
     # 좌측 강조 바
     p.append(f'<rect x="88" y="196" width="8" height="86" rx="4" fill="{accent}"/>')
     p.append(
@@ -126,13 +128,36 @@ def build_number_card_svg(eyebrow, number, number_unit, headline_lines,
             f'letter-spacing="-1">{escape_html(line)}</text>'
         )
         y += 92
-    if footnote:
-        p.append(
-            f'<text x="88" y="{CARD_H-70}" font-size="34" fill="#7f8 da3">'
-            f'{escape_html(footnote)}</text>'.replace("#7f8 da3", "#7f8da3")
-        )
+    p.append(_card_note(footnote))
     p.append("</svg>")
     return "\n".join(p)
+
+
+def png_data_uri(path):
+    """PNG를 base64 data URI로 만든다.
+
+    SVG 안에 <image href="data:...">로 박아야 헤드리스 브라우저가 한 번에 렌더한다.
+    외부 파일 경로로 걸어두면 스크린샷 시점에 로드가 안 될 수 있다."""
+    import base64
+    with open(path, "rb") as f:
+        return "data:image/png;base64," + base64.b64encode(f.read()).decode()
+
+
+def logo_tag(logo_path, x, y, box_w, box_h):
+    """카드 우상단 등에 로고를 넣는다. 원본 비율을 유지하며 박스 안에 맞춘다.
+
+    ※ 로고는 상표다. 기사가 실제로 그 기업을 다룰 때만 쓴다.
+      관련 없는 기사에 로고를 붙이면 그 기업 얘기인 것처럼 오인시키게 된다."""
+    if not logo_path or not os.path.exists(logo_path):
+        return ""
+    uri = png_data_uri(logo_path)
+    # 기업 로고는 대부분 어두운 원색이라 어두운 배경에 그냥 얹으면 묻힌다.
+    # 흰 라운드 판을 깔아서 실제 인쇄물처럼 보이게 한다.
+    pad = 22
+    plate = (f'<rect x="{x-pad}" y="{y-pad}" width="{box_w+pad*2}" height="{box_h+pad*2}" '
+             f'rx="18" fill="#ffffff" opacity="0.94"/>')
+    return plate + (f'<image href="{uri}" x="{x}" y="{y}" width="{box_w}" height="{box_h}" '
+                    f'preserveAspectRatio="xMidYMid meet"/>')
 
 
 def _card_open(accent):
@@ -168,9 +193,11 @@ def _card_head(eyebrow, title_lines, accent):
 
 
 def _card_note(note):
+    """하단 출처. 길면 폰트를 줄여 카드 밖으로 넘치지 않게 한다."""
     if not note:
         return ""
-    return (f'<text x="88" y="{CARD_H-64}" font-size="32" fill="#7f8da3">'
+    size = 32 if len(note) <= 34 else (27 if len(note) <= 46 else 23)
+    return (f'<text x="88" y="{CARD_H-64}" font-size="{size}" fill="#7f8da3">'
             f'{escape_html(note)}</text>')
 
 

@@ -36,7 +36,10 @@ def render_image(spec):
             number_unit=spec.get("number_unit", ""),
             headline_lines=spec.get("headline_lines", []),
             delta=spec.get("delta", ""), direction=spec.get("direction", "up"),
-            footnote=spec.get("note", ""))
+            footnote=spec.get("note", ""),
+            # logo는 assets/logos/ 안의 파일명. 기사가 실제로 그 기업을 다룰 때만 넣는다.
+            logo_path=(os.path.join("assets", "logos", spec["logo"])
+                       if spec.get("logo") else None))
     if kind == "rank_card":
         return build_rank_bar_card_svg(
             eyebrow=spec["eyebrow"], title_lines=spec.get("title_lines", []),
