@@ -291,18 +291,20 @@ def _candle_path(seed_points, x0, y0, w, h, down=True):
 
 def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
                               brand="", tagline="", logo_path=None,
-                              accent_words=None, size=1080, series=None):
+                              accent_words=None, size=1080, series=None,
+                              logo_opacity=0.18):
     """종목 주가 썸네일. 배경에 곤두박질/급등 차트를 깔고 카피를 얹는다.
 
     사용자 요청: "하이닉스 관련이면 하이닉스 배경에 주식차트 150만원 밑으로
     곤두박질 치는 이미지". 무료 CC 스톡에는 이런 장면이 없으므로 직접 그린다.
     스톡 사진보다 정보성(종목·방향·가격)이 높고, 매일 데이터만 바꾸면 된다.
 
-    down=True  : 하락 (빨강, 우하향, ▼)
-    down=False : 상승 (파랑, 우상향, ▲)
+    down=True  : 하락 (파랑, 우하향, ▼)  ← 한국 증시 관행: 파랑=하락/매도
+    down=False : 상승 (빨강, 우상향, ▲)  ← 빨강=상승/매수
     """
     accent_words = accent_words or []
-    color = "#ff4d5e" if down else "#2f80ed"
+    # 한국 증시 색상 관행 (미국과 반대): 상승=빨강, 하락=파랑
+    color = "#2f80ed" if down else "#ff4d5e"
     arrow = "▼" if down else "▲"
     # 기본 시세 곡선 (분위기용). down이면 뒤로 갈수록 급락하는 형태
     if series is None:
@@ -328,9 +330,12 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
     )
     p.append(f'<rect width="{size}" height="{size}" fill="url(#sbg)"/>')
 
-    # 배경 로고 워터마크 (있을 때) — 크게, 아주 흐리게
+    # 배경 로고 워터마크 (있을 때). logo_tag이 흰 판+로고를 반환하므로
+    # 그룹 opacity로 통째로 진하기를 조절한다. logo_opacity로 튜닝.
     if logo_path and os.path.exists(logo_path):
-        p.append(f'<g opacity="0.10">{logo_tag(logo_path, size*0.28, size*0.14, size*0.6, size*0.28)}</g>')
+        lx, ly, lw, lh = size * 0.30, size * 0.15, size * 0.56, size * 0.26
+        p.append(f'<g opacity="{logo_opacity}">'
+                 f'{logo_tag(logo_path, lx, ly, lw, lh)}</g>')
 
     # 격자
     for i in range(1, 5):
