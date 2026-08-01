@@ -91,6 +91,13 @@ SPACER = "⠀" * 3   # 점자 빈칸 — 네이버 붙여넣기에서 살아남�
 #   알아서 감싸기 때문에, 우리가 하드 줄바꿈을 박으면 어색한 데서 끊긴다.
 MAX_PARA_CHARS = 110
 EDITOR_HEADING = "📝 한눈에 보는 경제 노트"
+DIVIDER = "━" * 12   # 소제목 밑 구분선 (네이버·모바일에서 안 깨지는 문자)
+
+# 소제목·특수 이모지 문단은 flow_group으로 이어붙이지 않고 '독립 문단'으로 둔다.
+#   📌 소제목  💡 핵심 포인트  👉 독자에게 질문(댓글 유도)  💬 관점 한 문장(공유 유도)
+#   📝 경제 노트 헤딩  ⚠️ 주의  ✅ 체크
+HEADING_PREFIXES = ("📌", "📝")
+CALLOUT_PREFIXES = ("💡", "👉", "💬", "⚠️", "✅", "🔍")
 
 MARKER_RE = re.compile(r"^【\s*\d+\s*번\s*(?:이미지|사진)\s*】$")
 SENT_RE = re.compile(r"(?<=[.!?])\s+|(?<=다\.)\s*|(?<=요\.)\s*|(?<=죠\.)\s*")
@@ -153,7 +160,15 @@ def to_blocks(value):
         if not item or item == SPACER:
             flush()
             sep()
-        elif MARKER_RE.match(item) or item.startswith(("📌", "📝")):
+        elif item.startswith(HEADING_PREFIXES):
+            # 소제목 → 밑에 구분선을 자동으로 깔아 시각적으로 확실히 구획
+            flush()
+            sep()
+            out.append(item)
+            out.append(DIVIDER)
+            out.append(SPACER)
+        elif item.startswith(CALLOUT_PREFIXES) or MARKER_RE.match(item):
+            # 콜아웃(💡👉💬 등)·이미지 마커 → 이어붙이지 않고 독립 문단으로 띄운다
             flush()
             sep()
             out.append(item)
@@ -175,7 +190,9 @@ def validate(lines):
     초과하는지(벽돌 위험)와 마크다운 잔존만 본다."""
     problems = []
     for line in lines:
-        if line == SPACER or line.startswith(("#", "📌", "📝", "【")):
+        if line == SPACER or line == DIVIDER:
+            continue
+        if line.startswith(("#", "※") + HEADING_PREFIXES + CALLOUT_PREFIXES) or MARKER_RE.match(line):
             continue
         # 한 문장이 워낙 길어 문단 분리로도 못 줄인 경우만 경고 (여유 +50)
         if len(line) > MAX_PARA_CHARS + 50:
