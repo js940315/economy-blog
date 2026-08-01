@@ -86,7 +86,7 @@ def render_image(spec):
 
 SPACER = "⠀" * 3   # 점자 빈칸 — 네이버 붙여넣기에서 살아남는 문단 간격
 MAX_CHARS = 45      # 한 줄 최대 글자수
-MAX_LINES = 3       # 한 문단 최대 줄수
+MAX_LINES = 5       # 문단이 이 줄수를 넘기면 빈 줄로 끊는다 (벽돌 문단 방지)
 EDITOR_HEADING = "📝 한눈에 보는 경제 노트"
 
 MARKER_RE = re.compile(r"^【\s*\d+\s*번\s*(?:이미지|사진)\s*】$")
@@ -103,80 +103,83 @@ def strip_markdown(text):
     return text.strip()
 
 
-def wrap_sentence(sentence):
-    """45자가 넘는 문장을 어절 단위로 자른다.
+def wrap_text(text):
+    """여러 문장이 이어진 텍스트를 45자 단위로 자연스럽게 줄바꿈한다 (단어 경계).
 
-    단순히 45자에서 끊으면 마지막 줄에 한 단어만 남아 어색해지므로,
-    필요한 줄 수를 먼저 구하고 각 줄 길이를 균등하게 배분한다."""
-    if len(sentence) <= MAX_CHARS:
-        return [sentence]
-    words = sentence.split(" ")
-    n_lines = -(-len(sentence) // MAX_CHARS)          # 올림 나눗셈
-    while True:
-        target = len(sentence) / n_lines
-        lines, cur = [], ""
-        for w in words:
-            candidate = f"{cur} {w}".strip()
-            over_target = len(candidate) > target and len(lines) < n_lines - 1
-            if cur and (over_target or len(candidate) > MAX_CHARS):
-                lines.append(cur)
-                cur = w
-            else:
-                cur = candidate
-        if cur:
+    문장마다 끊지 않고 이어 흐르게 하므로, 둘째 줄에 '요.' 같은 짧은 꼬리가
+    남지 않는다. 다음 문장이 이어 붙어 줄을 자연스럽게 채운다."""
+    words = text.split(" ")
+    lines, cur = [], ""
+    for w in words:
+        cand = f"{cur} {w}".strip()
+        if cur and len(cand) > MAX_CHARS:
             lines.append(cur)
-        # 한 줄이라도 45자를 넘으면 줄 수를 늘려 다시 배분한다
-        if all(len(l) <= MAX_CHARS for l in lines) or n_lines > 12:
-            return lines
-        n_lines += 1
+            cur = w
+        else:
+            cur = cand
+    if cur:
+        lines.append(cur)
+    return lines
+
+
+def flow_group(sentences):
+    """한 문단(문장 리스트)을 이어서 흐르게 워드랩한다.
+
+    문장마다 줄바꿈하지 않고 계속 이어 쓰되, 누적 줄이 MAX_LINES(5)를 넘기려 하면
+    직전 문장 경계에서 빈 줄을 넣어 벽돌 문단을 막는다.
+    → '한 문장 후 무조건 엔터'가 아니라 '길어지면 그때만 한 줄 여백'."""
+    out, buf = [], []
+    for s in sentences:
+        trial = wrap_text(" ".join(buf + [s]))
+        if buf and len(trial) > MAX_LINES:
+            out += wrap_text(" ".join(buf))
+            out.append(SPACER)
+            buf = [s]
+        else:
+            buf.append(s)
+    if buf:
+        out += wrap_text(" ".join(buf))
+    return out
 
 
 def to_blocks(value):
-    """문자열 또는 리스트를 '3줄 이하 문단 + 빈 줄' 형태로 정규화한다."""
+    """문자열/리스트를 '문단 흐름 + 문단 사이 빈 줄' 형태로 정규화한다.
+
+    문단(빈 줄·소제목·마커로 구분) 안에서는 문장을 이어 흐르게 한다.
+    입력이 문장 배열이든 한 덩어리 문자열이든 결과는 동일하게 자연스럽다."""
     if isinstance(value, list):
-        raw_lines = []
-        for item in value:
-            item = strip_markdown(str(item))
-            if not item or item == SPACER:
-                raw_lines.append(SPACER)
-            elif MARKER_RE.match(item):
-                raw_lines.append(item)
-            else:
-                raw_lines.extend(wrap_sentence(item))
-        return regroup(raw_lines)
+        items = [strip_markdown(str(x)) for x in value]
+    else:
+        text = strip_markdown(str(value))
+        items = [s.strip() for s in SENT_RE.split(text) if s and s.strip()]
 
-    text = strip_markdown(str(value))
-    sentences = [s.strip() for s in SENT_RE.split(text) if s and s.strip()]
-    raw_lines = []
-    for s in sentences:
-        raw_lines.extend(wrap_sentence(s))
-    return regroup(raw_lines)
+    out, group = [], []
 
+    def flush():
+        if group:
+            out.extend(flow_group(group))
+            group.clear()
 
-def regroup(lines):
-    """연속된 본문 줄을 MAX_LINES마다 끊고 사이에 빈 줄을 넣는다."""
-    out, run = [], 0
-    for line in lines:
-        if line == SPACER:
-            if out and out[-1] != SPACER:
-                out.append(SPACER)
-            run = 0
-            continue
-        # 소제목·이미지 마커는 앞뒤로 빈 줄을 둬서 확실히 띄운다
-        if line.startswith(("📌", "📝")) or MARKER_RE.match(line):
-            if out and out[-1] != SPACER:
-                out.append(SPACER)
-            out.append(line)
+    def sep():
+        if out and out[-1] != SPACER:
             out.append(SPACER)
-            run = 0
-            continue
-        if run >= MAX_LINES:
+
+    for item in items:
+        if not item or item == SPACER:
+            flush()
+            sep()
+        elif MARKER_RE.match(item) or item.startswith(("📌", "📝")):
+            flush()
+            sep()
+            out.append(item)
             out.append(SPACER)
-            run = 0
-        out.append(line)
-        run += 1
+        else:
+            group.append(item)
+    flush()
     while out and out[-1] == SPACER:
         out.pop()
+    while out and out[0] == SPACER:
+        out.pop(0)
     return out
 
 
@@ -234,7 +237,8 @@ def build_one(article, out_dir):
 
     problems = validate(lines)
 
-    with open(os.path.join(out_dir, "본문.txt"), "w", encoding="utf-8") as f:
+    # 파일명 앞 '0번'은 정렬용 — 사진(1~4번)보다 위에 오게 해서 작업 순서(본문 먼저)와 일치
+    with open(os.path.join(out_dir, "0번 본문.txt"), "w", encoding="utf-8") as f:
         f.write(article["title"] + "\n" + SPACER + "\n" + "\n".join(lines))
 
     body_only = to_blocks(article["body_paragraphs"])

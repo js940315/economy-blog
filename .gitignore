@@ -4,3 +4,4 @@ build_log.txt
 tail.txt
 _*.txt
 demo/
+build_report.json
