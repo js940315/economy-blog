@@ -1,0 +1,26 @@
+<svg viewBox="0 0 640 380" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<rect x="0" y="0" width="640" height="380" fill="#fcfcfb"/>
+<text x="32" y="30" font-size="19" font-weight="700" fill="#0b0b0b">7월 수출, 반도체 한 품목이 41%</text>
+<text x="32" y="50" font-size="13" fill="#52514e">2026년 7월 수출액 (단위: 억 달러)</text>
+<line x1="32" y1="300.0" x2="600" y2="300.0" stroke="#c3c2b7" stroke-width="2"/>
+<text x="25" y="304.0" font-size="11" fill="#898781" text-anchor="end">0</text>
+<line x1="32" y1="236.66666666666669" x2="600" y2="236.66666666666669" stroke="#e1e0d9" stroke-width="1"/>
+<text x="25" y="240.66666666666669" font-size="11" fill="#898781" text-anchor="end">333</text>
+<line x1="32" y1="173.33333333333334" x2="600" y2="173.33333333333334" stroke="#e1e0d9" stroke-width="1"/>
+<text x="25" y="177.33333333333334" font-size="11" fill="#898781" text-anchor="end">666</text>
+<line x1="32" y1="110.0" x2="600" y2="110.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="25" y="114.0" font-size="11" fill="#898781" text-anchor="end">1,000</text>
+<path d="M93.1875,300.0 L93.1875,116.09 Q93.1875,112.09 97.1875,112.09 L175.3125,112.09 Q179.3125,112.09 179.3125,116.09 L179.3125,300.0 Z" fill="#2a78d6"/>
+<text x="136.25" y="102.09" font-size="13" font-weight="700" fill="#0b0b0b" text-anchor="middle">989</text>
+<text x="136.25" y="320.0" font-size="12" fill="#52514e" text-anchor="middle">전체 수출</text>
+<path d="M225.6875,300.0 L225.6875,226.10000000000002 Q225.6875,222.10000000000002 229.6875,222.10000000000002 L307.8125,222.10000000000002 Q311.8125,222.10000000000002 311.8125,226.10000000000002 L311.8125,300.0 Z" fill="#2a78d6"/>
+<text x="268.75" y="212.10000000000002" font-size="13" font-weight="700" fill="#0b0b0b" text-anchor="middle">410</text>
+<text x="268.75" y="320.0" font-size="12" fill="#52514e" text-anchor="middle">반도체</text>
+<path d="M358.1875,300.0 L358.1875,292.22 Q358.1875,288.22 362.1875,288.22 L440.3125,288.22 Q444.3125,288.22 444.3125,292.22 L444.3125,300.0 Z" fill="#2a78d6"/>
+<text x="401.25" y="278.22" font-size="13" font-weight="700" fill="#0b0b0b" text-anchor="middle">62</text>
+<text x="401.25" y="320.0" font-size="12" fill="#52514e" text-anchor="middle">자동차</text>
+<path d="M490.6875,300.0 L490.6875,294.88 Q490.6875,290.88 494.6875,290.88 L572.8125,290.88 Q576.8125,290.88 576.8125,294.88 L576.8125,300.0 Z" fill="#2a78d6"/>
+<text x="533.75" y="280.88" font-size="13" font-weight="700" fill="#0b0b0b" text-anchor="middle">48</text>
+<text x="533.75" y="320.0" font-size="12" fill="#52514e" text-anchor="middle">컴퓨터</text>
+<text x="32" y="365" font-size="11" fill="#898781">자료: 산업통상부 7월 수출입동향</text>
+</svg>
