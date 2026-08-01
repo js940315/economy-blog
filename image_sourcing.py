@@ -47,9 +47,21 @@ def source_tier(url):
     return 4
 
 
-def _get(url, timeout=20):
-    req = urllib.request.Request(url, headers=UA)
-    return urllib.request.urlopen(req, timeout=timeout).read()
+def _get(url, timeout=20, tries=4):
+    """API/HTML 조회. Commons API도 연속 호출 시 429를 내므로 백오프 재시도한다.
+    (재시도가 없으면 호출부가 빈 리스트를 받고 '후보 없음'으로 잘못 판단한다)"""
+    import time as _t
+    last = None
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(url, headers=UA)
+            return urllib.request.urlopen(req, timeout=timeout).read()
+        except Exception as e:
+            last = e
+            if "429" not in str(e) and "503" not in str(e):
+                raise
+            _t.sleep(1.5 + i * 2.0)
+    raise last
 
 
 def fetch_image(url, referer=None, timeout=25, tries=2):

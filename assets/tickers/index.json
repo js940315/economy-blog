@@ -1,0 +1,373 @@
+{
+  "삼성전자": {
+    "그룹": "국내주식",
+    "검색어": "Samsung Electronics logo",
+    "후보": [
+      {
+        "file": "samsung_0.png",
+        "title": "File:Samsung Electronics logo (english).svg",
+        "license": "Public domain",
+        "score": 9
+      },
+      {
+        "file": "samsung_1.png",
+        "title": "File:Samsung Electronics logo (hangul).svg",
+        "license": "Public domain",
+        "score": 9
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "SK하이닉스": {
+    "그룹": "국내주식",
+    "검색어": "SK Hynix logo",
+    "후보": [
+      {
+        "file": "skhynix_0.png",
+        "title": "File:SK Hynix.svg",
+        "license": "Public domain",
+        "score": 7
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "현대자동차": {
+    "그룹": "국내주식",
+    "검색어": "Hyundai Motor Company logo",
+    "후보": [
+      {
+        "file": "hyundai_0.png",
+        "title": "File:Hyundai Motor Company logo.svg",
+        "license": "Public domain",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "기아": {
+    "그룹": "국내주식",
+    "검색어": "Kia logo",
+    "후보": [
+      {
+        "file": "kia_0.png",
+        "title": "File:Kia Forum logo.svg",
+        "license": "Public domain",
+        "score": 10
+      },
+      {
+        "file": "kia_1.png",
+        "title": "File:Kia Motors 2002-2012 Logo.svg",
+        "license": "Public domain",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "네이버": {
+    "그룹": "국내주식",
+    "검색어": "Naver Corporation logo",
+    "후보": [
+      {
+        "file": "naver_0.png",
+        "title": "File:Naver Clova Logotype.svg",
+        "license": "Public domain",
+        "score": 7
+      },
+      {
+        "file": "naver_1.png",
+        "title": "File:Naver Logotype.svg",
+        "license": "Public domain",
+        "score": 7
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "카카오": {
+    "그룹": "국내주식",
+    "검색어": "Kakao Corp logo",
+    "후보": [
+      {
+        "file": "kakao_0.png",
+        "title": "File:KakaoBank logo.svg",
+        "license": "Public domain",
+        "score": 7
+      },
+      {
+        "file": "kakao_1.png",
+        "title": "File:KakaoTalk logo.svg",
+        "license": "Public domain",
+        "score": 7
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "셀트리온": {
+    "그룹": "국내주식",
+    "검색어": "Celltrion logo",
+    "후보": [
+      {
+        "file": "celltrion_0.png",
+        "title": "File:Celltrion Healthcare logo.png",
+        "license": "Public domain",
+        "score": 8
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "KB금융": {
+    "그룹": "국내주식",
+    "검색어": "KB Financial Group logo",
+    "후보": [
+      {
+        "file": "kbfg_0.png",
+        "title": "File:KB logo.svg",
+        "license": "Public domain",
+        "score": 7
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "애플": {
+    "그룹": "해외주식",
+    "검색어": "Apple Inc logo",
+    "후보": [
+      {
+        "file": "apple_1.png",
+        "title": "File:IMessage logo (Apple Inc.).png",
+        "license": "Public domain",
+        "score": 8
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "엔비디아": {
+    "그룹": "해외주식",
+    "검색어": "Nvidia logo",
+    "후보": [
+      {
+        "file": "nvidia_0.png",
+        "title": "File:NVIDIA logo.svg",
+        "license": "Apache License 2.0",
+        "score": 10
+      },
+      {
+        "file": "nvidia_1.png",
+        "title": "File:NVIDIA logo white.svg",
+        "license": "Apache License 2.0",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "테슬라": {
+    "그룹": "해외주식",
+    "검색어": "Tesla Motors logo",
+    "후보": [
+      {
+        "file": "tesla_0.png",
+        "title": "File:Tesla Motors Logo.svg",
+        "license": "Public domain",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "마이크로소프트": {
+    "그룹": "해외주식",
+    "검색어": "Microsoft Corporation wordmark",
+    "후보": [
+      {
+        "file": "microsoft_0.png",
+        "title": "File:Microsoft logo (1987).svg",
+        "license": "Public domain",
+        "score": 7
+      },
+      {
+        "file": "microsoft_1.png",
+        "title": "File:Microsoft logo (2012).svg",
+        "license": "Public domain",
+        "score": 7
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "구글": {
+    "그룹": "해외주식",
+    "검색어": "Google logo",
+    "후보": [
+      {
+        "file": "google_0.png",
+        "title": "File:Google2013logo.svg",
+        "license": "Public domain",
+        "score": 10
+      },
+      {
+        "file": "google_1.png",
+        "title": "File:Google \"G\" logo.svg",
+        "license": "Public domain",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "아마존": {
+    "그룹": "해외주식",
+    "검색어": "Amazon.com Inc logo",
+    "후보": [
+      {
+        "file": "amazon_0.png",
+        "title": "File:Amazon.com-Logo.svg",
+        "license": "Public domain",
+        "score": 7
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "메타": {
+    "그룹": "해외주식",
+    "검색어": "Meta Platforms logo",
+    "후보": [
+      {
+        "file": "meta_0.png",
+        "title": "File:Meta Platforms Inc. logo.svg",
+        "license": "Public domain",
+        "score": 10
+      },
+      {
+        "file": "meta_1.png",
+        "title": "File:Meta Platforms logo.svg",
+        "license": "Public domain",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "AMD": {
+    "그룹": "해외주식",
+    "검색어": "Advanced Micro Devices company logo",
+    "후보": [
+      {
+        "file": "amd_0.png",
+        "title": "File:AMD Logo.svg",
+        "license": "Public domain",
+        "score": 6
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "TSMC": {
+    "그룹": "해외주식",
+    "검색어": "TSMC logo",
+    "후보": [
+      {
+        "file": "tsmc_0.png",
+        "title": "File:TSMC logo on Taichung factory building.jpg",
+        "license": "CC BY-SA 4.0",
+        "score": 7
+      },
+      {
+        "file": "tsmc_1.png",
+        "title": "File:TSMC wordmark.svg",
+        "license": "Public domain",
+        "score": 7
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "브로드컴": {
+    "그룹": "해외주식",
+    "검색어": "Broadcom logo",
+    "후보": [
+      {
+        "file": "broadcom_0.png",
+        "title": "File:Broadcom logo (1991-2016).svg",
+        "license": "Public domain",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "넷플릭스": {
+    "그룹": "해외주식",
+    "검색어": "Netflix logo",
+    "후보": [
+      {
+        "file": "netflix_0.png",
+        "title": "File:Netflix 2015 logo.svg",
+        "license": "Public domain",
+        "score": 10
+      },
+      {
+        "file": "netflix_1.png",
+        "title": "File:Netflix first logo.svg",
+        "license": "Public domain",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "비트코인": {
+    "그룹": "가상자산",
+    "검색어": "Bitcoin logo",
+    "후보": [
+      {
+        "file": "bitcoin_0.png",
+        "title": "File:Bitcoin logo Satoshi Nakamoto.svg",
+        "license": "CC0",
+        "score": 10
+      },
+      {
+        "file": "bitcoin_1.png",
+        "title": "File:Bitcoin logo clean.svg",
+        "license": "CC0",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "이더리움": {
+    "그룹": "가상자산",
+    "검색어": "Ethereum logo",
+    "후보": [
+      {
+        "file": "ethereum_0.png",
+        "title": "File:Ethereum logo 2014.svg",
+        "license": "CC BY 3.0",
+        "score": 10
+      },
+      {
+        "file": "ethereum_1.png",
+        "title": "File:Ethereum logo translucent.svg",
+        "license": "CC0",
+        "score": 10
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "도지코인": {
+    "그룹": "가상자산",
+    "검색어": "Dogecoin logo",
+    "후보": [
+      {
+        "file": "dogecoin_0.png",
+        "title": "File:Tabler-icons currency-dogecoin.svg",
+        "license": "MIT",
+        "score": 6
+      }
+    ],
+    "검수": "2026-08-02 육안 확인 완료"
+  },
+  "_주의": "로고는 상표다. 해당 종목을 실제로 다루는 기사에만 쓰고, 그 기업이 블로그를 후원·보증하는 것처럼 보이게 쓰지 않는다.",
+  "_추가방법": "python build_ticker_library.py --only 종목명  → 컨택트시트로 눈 확인 → 엉뚱한 건 삭제",
+  "_검수기록": "2026-08-02 자동수집 60장 중 26장 폐기. Commons 검색은 자회사·제품·무관 파일을 대량으로 섞어준다(USB 동글, 논문 PDF, 현대오일뱅크, 브로케이드, 칵테일 사진, Office/Excel, RDNA3, Amazon Luna, AMD Xilinx 등). 점수 필터로 1차 거른 뒤 반드시 눈으로 확인해야 한다.",
+  "_미확보": {
+    "종목": [
+      "LG에너지솔루션",
+      "포스코",
+      "인텔",
+      "리플"
+    ],
+    "사유": "Commons에 대표 로고가 없거나 검색으로 안 잡힘",
+    "대안": "해당 종목 기사에는 로고 대신 사물 사진(반도체·항만·전광판)이나 숫자·차트 카드를 쓴다"
+  }
+}
