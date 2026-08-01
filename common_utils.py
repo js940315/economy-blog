@@ -271,6 +271,77 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
     return "".join(p)
 
 
+def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
+                         number=None, number_unit="", delta="", direction="up",
+                         accent=CARD_ACCENT_UP, logo_path=None):
+    """실사 사진을 꽉 채우고 그 위에 카피를 얹는 카드.
+
+    핵심은 스크림(scrim)이다. 사진 위에 흰 글씨를 그냥 얹으면 밝은 부분에서 글자가
+    사라진다. 아래에서 위로 어두워지는 그라데이션을 깔아야 어떤 사진이 와도 글이 읽힌다.
+
+    photo_path : 로컬 파일 (jpg/png). 재게시 가능한 라이선스인지 확인된 것만 넣는다.
+    credit     : CC BY / BY-SA 는 저작자·라이선스 표기가 의무 — 하단에 자동으로 들어간다.
+    """
+    import base64
+    import mimetypes
+    mime = mimetypes.guess_type(photo_path)[0] or "image/jpeg"
+    with open(photo_path, "rb") as f:
+        uri = f"data:{mime};base64," + base64.b64encode(f.read()).decode()
+
+    p = [f'<svg viewBox="0 0 {CARD_W} {CARD_H}" xmlns="http://www.w3.org/2000/svg" '
+         f'font-family="Pretendard, \'Malgun Gothic\', system-ui, sans-serif">']
+    p.append(
+        '<defs>'
+        # 아래 60%를 덮는 스크림 — 사진이 밝든 어둡든 카피 가독성을 보장한다
+        '<linearGradient id="scrim" x1="0" y1="0" x2="0" y2="1">'
+        '<stop offset="0%" stop-color="#050d1a" stop-opacity="0"/>'
+        '<stop offset="42%" stop-color="#050d1a" stop-opacity="0.34"/>'
+        '<stop offset="72%" stop-color="#050d1a" stop-opacity="0.82"/>'
+        '<stop offset="100%" stop-color="#050d1a" stop-opacity="0.96"/></linearGradient>'
+        # 상단도 살짝 눌러서 eyebrow가 뜨게
+        '<linearGradient id="topfade" x1="0" y1="0" x2="0" y2="1">'
+        '<stop offset="0%" stop-color="#050d1a" stop-opacity="0.55"/>'
+        '<stop offset="100%" stop-color="#050d1a" stop-opacity="0"/></linearGradient>'
+        '</defs>'
+    )
+    # slice = 비율 유지하며 꽉 채우기 (여백 없이 crop)
+    p.append(f'<image href="{uri}" x="0" y="0" width="{CARD_W}" height="{CARD_H}" '
+             f'preserveAspectRatio="xMidYMid slice"/>')
+    p.append(f'<rect width="{CARD_W}" height="{CARD_H}" fill="url(#scrim)"/>')
+    p.append(f'<rect width="{CARD_W}" height="300" fill="url(#topfade)"/>')
+
+    p.append(logo_tag(logo_path, CARD_W - 88 - 260, 84, 260, 78))
+    p.append(f'<rect x="88" y="96" width="8" height="66" rx="4" fill="{accent}"/>')
+    p.append(f'<text x="122" y="144" font-size="36" font-weight="600" fill="#ffffff" '
+             f'opacity="0.92">{escape_html(eyebrow)}</text>')
+
+    # 카피는 아래에서부터 쌓아 올린다 (사진 주제가 위쪽에 오는 경우가 많아서)
+    bottom = CARD_H - (110 if credit else 76)
+    y = bottom - 84 * (len(headline_lines) - 1)
+    if number:
+        y -= 150
+    for line in headline_lines:
+        p.append(f'<text x="88" y="{y}" font-size="70" font-weight="800" fill="#ffffff" '
+                 f'letter-spacing="-1.5">{escape_html(line)}</text>')
+        y += 84
+    if number:
+        y += 34
+        p.append(f'<text x="88" y="{y}" font-size="112" font-weight="800" fill="#ffffff" '
+                 f'letter-spacing="-3">{escape_html(str(number))}'
+                 f'<tspan font-size="48" fill="#d5dded" dx="14">'
+                 f'{escape_html(number_unit)}</tspan></text>')
+        if delta:
+            arrow = "▲" if direction == "up" else "▼"
+            p.append(f'<text x="{88 + 12}" y="{y+58}" font-size="40" font-weight="700" '
+                     f'fill="{accent}">{arrow} {escape_html(delta)}</text>')
+
+    if credit:
+        p.append(f'<text x="88" y="{CARD_H-52}" font-size="24" fill="#ffffff" '
+                 f'opacity="0.62">{escape_html(credit)}</text>')
+    p.append("</svg>")
+    return "".join(p)
+
+
 def build_bar_card_svg(eyebrow, title_lines, categories, values, displays=None,
                        note="", accent=CARD_ACCENT_UP, highlight=None):
     """세로 막대 카드 (다크 톤). 나머지 3종과 같은 배경·서체를 쓴다."""

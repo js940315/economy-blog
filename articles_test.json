@@ -104,14 +104,15 @@
     ],
     "images": [
       {
-        "type": "number_card",
-        "eyebrow": "2026년 7월 수출",
+        "type": "photo_card",
+        "photo": "port_4.jpg",
+        "eyebrow": "2026년 7월 수출입동향",
+        "headline_lines": ["역대 2위 기록인데", "41%는 반도체 혼자"],
         "number": "988.9",
         "number_unit": "억 달러",
-        "headline_lines": ["역대 2위 기록인데", "41%는 반도체 혼자"],
         "delta": "전년 대비 62.8%",
         "direction": "up",
-        "note": "자료 : 산업통상부 7월 수출입동향"
+        "credit": "사진 : CC0  |  자료 : 산업통상부"
       },
       {
         "type": "bar_card",

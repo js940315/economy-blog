@@ -272,6 +272,116 @@ def logo_candidates(company, out_dir, width=1200, limit=8, prefix="logo"):
     return report
 
 
+# ---------- 6) 실사 사진 소싱 (재게시 가능한 라이선스만) ----------
+
+# 상업적 재게시가 허용되는 라이선스만 통과시킨다.
+# 뉴스 보도사진(연합/뉴시스 등)은 여기 없다 — 블로그 재게시 시 저작권 문제가 되므로
+# 이 파이프라인에서는 아예 후보로 올리지 않는다.
+COMMERCIAL_OK = {"cc0", "pdm", "by", "by-sa"}
+ATTRIB_REQUIRED = {"by", "by-sa"}   # 저작자·라이선스 표기 의무가 있는 것
+
+
+def openverse_photo_candidates(query, limit=12, min_width=1400, timeout=25):
+    """Openverse(위키미디어·플리커·박물관 등 CC 이미지 통합 검색)에서 후보를 모은다.
+
+    API 키가 필요 없고, 라이선스/저작자/출처 메타데이터를 함께 주기 때문에
+    표기 의무가 있는 라이선스도 안전하게 쓸 수 있다.
+
+    반환 항목: url(원본) / thumb / w / h / license / attribution / creator / landing
+    """
+    params = {
+        "q": query,
+        "license_type": "commercial,modification",  # 상업이용+변형 허용만
+        "size": "large",
+        "page_size": str(limit),
+    }
+    url = "https://api.openverse.org/v1/images/?" + urllib.parse.urlencode(params)
+    try:
+        data = json.loads(_get(url, timeout).decode())
+    except Exception:
+        return []
+
+    out = []
+    for r in data.get("results", []):
+        lic = (r.get("license") or "").lower()
+        if lic not in COMMERCIAL_OK:
+            continue
+        w, h = r.get("width") or 0, r.get("height") or 0
+        if w < min_width:
+            continue
+        out.append({
+            "url": r.get("url"),
+            "thumb": r.get("thumbnail"),
+            "w": w, "h": h,
+            "license": lic,
+            "license_version": r.get("license_version") or "",
+            "license_url": r.get("license_url") or "",
+            "creator": r.get("creator") or "",
+            "title": (r.get("title") or "")[:80],
+            "source": r.get("source") or r.get("provider") or "",
+            "landing": r.get("foreign_landing_url") or "",
+            "attribution": r.get("attribution") or "",
+            "attrib_required": lic in ATTRIB_REQUIRED,
+        })
+    out.sort(key=lambda r: r["w"] * r["h"], reverse=True)
+    return out
+
+
+def short_credit(rec):
+    """카드 하단에 넣을 짧은 크레딧 문자열.
+
+    CC BY / BY-SA 는 저작자·라이선스 표기가 의무다. CC0 / PDM 은 없어도 되지만
+    출처를 남기는 편이 신뢰도에 유리해서 동일하게 표기한다."""
+    creator = (rec.get("creator") or "").strip()
+    lic = (rec.get("license") or "").upper()
+    ver = rec.get("license_version") or ""
+    lic_txt = f"CC {lic} {ver}".strip() if lic not in ("CC0", "PDM") else lic
+    src = rec.get("source") or ""
+    bits = [b for b in [creator, lic_txt, src] if b]
+    return "사진 : " + " / ".join(bits)
+
+
+def photo_candidates(query, out_dir, limit=10, min_width=1400, prefix="photo"):
+    """실사 사진 후보를 실제로 내려받아 파일로 저장하고 리포트를 돌려준다.
+
+    logo_candidates 와 같은 구조다 — 자동 채택하지 않고 '후보 모으기'까지만 한다.
+    검색 결과에는 주제와 무관한 사진이 반드시 섞이므로, Read 도구로 눈으로 확인한 뒤
+    고르는 단계를 건너뛰면 안 된다.
+
+    반환: [{"path","w","h","license","credit","attrib_required","title","landing"} | {"error",...}]
+    """
+    import time
+    os.makedirs(out_dir, exist_ok=True)
+    cands = openverse_photo_candidates(query, limit=limit, min_width=min_width)
+    report = []
+    for i, c in enumerate(cands):
+        try:
+            time.sleep(0.4)  # 원본 호스트(대개 upload.wikimedia.org) 과다요청 방지
+            data = fetch_image(c["url"], referer=c.get("landing") or None)
+            ext = "png" if data[:8].startswith(b"\x89PNG") else "jpg"
+            path = os.path.join(out_dir, f"{prefix}_{i}.{ext}")
+            with open(path, "wb") as f:
+                f.write(data)
+            w = h = None
+            if Image is not None:
+                try:
+                    im = Image.open(io.BytesIO(data))
+                    w, h = im.size
+                except Exception:
+                    pass
+            report.append({
+                "path": path, "w": w or c["w"], "h": h or c["h"],
+                "license": c["license"], "credit": short_credit(c),
+                "attrib_required": c["attrib_required"],
+                "title": c["title"], "landing": c["landing"],
+                "bytes": len(data),
+            })
+        except Exception as e:
+            report.append({"error": str(e)[:80], "title": c.get("title", ""),
+                           "url": c.get("url", "")})
+    return report
+
+
 # 후보를 못 찾을 때의 최후 폴백 URL 빌더 (참고용 — 화질/색상 한계 있음)
 def logo_fallback_urls(domain, brand_slug=None):
     """Commons에서 못 구했을 때 최후 폴백. 순서대로 시도.

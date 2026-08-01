@@ -1,0 +1,14 @@
+{
+  "_주의": "여기 있는 사진만 쓴다. 뉴스 보도사진(연합·뉴시스 등)은 재게시하면 저작권 문제가 되므로 절대 가져오지 않는다.",
+  "_추가방법": "python fetch_photo.py \"영어 검색어\" --name 접두어  → 받은 뒤 Read로 눈으로 확인하고 주제에 안 맞는 건 파일·항목을 같이 지운다",
+  "_검수기록": "2026-08-01 'container ship port export' 6장 중 5장 폐기(와인 항아리 등 무관), port_4.jpg만 채택",
+
+  "port_4.jpg": {
+    "license": "cc0",
+    "credit": "사진 : CC0 / rawpixel",
+    "attribution_required": false,
+    "title": "large number shipping containers b",
+    "query": "container ship port export",
+    "용도": "수출·무역·물류 주제"
+  }
+}

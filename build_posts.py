@@ -20,8 +20,13 @@ import sys
 from datetime import datetime
 
 from common_utils import (build_bar_card_svg, build_number_card_svg,
-                          build_page_html, build_rank_bar_card_svg,
-                          build_summary_card_svg, convert_svg_to_png)
+                          build_page_html, build_photo_card_svg,
+                          build_rank_bar_card_svg, build_summary_card_svg,
+                          convert_svg_to_png)
+
+
+def _asset(kind, name):
+    return os.path.join("assets", kind, name) if name else None
 
 
 def render_image(spec):
@@ -30,6 +35,15 @@ def render_image(spec):
     type 값에 따라 4종 카드 중 하나를 고른다. 전부 같은 배경·서체를 쓰기 때문에
     한 포스팅 안에서 4장이 한 세트로 보인다."""
     kind = spec.get("type", "bar_card")
+    if kind == "photo_card":
+        return build_photo_card_svg(
+            photo_path=_asset("photos", spec["photo"]),
+            eyebrow=spec["eyebrow"],
+            headline_lines=spec.get("headline_lines", []),
+            credit=spec.get("credit", ""),
+            number=spec.get("number"), number_unit=spec.get("number_unit", ""),
+            delta=spec.get("delta", ""), direction=spec.get("direction", "up"),
+            logo_path=_asset("logos", spec.get("logo")))
     if kind == "number_card":
         return build_number_card_svg(
             eyebrow=spec["eyebrow"], number=spec["number"],
@@ -38,8 +52,7 @@ def render_image(spec):
             delta=spec.get("delta", ""), direction=spec.get("direction", "up"),
             footnote=spec.get("note", ""),
             # logo는 assets/logos/ 안의 파일명. 기사가 실제로 그 기업을 다룰 때만 넣는다.
-            logo_path=(os.path.join("assets", "logos", spec["logo"])
-                       if spec.get("logo") else None))
+            logo_path=_asset("logos", spec.get("logo")))
     if kind == "rank_card":
         return build_rank_bar_card_svg(
             eyebrow=spec["eyebrow"], title_lines=spec.get("title_lines", []),
