@@ -1,14 +1,13 @@
 {
   "_주의": "여기 있는 사진만 쓴다. 뉴스 보도사진(연합·뉴시스 등)은 재게시하면 저작권 문제가 되므로 절대 가져오지 않는다.",
   "_추가방법": "python fetch_photo.py \"영어 검색어\" --name 접두어  → 받은 뒤 Read로 눈으로 확인하고 주제에 안 맞는 건 파일·항목을 같이 지운다",
-  "_검수기록": "2026-08-01 'container ship port export' 6장 중 5장 폐기(와인 항아리 등 무관), port_4.jpg만 채택",
-
-  "port_4.jpg": {
-    "license": "cc0",
-    "credit": "사진 : CC0 / rawpixel",
-    "attribution_required": false,
-    "title": "large number shipping containers b",
-    "query": "container ship port export",
+  "_검수기록": "2026-08-01 Openverse 축소본 문제 확인 후 Wikimedia 직접 경로로 교체. port_terminal.jpg 채택",
+  "port_terminal.jpg": {
+    "license": "CC BY-SA 3.0",
+    "credit": "사진 : Container terminal / CC BY-SA 3.0 / Wikimedia Commons",
+    "attribution_required": true,
+    "원본해상도": "5788x3543",
+    "처리": "prepare_photo 로 정사각 크롭 + 시리즈 톤 그레이딩 + 비네트 적용 (1400px)",
     "용도": "수출·무역·물류 주제"
   }
 }

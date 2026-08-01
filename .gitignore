@@ -2,10 +2,5 @@ __pycache__/
 *.pyc
 build_log.txt
 tail.txt
-_probe*.txt
-_logo_test.txt
-_net.txt
-_ov.txt
-_photo.txt
-_por*.txt
+_*.txt
 demo/

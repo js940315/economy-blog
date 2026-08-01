@@ -104,7 +104,7 @@
   "images": [
     {
       "type": "photo_card",
-      "photo": "port_4.jpg",
+      "photo": "port_terminal.jpg",
       "eyebrow": "2026년 7월 수출입동향",
       "headline_lines": [
         "역대 2위 기록인데",
@@ -114,7 +114,7 @@
       "number_unit": "억 달러",
       "delta": "전년 대비 62.8%",
       "direction": "up",
-      "credit": "사진 : CC0  |  자료 : 산업통상부"
+      "credit": "사진 : CC BY-SA 3.0 / Wikimedia Commons  |  자료 : 산업통상부"
     },
     {
       "type": "bar_card",

@@ -341,6 +341,82 @@ def short_credit(rec):
     return "사진 : " + " / ".join(bits)
 
 
+def wikimedia_photo_candidates(query, out_dir, limit=6, min_width=1600,
+                               render_width=2200, prefix="wm"):
+    """Wikimedia Commons에서 직접 사진을 받는다. 고해상이 보장되는 경로.
+
+    Openverse는 편하지만 rawpixel 같은 제공자가 '6000px'이라고 보고해놓고
+    실제로는 1024px 축소본만 내려주는 경우가 많다. Commons는 iiurlwidth로
+    원하는 폭을 서버에서 렌더해 주기 때문에 요청한 크기가 그대로 온다.
+
+    라이선스는 파일별로 다르므로 재게시 가능한 것만 통과시킨다.
+    """
+    import time
+    os.makedirs(out_dir, exist_ok=True)
+    cands = commons_file_candidates(query, width=render_width, limit=limit * 3)
+    report, kept = [], 0
+    for c in cands:
+        if kept >= limit:
+            break
+        if not _portrait_license_ok(c.get("license")):
+            report.append({"skipped": "라이선스 부적합", "license": c.get("license"),
+                           "title": c.get("title", "")})
+            continue
+        if (c.get("src_w") or 0) < min_width:
+            report.append({"skipped": f"원본 작음({c.get('src_w')}px)",
+                           "title": c.get("title", "")})
+            continue
+        if (c.get("mime") or "").endswith("svg+xml"):
+            continue                     # 사진이 아니라 도형
+        url = c.get("render_url")
+        try:
+            time.sleep(1.0)
+            data = fetch_image(url)
+            rw, rh = _real_size(data)
+            if rw and rw < min_width:
+                report.append({"skipped": f"렌더 작음({rw}px)", "title": c["title"]})
+                continue
+            path = os.path.join(out_dir, f"{prefix}_{kept}.jpg")
+            with open(path, "wb") as f:
+                f.write(data)
+            title = (c["title"] or "").replace("File:", "").rsplit(".", 1)[0]
+            report.append({
+                "path": path, "w": rw, "h": rh,
+                "license": c["license"],
+                "credit": f"사진 : {title[:44]} / {c['license']} / Wikimedia Commons",
+                "title": c["title"], "src_w": c.get("src_w"), "src_h": c.get("src_h"),
+            })
+            kept += 1
+        except Exception as e:
+            report.append({"error": str(e)[:70], "title": c.get("title", "")})
+    return report
+
+
+def wikimedia_thumb_url(url, width=2400):
+    """upload.wikimedia.org 원본 URL을 '지정폭 렌더' URL로 바꾼다.
+
+      .../commons/a/ab/Foo.jpg  ->  .../commons/thumb/a/ab/Foo.jpg/2400px-Foo.jpg
+
+    원본이 8000px짜리면 그대로 받는 건 느리고 무거우므로, 필요한 폭만 렌더해서 받는다.
+    (이미 thumb URL이면 그대로 돌려준다)"""
+    if "upload.wikimedia.org" not in url or "/thumb/" in url:
+        return url
+    m = re.match(r"(https?://upload\.wikimedia\.org/wikipedia/[^/]+)/([0-9a-f])/([0-9a-f]{2})/(.+)$", url)
+    if not m:
+        return url
+    base, d1, d2, fname = m.groups()
+    return f"{base}/thumb/{d1}/{d2}/{fname}/{width}px-{fname}"
+
+
+def _real_size(data):
+    if Image is None:
+        return (0, 0)
+    try:
+        return Image.open(io.BytesIO(data)).size
+    except Exception:
+        return (0, 0)
+
+
 def photo_candidates(query, out_dir, limit=10, min_width=1400, prefix="photo"):
     """실사 사진 후보를 실제로 내려받아 파일로 저장하고 리포트를 돌려준다.
 
@@ -352,33 +428,42 @@ def photo_candidates(query, out_dir, limit=10, min_width=1400, prefix="photo"):
     """
     import time
     os.makedirs(out_dir, exist_ok=True)
-    cands = openverse_photo_candidates(query, limit=limit, min_width=min_width)
-    report = []
+    cands = openverse_photo_candidates(query, limit=limit * 2, min_width=min_width)
+
+    # 원본을 실제로 주는 호스트를 앞에 세운다.
+    # rawpixel 등 일부 제공자는 API가 6000px이라고 보고해놓고 1024px 축소본만 내려준다.
+    cands.sort(key=lambda c: (0 if "wikimedia" in (c.get("url") or "") else 1,
+                              -(c["w"] * c["h"])))
+
+    report, kept = [], 0
     for i, c in enumerate(cands):
+        if kept >= limit:
+            break
+        url = wikimedia_thumb_url(c["url"], width=2400)
         try:
-            time.sleep(0.4)  # 원본 호스트(대개 upload.wikimedia.org) 과다요청 방지
-            data = fetch_image(c["url"], referer=c.get("landing") or None)
+            time.sleep(1.0)   # 429 방지
+            data = fetch_image(url, referer=c.get("landing") or None)
+            rw, rh = _real_size(data)
+            # API 보고값이 아니라 '실제 픽셀'로 판정한다
+            if rw and rw < min_width:
+                report.append({"skipped": f"축소본({rw}x{rh}, 보고 {c['w']}x{c['h']})",
+                               "title": c["title"]})
+                continue
             ext = "png" if data[:8].startswith(b"\x89PNG") else "jpg"
-            path = os.path.join(out_dir, f"{prefix}_{i}.{ext}")
+            path = os.path.join(out_dir, f"{prefix}_{kept}.{ext}")
             with open(path, "wb") as f:
                 f.write(data)
-            w = h = None
-            if Image is not None:
-                try:
-                    im = Image.open(io.BytesIO(data))
-                    w, h = im.size
-                except Exception:
-                    pass
             report.append({
-                "path": path, "w": w or c["w"], "h": h or c["h"],
+                "path": path, "w": rw or c["w"], "h": rh or c["h"],
                 "license": c["license"], "credit": short_credit(c),
                 "attrib_required": c["attrib_required"],
                 "title": c["title"], "landing": c["landing"],
                 "bytes": len(data),
             })
+            kept += 1
         except Exception as e:
             report.append({"error": str(e)[:80], "title": c.get("title", ""),
-                           "url": c.get("url", "")})
+                           "url": url})
     return report
 
 
@@ -458,6 +543,65 @@ def portrait_candidates(query, out_dir, limit=6, min_width=1200, prefix="portrai
         except Exception as e:
             report.append({"error": str(e)[:70], "title": c.get("title", "")})
     return report
+
+
+# ---------- 8) 후처리: 매일 다른 사진이 와도 같은 톤으로 보이게 ----------
+
+def prepare_photo(src_path, dst_path, size=1080, focus="center",
+                  grade=True, vignette=True):
+    """사진을 카드 규격에 맞게 정사각으로 자르고, 시리즈 톤으로 보정한다.
+
+    스톡 사진을 그대로 쓰면 매일 색감이 제각각이라 블로그가 '긁어온 티'가 난다.
+    아래 3가지를 걸면 어떤 사진이 와도 같은 매체가 만든 것처럼 보인다:
+      1) 정사각 크롭 (비율 왜곡 없이 꽉 채움)
+      2) 컬러 그레이딩 — 채도를 살짝 낮추고 그림자에 청색을 더해 카드 남색과 붙인다
+      3) 비네트 — 가장자리를 눌러 가운데 피사체로 시선을 모으고 카피 가독성을 높인다
+
+    focus: 'center' | 'top' | 'bottom'  (인물은 대개 'top'이 얼굴을 살린다)
+    """
+    if Image is None:
+        raise RuntimeError("Pillow가 필요합니다")
+    from PIL import ImageEnhance, ImageDraw, ImageFilter
+
+    im = Image.open(src_path).convert("RGB")
+    w, h = im.size
+
+    # 1) 정사각 크롭
+    side = min(w, h)
+    if w >= h:
+        left = (w - side) // 2
+        top = 0
+    else:
+        left = 0
+        if focus == "top":
+            top = 0
+        elif focus == "bottom":
+            top = h - side
+        else:
+            top = (h - side) // 2
+    im = im.crop((left, top, left + side, top + side))
+    im = im.resize((size, size), Image.LANCZOS)
+
+    if grade:
+        # 채도 -12%, 대비 +8% : 과하지 않게. 사진을 '망치지 않는' 선이 중요하다
+        im = ImageEnhance.Color(im).enhance(0.88)
+        im = ImageEnhance.Contrast(im).enhance(1.08)
+        # 그림자에만 청색을 살짝 — 카드 배경(남색)과 자연스럽게 이어진다
+        tint = Image.new("RGB", im.size, (14, 30, 58))
+        im = Image.blend(im, tint, 0.10)
+
+    if vignette:
+        # 가장자리를 어둡게 (원형 마스크를 블러해서 자연스럽게)
+        mask = Image.new("L", (size, size), 0)
+        d = ImageDraw.Draw(mask)
+        pad = int(size * 0.06)
+        d.ellipse([-pad, -pad, size + pad, size + pad], fill=255)
+        mask = mask.filter(ImageFilter.GaussianBlur(size * 0.18))
+        dark = Image.new("RGB", im.size, (6, 12, 24))
+        im = Image.composite(im, dark, mask)
+
+    im.save(dst_path, quality=92, subsampling=1)
+    return dst_path
 
 
 # 후보를 못 찾을 때의 최후 폴백 URL 빌더 (참고용 — 화질/색상 한계 있음)
