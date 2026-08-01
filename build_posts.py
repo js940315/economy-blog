@@ -22,7 +22,7 @@ from datetime import datetime
 from common_utils import (build_bar_card_svg, build_number_card_svg,
                           build_page_html, build_photo_card_svg,
                           build_rank_bar_card_svg, build_summary_card_svg,
-                          convert_svg_to_png)
+                          build_thumbnail_svg, convert_svg_to_png)
 
 
 def _asset(kind, name):
@@ -35,6 +35,12 @@ def render_image(spec):
     type 값에 따라 4종 카드 중 하나를 고른다. 전부 같은 배경·서체를 쓰기 때문에
     한 포스팅 안에서 4장이 한 세트로 보인다."""
     kind = spec.get("type", "bar_card")
+    if kind == "thumbnail":
+        return build_thumbnail_svg(
+            photo_path=_asset("photos", spec["photo"]),
+            line1=spec["line1"], line2=spec["line2"],
+            brand=spec.get("brand", ""), tagline=spec.get("tagline", ""),
+            accent_words=spec.get("accent_words"), dim=spec.get("dim", 0.0))
     if kind == "photo_card":
         return build_photo_card_svg(
             photo_path=_asset("photos", spec["photo"]),

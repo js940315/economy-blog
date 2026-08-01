@@ -271,6 +271,95 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
     return "".join(p)
 
 
+THUMB_INK = "#ffffff"
+THUMB_STROKE = "#0a1018"
+THUMB_ACCENT = "#7dffce"     # 민트 — 숫자·종목명 강조용
+
+
+def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
+                        accent_words=None, size=1080, dim=0.0):
+    """홈판 썸네일. 사진 위에 2줄 카피를 두꺼운 외곽선으로 얹는다.
+
+    설계 근거 (상위 블로그 구조 분석):
+      1) 사진은 분위기만 담당하고 정보는 텍스트가 전담한다.
+         -> 기사와 딱 맞는 사진을 못 구해도 톤만 맞으면 쓸 수 있다
+      2) 무조건 2줄. 모바일 목록에서 잘리지 않는 최대 분량이다
+      3) 외곽선(paint-order: stroke)이 핵심. 이게 없으면 밝은 사진에서 글자가 사라진다
+      4) 숫자·종목명만 색을 바꿔 시선을 그쪽으로 먼저 보낸다
+
+    accent_words: 강조할 단어 리스트 (예: ["하이닉스", "150만원"])
+    """
+    import base64
+    import mimetypes
+    mime = mimetypes.guess_type(photo_path)[0] or "image/jpeg"
+    with open(photo_path, "rb") as f:
+        uri = f"data:{mime};base64," + base64.b64encode(f.read()).decode()
+
+    accent_words = accent_words or []
+
+    def tspans(text):
+        """강조 단어만 민트색으로 바꾼다. 나머지는 흰색."""
+        if not accent_words:
+            return escape_html(text)
+        import re as _re
+        pat = "(" + "|".join(_re.escape(w) for w in accent_words) + ")"
+        parts = [p for p in _re.split(pat, text) if p]
+        out = []
+        for p in parts:
+            if p in accent_words:
+                out.append(f'<tspan fill="{THUMB_ACCENT}">{escape_html(p)}</tspan>')
+            else:
+                out.append(escape_html(p))
+        return "".join(out)
+
+    fs = 92 if max(len(line1), len(line2)) <= 11 else 80
+    gap = int(fs * 1.16)
+    base_y = int(size * 0.70)
+
+    p = [f'<svg viewBox="0 0 {size} {size}" xmlns="http://www.w3.org/2000/svg" '
+         f'font-family="Pretendard, \'Malgun Gothic\', sans-serif">']
+    p.append(
+        '<defs>'
+        '<linearGradient id="tscrim" x1="0" y1="0" x2="0" y2="1">'
+        '<stop offset="0%" stop-color="#000000" stop-opacity="0.30"/>'
+        '<stop offset="45%" stop-color="#000000" stop-opacity="0.14"/>'
+        '<stop offset="100%" stop-color="#000000" stop-opacity="0.52"/></linearGradient>'
+        '</defs>'
+    )
+    p.append(f'<image href="{uri}" x="0" y="0" width="{size}" height="{size}" '
+             f'preserveAspectRatio="xMidYMid slice"/>')
+    p.append(f'<rect width="{size}" height="{size}" fill="url(#tscrim)"/>')
+    # 배경이 시끄러운 사진(웨이퍼·전광판 등)은 dim을 올려 글자와의 경쟁을 없앤다
+    if dim > 0:
+        p.append(f'<rect width="{size}" height="{size}" fill="#050a12" opacity="{dim}"/>')
+
+    # 카피 2줄 — 외곽선을 글자 뒤로 깔아야(paint-order) 획이 안 갉힌다
+    for i, line in enumerate([line1, line2]):
+        if not line:
+            continue
+        y = base_y + i * gap
+        p.append(
+            f'<text x="62" y="{y}" font-size="{fs}" font-weight="800" '
+            f'fill="{THUMB_INK}" stroke="{THUMB_STROKE}" stroke-width="{fs*0.17:.0f}" '
+            f'stroke-linejoin="round" paint-order="stroke" letter-spacing="-2">'
+            f'{tspans(line)}</text>'
+        )
+
+    if brand:
+        bw = 34 + len(brand) * 19
+        p.append(f'<rect x="{size-38-bw}" y="34" width="{bw}" height="52" rx="26" '
+                 f'fill="#0a1018" opacity="0.72"/>')
+        p.append(f'<text x="{size-38-bw/2}" y="69" font-size="27" font-weight="700" '
+                 f'fill="#ffffff" text-anchor="middle" letter-spacing="1">'
+                 f'{escape_html(brand)}</text>')
+    if tagline:
+        p.append(f'<text x="62" y="{size-44}" font-size="25" font-weight="600" '
+                 f'fill="#ffffff" opacity="0.78" letter-spacing="3">'
+                 f'{escape_html(tagline)}</text>')
+    p.append("</svg>")
+    return "".join(p)
+
+
 def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
                          number=None, number_unit="", delta="", direction="up",
                          accent=CARD_ACCENT_UP, logo_path=None):
