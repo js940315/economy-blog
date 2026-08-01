@@ -183,6 +183,54 @@ def to_blocks(value):
     return out
 
 
+def place_images_evenly(body_lines, n_images):
+    """본문 문단들 사이에 이미지 마커 N개를 '글자수 기준 균등'으로 끼워넣는다.
+
+    이미지가 한곳에 몰리거나(스크롤 초반만 화려) 큰 빈 구간이 생기면(중반 이탈)
+    안 되므로, 본문 텍스트 총량을 (N+1)등분해서 각 경계의 문단 사이에 마커를 둔다.
+    body_paragraphs 안의 원래 마커는 무시하고 여기서 새로 배치한다.
+
+    카드형 이미지는 '그 주제 전체'를 요약하므로 정확한 문맥 위치에 안 묶인다.
+    대신 마지막 이미지(정리 카드)는 본문 맨 끝에 오도록 경계를 잡는다."""
+    # 이미지 삽입 후보 = 문단과 문단 사이(=SPACER 위치). 소제목 바로 뒤는 피한다.
+    para_lens, boundary_after = [], []   # boundary_after[i] = i번째 줄 뒤에 삽입 가능?
+    total = 0
+    for i, ln in enumerate(body_lines):
+        is_text = ln not in (SPACER, DIVIDER) and not ln.startswith(
+            ("#", "※", "📌", "📝") + CALLOUT_PREFIXES) and not MARKER_RE.match(ln)
+        if is_text:
+            total += len(ln)
+        # 빈 줄(SPACER) 위치에서, 바로 앞이 소제목/구분선이 아니면 삽입 가능
+        ok = (ln == SPACER and i > 0 and
+              not body_lines[i-1].startswith(("📌", "📝")) and body_lines[i-1] != DIVIDER)
+        boundary_after.append(ok)
+        para_lens.append(len(ln) if is_text else 0)
+
+    if total == 0 or n_images == 0:
+        return body_lines
+
+    targets = [total * (k + 1) / (n_images + 1) for k in range(n_images)]
+    targets[-1] = total + 1   # 마지막 이미지는 본문 맨 끝으로 민다
+
+    out, acc, ti = [], 0, 0
+    for i, ln in enumerate(body_lines):
+        out.append(ln)
+        acc += para_lens[i]
+        # 현재 누적이 다음 목표를 넘었고, 여기가 삽입 가능한 경계면 마커 삽입
+        while ti < n_images and acc >= targets[ti] and boundary_after[i]:
+            out.append(f"【{ti+1}번 사진】")
+            out.append(SPACER)
+            ti += 1
+    # 남은 이미지(마지막 등)는 본문 맨 끝에 순서대로
+    while ti < n_images:
+        if out and out[-1] != SPACER:
+            out.append(SPACER)
+        out.append(f"【{ti+1}번 사진】")
+        out.append(SPACER)
+        ti += 1
+    return out
+
+
 def validate(lines):
     """규격 위반을 찾아 목록으로 돌려준다 (빈 목록 = 통과).
 
@@ -227,9 +275,16 @@ def build_one(article, out_dir):
         if os.path.exists(tmp_svg):       # 중간산물 svg는 남기지 않는다
             os.remove(tmp_svg)
 
+    # 본문 조립: body_paragraphs 안의 원래 이미지 마커는 걷어내고,
+    # place_images_evenly가 글자수 기준으로 균등하게 다시 배치한다.
+    body_wo_markers = [p for p in article["body_paragraphs"]
+                       if not MARKER_RE.match(strip_markdown(str(p)))]
+    body_lines = to_blocks(body_wo_markers)
+    body_lines = place_images_evenly(body_lines, len(article.get("images", [])))
+
     lines = []
     lines += to_blocks(article["intro"])
-    lines += [SPACER] + to_blocks(article["body_paragraphs"])
+    lines += [SPACER] + body_lines
     lines += [SPACER, EDITOR_HEADING, SPACER] + to_blocks(article["editor_comment"])
     # 여운형 질문 — 정리(경제 노트) 다음, 면책 앞. 글의 진짜 마지막 말이라
     # 독자가 자기 상황을 떠올리며 자연스럽게 반응하게 된다. ('댓글' 요청 아님)
