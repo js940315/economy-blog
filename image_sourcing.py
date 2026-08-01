@@ -382,6 +382,84 @@ def photo_candidates(query, out_dir, limit=10, min_width=1400, prefix="photo"):
     return report
 
 
+# ---------- 7) 인물 사진 소싱 (공인의 공적 활동, 라이선스 열린 소스만) ----------
+
+# 재게시 가능한 라이선스 패턴. 언론사 보도사진은 여기 없다.
+#   KOGL 제1유형 = 공공누리 1유형: 출처표시 조건, 상업적 이용·변형 허용
+PORTRAIT_OK_PATTERNS = [
+    "public domain", "pdm", "cc0",
+    "cc by", "cc by-sa", "kogl", "공공누리",
+]
+
+
+def _portrait_license_ok(license_short):
+    s = (license_short or "").lower()
+    if not s:
+        return False
+    if "nc" in s.split() or "-nc" in s or "noncommercial" in s:
+        return False          # 비상업 전용은 블로그(수익형)에 부적합
+    if "nd" in s.split() or "-nd" in s:
+        return False          # 변형 금지는 카드 합성에 부적합
+    return any(pat in s for pat in PORTRAIT_OK_PATTERNS)
+
+
+def portrait_credit(rec):
+    """인물 사진 크레딧. KOGL·CC BY 계열은 출처표시가 조건이므로 반드시 넣는다."""
+    lic = rec.get("license", "")
+    title = (rec.get("title", "") or "").replace("File:", "").rsplit(".", 1)[0]
+    return f"사진 : {title[:46]} / {lic} / Wikimedia Commons"
+
+
+def portrait_candidates(query, out_dir, limit=6, min_width=1200, prefix="portrait"):
+    """공인의 인물 사진 후보를 라이선스 열린 소스에서만 받아온다.
+
+    판단 기준은 '실존 인물이냐'가 아니라 '이 사진을 재게시할 권리가 있느냐'다.
+    공인을 그의 공적 활동(실적·정책 발표 등)과 함께 보도·정보전달 맥락에서 다루는 것은
+    문제되지 않는다. 문제가 되는 것은 언론사 사진의 무단 전재다.
+
+    주의:
+      - Commons 검색은 느슨해서 동명이인·단체사진·엉뚱한 인물이 섞인다.
+        반드시 Read 도구로 얼굴을 눈으로 확인한 뒤 채택할 것.
+      - 상업적 보증처럼 보이게 쓰지 않는다 (특정 상품 추천에 인물 얼굴을 붙이는 행위).
+      - 공적 역할과 무관한 사적인 사진은 쓰지 않는다.
+    """
+    import time
+    os.makedirs(out_dir, exist_ok=True)
+    cands = wikimedia_portrait_candidates(query, limit=limit * 2, min_width=min_width)
+    report, n = [], 0
+    for c in cands:
+        if n >= limit:
+            break
+        if not _portrait_license_ok(c.get("license")):
+            report.append({"skipped": "라이선스 부적합", "license": c.get("license"),
+                           "title": c.get("title", "")})
+            continue
+        url = c.get("thumb") or c.get("url")   # thumb = 지정폭 렌더 (2000px)
+        try:
+            # upload.wikimedia.org 는 연속 요청에 429를 잘 낸다. 0.5초로는 부족해서 1.2초.
+            time.sleep(1.2)
+            data = fetch_image(url)
+            ext = "png" if data[:8].startswith(b"\x89PNG") else "jpg"
+            path = os.path.join(out_dir, f"{prefix}_{n}.{ext}")
+            with open(path, "wb") as f:
+                f.write(data)
+            w = h = None
+            if Image is not None:
+                try:
+                    im = Image.open(io.BytesIO(data)); w, h = im.size
+                except Exception:
+                    pass
+            report.append({
+                "path": path, "w": w or c["width"], "h": h or c["height"],
+                "license": c["license"], "credit": portrait_credit(c),
+                "title": c["title"], "src_w": c["width"], "src_h": c["height"],
+            })
+            n += 1
+        except Exception as e:
+            report.append({"error": str(e)[:70], "title": c.get("title", "")})
+    return report
+
+
 # 후보를 못 찾을 때의 최후 폴백 URL 빌더 (참고용 — 화질/색상 한계 있음)
 def logo_fallback_urls(domain, brand_slug=None):
     """Commons에서 못 구했을 때 최후 폴백. 순서대로 시도.

@@ -1,0 +1,39 @@
+{
+  "_기준": "금지 대상은 '실존 인물'이 아니라 '재게시 권리가 없는 사진'이다. 공인을 공적 활동(실적·정책)과 함께 보도·정보전달 맥락에서 다루는 것은 허용된다. 실제 리스크는 언론사 보도사진의 무단 전재다.",
+  "_허용라이선스": "Public domain / CC0 / CC BY / CC BY-SA / KOGL 제1유형. NC(비상업)·ND(변형금지)는 제외.",
+  "_금지": "상업적 보증·후원 오해 / 명예훼손·허위사실 결합 / 공적 역할과 무관한 사적 사진 / 언론사 원본 무단 전재",
+  "_추가방법": "python fetch_portrait.py \"영문이름 소속\" --name 접두어  → Read로 얼굴 확인 후 채택",
+  "_소스맵": {
+    "글로벌 인사(젠슨 황·팀 쿡·바이든 등)": "CC 단독 초상 풍부. 고화질 확보 쉬움",
+    "한국 정부·국회·한은": "KOGL 제1유형으로 상당수 확보 가능 (출처표시 조건)",
+    "한국 재계(이재용·최태원·정의선)": "CC 단독 초상이 드묾. 단체·행사 사진만 나오면 무리해서 쓰지 말고 사옥·로고·반도체 등 사물로 대체"
+  },
+
+  "jensen_0.jpg": {
+    "인물": "젠슨 황 (NVIDIA CEO)",
+    "license": "CC BY-SA 4.0",
+    "credit": "사진 : Jensen Huang, Stanford (2026) / CC BY-SA 4.0 / Wikimedia Commons",
+    "attribution_required": true,
+    "해상도": "3840x5120",
+    "검수": "2026-08-01 육안 확인 — 본인 단독 초상 확인",
+    "용도": "AI·반도체·엔비디아 주제"
+  },
+  "jensen_1.jpg": {
+    "인물": "젠슨 황 (NVIDIA CEO)",
+    "license": "CC BY-SA 4.0",
+    "credit": "사진 : Jensen Huang, Stanford (2026) / CC BY-SA 4.0 / Wikimedia Commons",
+    "attribution_required": true,
+    "해상도": "3840x5120",
+    "검수": "2026-08-01 확인",
+    "용도": "AI·반도체·엔비디아 주제 (예비)"
+  },
+  "leejy_0.jpg": {
+    "인물": "삼성 평택캠퍼스 방문 단체사진 (이재용 우측 끝, 마스크 착용)",
+    "license": "Public domain",
+    "credit": "사진 : The White House / Public domain / Wikimedia Commons",
+    "attribution_required": false,
+    "해상도": "3000x2000",
+    "검수": "2026-08-01 육안 확인 — 단독 초상 아님. 인물 클로즈업 용도로는 부적합",
+    "용도": "한미 반도체 협력·평택공장 주제에 한해 사용"
+  }
+}
