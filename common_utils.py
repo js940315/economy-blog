@@ -74,6 +74,220 @@ def escape_html(text):
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+# ---- 숫자 강조 카드 (네이버 경제 블로그 썸네일 스타일) ----
+CARD_W, CARD_H = 1080, 1080
+CARD_BG_TOP = "#0f1f3d"
+CARD_BG_BOT = "#0a1428"
+CARD_ACCENT_UP = "#ff4d4f"      # 상승 = 빨강 (국내 증시 관행)
+CARD_ACCENT_DOWN = "#2f80ed"    # 하락 = 파랑
+CARD_GOLD = "#ffc83d"
+
+
+def build_number_card_svg(eyebrow, number, number_unit, headline_lines,
+                          delta="", direction="up", footnote=""):
+    """큰 숫자 하나를 주인공으로 세운 정사각 카드.
+
+    eyebrow        : 상단 작은 라벨 (예: 2026년 7월 수출)
+    number         : 주인공 숫자 문자열 (예: 988.9)
+    number_unit    : 숫자 뒤 단위 (예: 억 달러)
+    headline_lines : 하단 카피, 줄 단위 리스트 (2줄 권장)
+    delta          : 증감 표기 (예: 전년 대비 +62.8%)
+    direction      : up = 빨강, down = 파랑
+    """
+    accent = CARD_ACCENT_UP if direction == "up" else CARD_ACCENT_DOWN
+    arrow = "▲" if direction == "up" else "▼"
+    # 나머지 3종 카드와 같은 배경을 써야 한 세트로 보인다
+    p = [_card_open(accent)]
+    # 좌측 강조 바
+    p.append(f'<rect x="88" y="196" width="8" height="86" rx="4" fill="{accent}"/>')
+    p.append(
+        f'<text x="122" y="248" font-size="40" fill="#a9b6cc" '
+        f'letter-spacing="1">{escape_html(eyebrow)}</text>'
+    )
+    # 주인공 숫자
+    p.append(
+        f'<text x="88" y="470" font-size="200" font-weight="800" fill="#ffffff" '
+        f'letter-spacing="-4">{escape_html(number)}'
+        f'<tspan font-size="76" font-weight="700" fill="#d5dded" dx="18">'
+        f'{escape_html(number_unit)}</tspan></text>'
+    )
+    if delta:
+        p.append(
+            f'<text x="92" y="556" font-size="52" font-weight="700" fill="{accent}">'
+            f'{arrow} {escape_html(delta)}</text>'
+        )
+    # 구분선
+    p.append(f'<rect x="88" y="630" width="904" height="2" fill="#ffffff" opacity="0.14"/>')
+    # 하단 카피
+    y = 740
+    for line in headline_lines:
+        p.append(
+            f'<text x="88" y="{y}" font-size="66" font-weight="700" fill="#ffffff" '
+            f'letter-spacing="-1">{escape_html(line)}</text>'
+        )
+        y += 92
+    if footnote:
+        p.append(
+            f'<text x="88" y="{CARD_H-70}" font-size="34" fill="#7f8 da3">'
+            f'{escape_html(footnote)}</text>'.replace("#7f8 da3", "#7f8da3")
+        )
+    p.append("</svg>")
+    return "\n".join(p)
+
+
+def _card_open(accent):
+    """4종 카드가 공유하는 배경·그라데이션. 시리즈 통일감의 핵심."""
+    return (
+        f'<svg viewBox="0 0 {CARD_W} {CARD_H}" xmlns="http://www.w3.org/2000/svg" '
+        f'font-family="Pretendard, \'Malgun Gothic\', system-ui, sans-serif">'
+        '<defs>'
+        f'<linearGradient id="bg" x1="0" y1="0" x2="0.4" y2="1">'
+        f'<stop offset="0%" stop-color="{CARD_BG_TOP}"/>'
+        f'<stop offset="100%" stop-color="{CARD_BG_BOT}"/></linearGradient>'
+        f'<radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">'
+        f'<stop offset="0%" stop-color="{accent}" stop-opacity="0.16"/>'
+        f'<stop offset="100%" stop-color="{accent}" stop-opacity="0"/></radialGradient>'
+        '</defs>'
+        f'<rect width="{CARD_W}" height="{CARD_H}" fill="url(#bg)"/>'
+        f'<circle cx="{CARD_W-40}" cy="-40" r="620" fill="url(#glow)"/>'
+    )
+
+
+def _card_head(eyebrow, title_lines, accent):
+    """상단 라벨 + 제목. 모든 카드가 같은 위치·크기를 쓴다."""
+    p = [f'<rect x="88" y="96" width="8" height="72" rx="4" fill="{accent}"/>',
+         f'<text x="122" y="146" font-size="38" fill="#a9b6cc">{escape_html(eyebrow)}</text>']
+    y = 268
+    for line in title_lines:
+        p.append(
+            f'<text x="88" y="{y}" font-size="64" font-weight="800" fill="#ffffff" '
+            f'letter-spacing="-1">{escape_html(line)}</text>'
+        )
+        y += 84
+    return "".join(p), y
+
+
+def _card_note(note):
+    if not note:
+        return ""
+    return (f'<text x="88" y="{CARD_H-64}" font-size="32" fill="#7f8da3">'
+            f'{escape_html(note)}</text>')
+
+
+def build_rank_bar_card_svg(eyebrow, title_lines, items, note="", accent=CARD_ACCENT_UP):
+    """가로 순위 막대 카드. items = [(라벨, 수치값, 표시문자열), ...]
+
+    독자가 '내 업종·내 지역은 어디쯤인가'를 3초 안에 찾게 만드는 포맷.
+    1위만 강조색을 주고 나머지는 눌러서 시선 순서를 통제한다."""
+    p = [_card_open(accent)]
+    head, y = _card_head(eyebrow, title_lines, accent)
+    p.append(head)
+
+    y += 40
+    max_val = max(abs(v) for _, v, _ in items) or 1
+    bar_x, bar_max_w = 88, 700
+    # 남은 세로 공간에 행을 균등 배치해 아래쪽이 비지 않게 한다
+    row_h = max(96, min(132, (CARD_H - 150 - y) // max(1, len(items))))
+    for i, (label, value, display) in enumerate(items):
+        # 값이 작아도 막대가 점으로 보이지 않도록 최소 길이를 준다
+        w = max(56, abs(value) / max_val * bar_max_w)
+        color = accent if i == 0 else "#ffffff"
+        opacity = "1" if i == 0 else "0.22"
+        p.append(
+            f'<text x="88" y="{y}" font-size="38" font-weight="600" fill="#d5dded">'
+            f'{escape_html(label)}</text>'
+        )
+        p.append(
+            f'<rect x="{bar_x}" y="{y+18}" width="{w:.0f}" height="30" rx="15" '
+            f'fill="{color}" opacity="{opacity}"/>'
+        )
+        val_color = accent if i == 0 else "#ffffff"
+        p.append(
+            f'<text x="{CARD_W-88}" y="{y+2}" font-size="46" font-weight="800" '
+            f'fill="{val_color}" text-anchor="end">{escape_html(display)}</text>'
+        )
+        y += row_h
+
+    p.append(_card_note(note))
+    p.append("</svg>")
+    return "".join(p)
+
+
+def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GOLD):
+    """마무리 정리 카드. points = ["한 줄", "한 줄", "한 줄"]
+
+    '저장해두고 싶은' 카드를 만들어 스크랩을 유도한다.
+    스크랩·공유는 체류시간만큼이나 노출에 영향을 준다."""
+    p = [_card_open(accent)]
+    head, y = _card_head(eyebrow, title_lines, accent)
+    p.append(head)
+
+    y += 56
+    for i, point in enumerate(points, start=1):
+        lines = point if isinstance(point, list) else [point]
+        p.append(f'<circle cx="118" cy="{y-14}" r="30" fill="{accent}" opacity="0.18"/>')
+        p.append(
+            f'<text x="118" y="{y}" font-size="34" font-weight="800" fill="{accent}" '
+            f'text-anchor="middle">{i}</text>'
+        )
+        ty = y + 2
+        for line in lines:
+            p.append(
+                f'<text x="172" y="{ty}" font-size="44" font-weight="600" fill="#ffffff">'
+                f'{escape_html(line)}</text>'
+            )
+            ty += 58
+        y = ty + 54
+
+    p.append(_card_note(note))
+    p.append("</svg>")
+    return "".join(p)
+
+
+def build_bar_card_svg(eyebrow, title_lines, categories, values, displays=None,
+                       note="", accent=CARD_ACCENT_UP, highlight=None):
+    """세로 막대 카드 (다크 톤). 나머지 3종과 같은 배경·서체를 쓴다."""
+    p = [_card_open(accent)]
+    head, y = _card_head(eyebrow, title_lines, accent)
+    p.append(head)
+
+    displays = displays or [f"{v:,.0f}" for v in values]
+    top, bottom = y + 70, CARD_H - 190
+    plot_h = bottom - top
+    max_val = max(values) or 1
+    n = len(categories)
+    slot = (CARD_W - 176) / n
+    bar_w = slot * 0.56
+
+    p.append(f'<line x1="88" y1="{bottom}" x2="{CARD_W-88}" y2="{bottom}" '
+             f'stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>')
+
+    for i, (cat, val, disp) in enumerate(zip(categories, values, displays)):
+        h = max(10, val / max_val * plot_h)
+        x = 88 + i * slot + (slot - bar_w) / 2
+        # highlight를 주면 그 항목을, 안 주면 최댓값을 강조한다.
+        # 이야기의 주인공과 최댓값이 다를 때가 많아 지정할 수 있게 열어둔다.
+        is_hero = (i == highlight) if highlight is not None else (val == max_val)
+        color = accent if is_hero else "#ffffff"
+        opacity = "1" if is_hero else "0.26"
+        p.append(
+            f'<rect x="{x:.0f}" y="{bottom-h:.0f}" width="{bar_w:.0f}" height="{h:.0f}" '
+            f'rx="10" fill="{color}" opacity="{opacity}"/>'
+        )
+        p.append(
+            f'<text x="{x+bar_w/2:.0f}" y="{bottom-h-28:.0f}" font-size="44" '
+            f'font-weight="800" fill="#ffffff" text-anchor="middle">{escape_html(disp)}</text>'
+        )
+        p.append(
+            f'<text x="{x+bar_w/2:.0f}" y="{bottom+56}" font-size="36" fill="#a9b6cc" '
+            f'text-anchor="middle">{escape_html(str(cat))}</text>'
+        )
+
+    p.append(_card_note(note))
+    p.append("</svg>")
+    return "".join(p)
+
+
 # ---- 팔레트: dataviz 스킬에서 검증된 단일 계열 blue ----
 CHART_BLUE = "#2a78d6"
 CHART_SURFACE = "#fcfcfb"

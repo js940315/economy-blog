@@ -19,7 +19,37 @@ import re
 import sys
 from datetime import datetime
 
-from common_utils import build_bar_chart_svg, build_page_html, convert_svg_to_png
+from common_utils import (build_bar_card_svg, build_number_card_svg,
+                          build_page_html, build_rank_bar_card_svg,
+                          build_summary_card_svg, convert_svg_to_png)
+
+
+def render_image(spec):
+    """images 배열의 한 원소를 SVG 문자열로 만든다.
+
+    type 값에 따라 4종 카드 중 하나를 고른다. 전부 같은 배경·서체를 쓰기 때문에
+    한 포스팅 안에서 4장이 한 세트로 보인다."""
+    kind = spec.get("type", "bar_card")
+    if kind == "number_card":
+        return build_number_card_svg(
+            eyebrow=spec["eyebrow"], number=spec["number"],
+            number_unit=spec.get("number_unit", ""),
+            headline_lines=spec.get("headline_lines", []),
+            delta=spec.get("delta", ""), direction=spec.get("direction", "up"),
+            footnote=spec.get("note", ""))
+    if kind == "rank_card":
+        return build_rank_bar_card_svg(
+            eyebrow=spec["eyebrow"], title_lines=spec.get("title_lines", []),
+            items=[tuple(i) for i in spec["items"]], note=spec.get("note", ""))
+    if kind == "summary_card":
+        return build_summary_card_svg(
+            eyebrow=spec["eyebrow"], title_lines=spec.get("title_lines", []),
+            points=spec["points"], note=spec.get("note", ""))
+    return build_bar_card_svg(
+        eyebrow=spec["eyebrow"], title_lines=spec.get("title_lines", []),
+        categories=spec["categories"], values=spec["values"],
+        displays=spec.get("displays"), note=spec.get("note", ""),
+        highlight=spec.get("highlight"))
 
 SPACER = "⠀" * 3   # 점자 빈칸 — 네이버 붙여넣기에서 살아남는 문단 간격
 MAX_CHARS = 45      # 한 줄 최대 글자수
@@ -140,18 +170,8 @@ def build_one(article, out_dir):
     os.makedirs(out_dir, exist_ok=True)
     image_map = {}
 
-    charts = article.get("charts") or ([article["chart"]] if article.get("chart") else [])
-    for idx, chart in enumerate(charts, start=1):
-        if not (chart.get("categories") and chart.get("values")):
-            continue
-        svg = build_bar_chart_svg(
-            title=chart.get("title", ""),
-            subtitle=chart.get("subtitle", ""),
-            categories=chart["categories"],
-            values=chart["values"],
-            unit=chart.get("unit", ""),
-            footnote=chart.get("footnote", ""),
-        )
+    for idx, spec in enumerate(article.get("images", []), start=1):
+        svg = render_image(spec)
         svg_path = os.path.join(out_dir, f"image{idx}.svg")
         png_path = os.path.join(out_dir, f"image{idx}.png")
         with open(svg_path, "w", encoding="utf-8") as f:
