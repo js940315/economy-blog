@@ -85,8 +85,11 @@ def render_image(spec):
         highlight=spec.get("highlight"))
 
 SPACER = "⠀" * 3   # 점자 빈칸 — 네이버 붙여넣기에서 살아남는 문단 간격
-MAX_CHARS = 45      # 한 줄 최대 글자수
-MAX_LINES = 5       # 문단이 이 줄수를 넘기면 빈 줄로 끊는다 (벽돌 문단 방지)
+# 한 문단 목표 글자수. 네이버 모바일에서 대략 4줄 분량.
+# 이 값을 넘으면 문장 경계에서 문단을 나눠 빈 줄을 넣는다.
+# ※ 문장 중간에는 절대 줄바꿈(\n)을 넣지 않는다 — 네이버가 화면 폭에 맞춰
+#   알아서 감싸기 때문에, 우리가 하드 줄바꿈을 박으면 어색한 데서 끊긴다.
+MAX_PARA_CHARS = 110
 EDITOR_HEADING = "📝 한눈에 보는 경제 노트"
 
 MARKER_RE = re.compile(r"^【\s*\d+\s*번\s*(?:이미지|사진)\s*】$")
@@ -103,42 +106,24 @@ def strip_markdown(text):
     return text.strip()
 
 
-def wrap_text(text):
-    """여러 문장이 이어진 텍스트를 45자 단위로 자연스럽게 줄바꿈한다 (단어 경계).
-
-    문장마다 끊지 않고 이어 흐르게 하므로, 둘째 줄에 '요.' 같은 짧은 꼬리가
-    남지 않는다. 다음 문장이 이어 붙어 줄을 자연스럽게 채운다."""
-    words = text.split(" ")
-    lines, cur = [], ""
-    for w in words:
-        cand = f"{cur} {w}".strip()
-        if cur and len(cand) > MAX_CHARS:
-            lines.append(cur)
-            cur = w
-        else:
-            cur = cand
-    if cur:
-        lines.append(cur)
-    return lines
-
-
 def flow_group(sentences):
-    """한 문단(문장 리스트)을 이어서 흐르게 워드랩한다.
+    """문장들을 이어 한 문단으로 만든다. 문장 중간엔 절대 줄바꿈하지 않는다.
 
-    문장마다 줄바꿈하지 않고 계속 이어 쓰되, 누적 줄이 MAX_LINES(5)를 넘기려 하면
-    직전 문장 경계에서 빈 줄을 넣어 벽돌 문단을 막는다.
-    → '한 문장 후 무조건 엔터'가 아니라 '길어지면 그때만 한 줄 여백'."""
-    out, buf = [], []
+    한 문단은 '한 줄'로 저장되고(문장들이 공백으로 이어짐), 네이버 에디터가
+    화면 폭에 맞춰 알아서 감싼다. 문단이 모바일 약 4줄(MAX_PARA_CHARS)을 넘기려
+    하면 그때만 직전 문장 경계에서 끊어 빈 줄을 넣는다.
+    → '한 문장마다 엔터'도 아니고 '억지 줄바꿈'도 아니다. 문단만 나눈다."""
+    out, buf, buf_len = [], [], 0
     for s in sentences:
-        trial = wrap_text(" ".join(buf + [s]))
-        if buf and len(trial) > MAX_LINES:
-            out += wrap_text(" ".join(buf))
+        if buf and buf_len + len(s) > MAX_PARA_CHARS:
+            out.append(" ".join(buf))   # 문단 확정 (한 줄, \n 없음)
             out.append(SPACER)
-            buf = [s]
+            buf, buf_len = [s], len(s)
         else:
             buf.append(s)
+            buf_len += len(s) + 1
     if buf:
-        out += wrap_text(" ".join(buf))
+        out.append(" ".join(buf))
     return out
 
 
@@ -184,19 +169,17 @@ def to_blocks(value):
 
 
 def validate(lines):
-    """규격 위반을 찾아 목록으로 돌려준다 (빈 목록 = 통과)."""
-    problems, run = [], 0
+    """규격 위반을 찾아 목록으로 돌려준다 (빈 목록 = 통과).
+
+    이제 '줄 길이'는 보지 않는다 (네이버가 감싸므로). 문단이 목표치를 크게
+    초과하는지(벽돌 위험)와 마크다운 잔존만 본다."""
+    problems = []
     for line in lines:
-        if line == SPACER:
-            run = 0
+        if line == SPACER or line.startswith(("#", "📌", "📝", "【")):
             continue
-        if line.startswith("#"):      # 해시태그 묶음은 문단 규칙 대상이 아니다
-            continue
-        run += 1
-        if run > MAX_LINES:
-            problems.append(f"{MAX_LINES}줄 초과 문단: {line[:20]}...")
-        if len(line) > MAX_CHARS:
-            problems.append(f"{len(line)}자 문장: {line[:20]}...")
+        # 한 문장이 워낙 길어 문단 분리로도 못 줄인 경우만 경고 (여유 +50)
+        if len(line) > MAX_PARA_CHARS + 50:
+            problems.append(f"{len(line)}자 문단(너무 김): {line[:20]}...")
         if "**" in line or "`" in line:
             problems.append(f"마크다운 잔존: {line[:20]}...")
     return problems
