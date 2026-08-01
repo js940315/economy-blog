@@ -292,7 +292,7 @@ def _candle_path(seed_points, x0, y0, w, h, down=True):
 def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
                               brand="", tagline="", logo_path=None,
                               accent_words=None, size=1080, series=None,
-                              logo_opacity=0.18):
+                              logo_opacity=0.6):
     """종목 주가 썸네일. 배경에 곤두박질/급등 차트를 깔고 카피를 얹는다.
 
     사용자 요청: "하이닉스 관련이면 하이닉스 배경에 주식차트 150만원 밑으로
@@ -333,7 +333,8 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
     # 배경 로고 워터마크 (있을 때). logo_tag이 흰 판+로고를 반환하므로
     # 그룹 opacity로 통째로 진하기를 조절한다. logo_opacity로 튜닝.
     if logo_path and os.path.exists(logo_path):
-        lx, ly, lw, lh = size * 0.30, size * 0.15, size * 0.56, size * 0.26
+        # 좌측 중단에 배치 — 우상단 가격/등락률과 안 겹치게
+        lx, ly, lw, lh = size * 0.06, size * 0.40, size * 0.46, size * 0.22
         p.append(f'<g opacity="{logo_opacity}">'
                  f'{logo_tag(logo_path, lx, ly, lw, lh)}</g>')
 
