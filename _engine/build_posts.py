@@ -261,19 +261,28 @@ def build_one(article, out_dir):
     os.makedirs(out_dir, exist_ok=True)
     image_map = {}
 
+    from PIL import Image
     for idx, spec in enumerate(article.get("images", []), start=1):
         svg = render_image(spec)
         tmp_svg = os.path.join(out_dir, f"_tmp{idx}.svg")
-        png_name = f"{idx}번 사진.png"
-        png_path = os.path.join(out_dir, png_name)
+        tmp_png = os.path.join(out_dir, f"_tmp{idx}.png")
+        img_name = f"{idx}번 사진.jpg"
+        img_path = os.path.join(out_dir, img_name)
         with open(tmp_svg, "w", encoding="utf-8") as f:
             f.write(svg)
-        if convert_svg_to_png(tmp_svg, png_path):
-            image_map[str(idx)] = png_name
+        if convert_svg_to_png(tmp_svg, tmp_png):
+            # 2160px 원본을 1080px JPG로 — 네이버엔 충분하고 용량은 1/20.
+            # 저장소·다운로드가 가벼워져 매일 복붙 가성비가 올라간다.
+            im = Image.open(tmp_png).convert("RGB")
+            if im.size[0] > 1080:
+                im = im.resize((1080, 1080), Image.LANCZOS)
+            im.save(img_path, "JPEG", quality=92, subsampling=1)
+            image_map[str(idx)] = img_name
         else:
-            print(f"  [경고] PNG 변환 실패: {png_path}")
-        if os.path.exists(tmp_svg):       # 중간산물 svg는 남기지 않는다
-            os.remove(tmp_svg)
+            print(f"  [경고] 이미지 변환 실패: {img_path}")
+        for tmp in (tmp_svg, tmp_png):     # 중간산물은 남기지 않는다
+            if os.path.exists(tmp):
+                os.remove(tmp)
 
     # 본문 조립: body_paragraphs 안의 원래 이미지 마커는 걷어내고,
     # place_images_evenly가 글자수 기준으로 균등하게 다시 배치한다.
