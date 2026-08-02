@@ -61,12 +61,13 @@
         "dim": 0.3
       },
       {
-        "type": "number_card",
-        "eyebrow": "상위 10% 가구 평균",
+        "type": "photo_card",
+        "photo": "부동산_1_0.jpg",
+        "eyebrow": "자산 격차의 현장",
+        "headline_lines": ["같은 노력도", "결과는 다르다"],
         "number": "21.7",
         "number_unit": "억원",
-        "headline_lines": ["전년 대비", "8.8% 늘었다"],
-        "delta": "",
+        "delta": "상위 10% 평균",
         "direction": "up"
       },
       {
@@ -166,12 +167,13 @@
         "dim": 0.3
       },
       {
-        "type": "number_card",
-        "eyebrow": "2025년 국내은행",
+        "type": "photo_card",
+        "photo": "금리통화_0_0.jpg",
+        "eyebrow": "예대마진이 쌓이는 곳",
+        "headline_lines": ["기준금리 아래", "그 간격은 그대로"],
         "number": "60.4",
         "number_unit": "조원",
-        "headline_lines": ["이자이익만", "이만큼입니다"],
-        "delta": "전년比 +1.8%",
+        "delta": "2025년 이자이익",
         "direction": "up"
       },
       {
@@ -374,12 +376,13 @@
         "dim": 0.35
       },
       {
-        "type": "number_card",
-        "eyebrow": "2026년 국민연금 수급자",
+        "type": "photo_card",
+        "photo": "경제정책_1_0.jpg",
+        "eyebrow": "국민연금이라는 안전망",
+        "headline_lines": ["믿었던 만큼", "자세히는 몰랐다"],
         "number": "69.8",
         "number_unit": "만원",
-        "headline_lines": ["평균 수령액이", "이만큼입니다"],
-        "delta": "전년比 +2.1%",
+        "delta": "2026년 평균 수령액",
         "direction": "up"
       },
       {
@@ -479,12 +482,13 @@
         "dim": 0.3
       },
       {
-        "type": "number_card",
-        "eyebrow": "이자소득세 15.4% 적용 후",
+        "type": "photo_card",
+        "photo": "은행_0_0.jpg",
+        "eyebrow": "이자, 이 안에서 계산됩니다",
+        "headline_lines": ["세금 떼고 나면", "달라지는 숫자"],
         "number": "3.38",
         "number_unit": "%",
-        "headline_lines": ["연 4% 적금의", "진짜 실수령률"],
-        "delta": "세전 대비 -0.62%p",
+        "delta": "세후 실수령률",
         "direction": "down"
       },
       {
