@@ -5,3 +5,4 @@ tail.txt
 _*.txt
 demo/
 build_report.json
+samples_build_report.json

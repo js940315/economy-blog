@@ -160,8 +160,12 @@ def logo_tag(logo_path, x, y, box_w, box_h):
                     f'preserveAspectRatio="xMidYMid meet"/>')
 
 
+CARD_BLEED = 4  # 스크린샷 변환 시 반올림으로 흰 테두리가 비치지 않도록 배경을 살짝 넘겨 채운다
+
+
 def _card_open(accent):
     """4종 카드가 공유하는 배경·그라데이션. 시리즈 통일감의 핵심."""
+    b = CARD_BLEED
     return (
         f'<svg viewBox="0 0 {CARD_W} {CARD_H}" xmlns="http://www.w3.org/2000/svg" '
         f'font-family="Pretendard, \'Malgun Gothic\', system-ui, sans-serif">'
@@ -173,7 +177,7 @@ def _card_open(accent):
         f'<stop offset="0%" stop-color="{accent}" stop-opacity="0.16"/>'
         f'<stop offset="100%" stop-color="{accent}" stop-opacity="0"/></radialGradient>'
         '</defs>'
-        f'<rect width="{CARD_W}" height="{CARD_H}" fill="url(#bg)"/>'
+        f'<rect x="{-b}" y="{-b}" width="{CARD_W+2*b}" height="{CARD_H+2*b}" fill="url(#bg)"/>'
         f'<circle cx="{CARD_W-40}" cy="-40" r="620" fill="url(#glow)"/>'
     )
 
@@ -324,7 +328,7 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
         f'<stop offset="100%" stop-color="#05080f" stop-opacity="0.86"/></linearGradient>'
         '</defs>'
     )
-    p.append(f'<rect width="{size}" height="{size}" fill="url(#sbg)"/>')
+    p.append(f'<rect x="-4" y="-4" width="{size+8}" height="{size+8}" fill="url(#sbg)"/>')
 
     # 배경 로고 워터마크 (있을 때). logo_tag이 흰 판+로고를 반환하므로
     # 그룹 opacity로 통째로 진하기를 조절한다. logo_opacity로 튜닝.
@@ -448,9 +452,9 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
         '<stop offset="100%" stop-color="#000000" stop-opacity="0.52"/></linearGradient>'
         '</defs>'
     )
-    p.append(f'<image href="{uri}" x="0" y="0" width="{size}" height="{size}" '
+    p.append(f'<image href="{uri}" x="-4" y="-4" width="{size+8}" height="{size+8}" '
              f'preserveAspectRatio="xMidYMid slice"/>')
-    p.append(f'<rect width="{size}" height="{size}" fill="url(#tscrim)"/>')
+    p.append(f'<rect x="-4" y="-4" width="{size+8}" height="{size+8}" fill="url(#tscrim)"/>')
     # 배경이 시끄러운 사진(웨이퍼·전광판 등)은 dim을 올려 글자와의 경쟁을 없앤다
     if dim > 0:
         p.append(f'<rect width="{size}" height="{size}" fill="#050a12" opacity="{dim}"/>')
@@ -490,7 +494,8 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
     사라진다. 아래에서 위로 어두워지는 그라데이션을 깔아야 어떤 사진이 와도 글이 읽힌다.
 
     photo_path : 로컬 파일 (jpg/png). 재게시 가능한 라이선스인지 확인된 것만 넣는다.
-    credit     : CC BY / BY-SA 는 저작자·라이선스 표기가 의무 — 하단에 자동으로 들어간다.
+    credit     : 이미지 위에는 더 이상 표기하지 않는다(디자인 클러터 제거, 확정 규칙).
+                 라이선스 출처 기록은 이 값을 호출부(기사 JSON)에 남겨 별도로 추적한다.
     """
     import base64
     import mimetypes
@@ -514,11 +519,12 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
         '<stop offset="100%" stop-color="#050d1a" stop-opacity="0"/></linearGradient>'
         '</defs>'
     )
-    # slice = 비율 유지하며 꽉 채우기 (여백 없이 crop)
-    p.append(f'<image href="{uri}" x="0" y="0" width="{CARD_W}" height="{CARD_H}" '
+    # slice = 비율 유지하며 꽉 채우기 (여백 없이 crop). 스크린샷 변환 시 흰 테두리가
+    # 비치지 않도록 캔버스보다 살짝 크게(bleed) 그린다.
+    p.append(f'<image href="{uri}" x="-4" y="-4" width="{CARD_W+8}" height="{CARD_H+8}" '
              f'preserveAspectRatio="xMidYMid slice"/>')
-    p.append(f'<rect width="{CARD_W}" height="{CARD_H}" fill="url(#scrim)"/>')
-    p.append(f'<rect width="{CARD_W}" height="300" fill="url(#topfade)"/>')
+    p.append(f'<rect x="-4" y="-4" width="{CARD_W+8}" height="{CARD_H+8}" fill="url(#scrim)"/>')
+    p.append(f'<rect x="-4" y="-4" width="{CARD_W+8}" height="300" fill="url(#topfade)"/>')
 
     p.append(logo_tag(logo_path, CARD_W - 88 - 260, 84, 260, 78))
     p.append(f'<rect x="88" y="96" width="8" height="66" rx="4" fill="{accent}"/>')
@@ -526,7 +532,7 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
              f'opacity="0.92">{escape_html(eyebrow)}</text>')
 
     # 카피는 아래에서부터 쌓아 올린다 (사진 주제가 위쪽에 오는 경우가 많아서)
-    bottom = CARD_H - (110 if credit else 76)
+    bottom = CARD_H - 76
     y = bottom - 84 * (len(headline_lines) - 1)
     if number:
         y -= 150
