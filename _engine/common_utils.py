@@ -143,21 +143,58 @@ def png_data_uri(path):
         return "data:image/png;base64," + base64.b64encode(f.read()).decode()
 
 
-def logo_tag(logo_path, x, y, box_w, box_h):
+def logo_tag(logo_path, x, y, box_w, box_h, plate=True):
     """카드 우상단 등에 로고를 넣는다. 원본 비율을 유지하며 박스 안에 맞춘다.
 
     ※ 로고는 상표다. 기사가 실제로 그 기업을 다룰 때만 쓴다.
-      관련 없는 기사에 로고를 붙이면 그 기업 얘기인 것처럼 오인시키게 된다."""
+      관련 없는 기사에 로고를 붙이면 그 기업 얘기인 것처럼 오인시키게 된다.
+
+    plate=True : 어두운 배경에 얹는 코너 배지용 — 흰 라운드 판을 깔아 대비를 준다.
+    plate=False: 큰 워터마크로 반투명하게 깔 때(stock_thumbnail 등) — 판 없이 로고만.
+                 이때 box_w/box_h는 정사각(로고 대부분 원형)에 가깝게 넘겨야
+                 빈 여백이 남는 '갇힌 박스' 느낌이 안 생긴다."""
     if not logo_path or not os.path.exists(logo_path):
         return ""
     uri = png_data_uri(logo_path)
+    img_tag = (f'<image href="{uri}" x="{x}" y="{y}" width="{box_w}" height="{box_h}" '
+               f'preserveAspectRatio="xMidYMid meet"/>')
+    if not plate:
+        return img_tag
     # 기업 로고는 대부분 어두운 원색이라 어두운 배경에 그냥 얹으면 묻힌다.
     # 흰 라운드 판을 깔아서 실제 인쇄물처럼 보이게 한다.
     pad = 22
-    plate = (f'<rect x="{x-pad}" y="{y-pad}" width="{box_w+pad*2}" height="{box_h+pad*2}" '
-             f'rx="18" fill="#ffffff" opacity="0.94"/>')
-    return plate + (f'<image href="{uri}" x="{x}" y="{y}" width="{box_w}" height="{box_h}" '
-                    f'preserveAspectRatio="xMidYMid meet"/>')
+    plate_rect = (f'<rect x="{x-pad}" y="{y-pad}" width="{box_w+pad*2}" height="{box_h+pad*2}" '
+                  f'rx="18" fill="#ffffff" opacity="0.94"/>')
+    return plate_rect + img_tag
+
+
+def fit_copy_font_size(line1, line2, size=1080, max_fs=92, min_fs=42,
+                       left_margin=62, right_margin=48):
+    """썸네일 2줄 카피가 캔버스 폭을 넘기지 않는 최대 폰트 크기를 계산한다.
+
+    이전엔 '11자 이하면 92, 아니면 80' 이분법이라 승인된 장문 카피(12자+)가
+    오른쪽으로 잘려나가는 문제가 있었다. 문자 종류별 평균 폭을 추정해서
+    (한글류는 거의 정사각형, 라틴/숫자/기호는 더 좁음) 실제 폭이 가용 폭을
+    넘지 않는 선까지 2px 단위로 줄인다. 정확한 폰트 메트릭이 없는 상태의
+    근사치이므로 우측에 넉넉히 여백(right_margin)을 남겨 안전 마진을 둔다."""
+    max_width = size - left_margin - right_margin
+
+    def est_width(text, fs):
+        w = 0.0
+        for ch in text:
+            if not ch.isascii():
+                w += fs * 0.98      # 한글 등 전각 문자
+            elif ch.isalnum():
+                w += fs * 0.58      # 라틴 문자·숫자
+            else:
+                w += fs * 0.34      # 공백·기호
+        return w
+
+    longest = max((line1 or "", line2 or ""), key=len)
+    fs = max_fs
+    while fs > min_fs and est_width(longest, fs) > max_width:
+        fs -= 2
+    return fs
 
 
 CARD_BLEED = 4  # 스크린샷 변환 시 반올림으로 흰 테두리가 비치지 않도록 배경을 살짝 넘겨 채운다
@@ -330,13 +367,15 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
     )
     p.append(f'<rect x="-4" y="-4" width="{size+8}" height="{size+8}" fill="url(#sbg)"/>')
 
-    # 배경 로고 워터마크 (있을 때). logo_tag이 흰 판+로고를 반환하므로
-    # 그룹 opacity로 통째로 진하기를 조절한다. logo_opacity로 튜닝.
+    # 배경 로고 워터마크 (있을 때). 정사각 박스 + 판(plate) 없이 로고만 얹는다 —
+    # 이전엔 폭이 2배 넓은 박스에 원형 로고를 'meet'로 맞추다 보니 로고 양옆으로
+    # 빈 회색 판이 크게 남아 '갇혀 잘린' 것처럼 보였다.
     if logo_path and os.path.exists(logo_path):
         # 좌측 중단에 배치 — 우상단 가격/등락률과 안 겹치게
-        lx, ly, lw, lh = size * 0.06, size * 0.40, size * 0.46, size * 0.22
+        lsize = size * 0.30
+        lx, ly = size * 0.08, size * 0.36
         p.append(f'<g opacity="{logo_opacity}">'
-                 f'{logo_tag(logo_path, lx, ly, lw, lh)}</g>')
+                 f'{logo_tag(logo_path, lx, ly, lsize, lsize, plate=False)}</g>')
 
     # 격자
     for i in range(1, 5):
@@ -378,7 +417,7 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
         return "".join(f'<tspan fill="{THUMB_ACCENT}">{escape_html(x)}</tspan>'
                        if x in accent_words else escape_html(x) for x in parts)
 
-    fs = 92 if max(len(line1), len(line2)) <= 11 else 80
+    fs = fit_copy_font_size(line1, line2, size)
     gap = int(fs * 1.16)
     base_y = int(size * 0.72)
     for i, ln in enumerate([line1, line2]):
@@ -438,7 +477,7 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
                 out.append(escape_html(p))
         return "".join(out)
 
-    fs = 92 if max(len(line1), len(line2)) <= 11 else 80
+    fs = fit_copy_font_size(line1, line2, size)
     gap = int(fs * 1.16)
     base_y = int(size * 0.70)
 

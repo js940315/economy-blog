@@ -17,6 +17,7 @@ import json
 import os
 import re
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime
 
 from common_utils import (build_bar_card_svg, build_number_card_svg,
@@ -250,6 +251,32 @@ def validate(lines):
     return problems
 
 
+REAL_PHOTO_IMAGE_TYPES = {"photo_card"}   # '실물 사진'으로 인정하는 카드 타입
+THUMBNAIL_TYPES = {"thumbnail", "stock_thumbnail"}
+
+
+def validate_image_structure(specs):
+    """images 배열이 '썸네일1 + 실물1 + 카드N' 5장 스펙(v2/v3)을 지키는지 확인한다.
+
+    사람이 기사 JSON을 쓸 때 실물 슬롯을 깜빡하고 데이터 카드로 채워도
+    (썸네일1+카드4) 겉보기엔 5장이라 build 단계에서 조용히 넘어가곤 했다.
+    여기서 강제로 잡아내 build_report.json의 problems에 남긴다."""
+    problems = []
+    if not specs:
+        return problems
+    if specs[0].get("type") not in THUMBNAIL_TYPES:
+        problems.append(
+            f"1번 이미지가 대표 썸네일이 아님(thumbnail/stock_thumbnail만 허용): "
+            f"{specs[0].get('type')}")
+    if len(specs) == 5:
+        slot2 = specs[1].get("type")
+        if slot2 not in REAL_PHOTO_IMAGE_TYPES:
+            problems.append(
+                f"5장 구성(썸네일1+실물1+카드3)인데 2번(실물) 슬롯이 photo_card가 "
+                f"아니라 '{slot2}'임 — 실물 사진을 넣거나 4장 구성으로 바꿀 것")
+    return problems
+
+
 def build_one(article, out_dir):
     """붙여넣기 폴더에는 사람이 실제로 쓰는 것만 남긴다.
 
@@ -260,17 +287,34 @@ def build_one(article, out_dir):
     """
     os.makedirs(out_dir, exist_ok=True)
     image_map = {}
+    specs = article.get("images", [])
 
     from PIL import Image
-    for idx, spec in enumerate(article.get("images", []), start=1):
+
+    # SVG 작성 자체는 순수 CPU/문자열 작업이라 거의 공짜다. 시간을 잡아먹는 건
+    # 이미지 1장마다 헤드리스 브라우저 프로세스를 새로 띄우는 convert_svg_to_png다.
+    # 이미지끼리는 서로 완전히 독립적이므로, 그 부분만 스레드풀로 병렬 실행해
+    # 벽시계 시간을 이미지 개수만큼 순차로 곱하지 않게 한다.
+    tmp_paths = []
+    for idx, spec in enumerate(specs, start=1):
         svg = render_image(spec)
         tmp_svg = os.path.join(out_dir, f"_tmp{idx}.svg")
         tmp_png = os.path.join(out_dir, f"_tmp{idx}.png")
-        img_name = f"{idx}번 사진.jpg"
-        img_path = os.path.join(out_dir, img_name)
         with open(tmp_svg, "w", encoding="utf-8") as f:
             f.write(svg)
-        if convert_svg_to_png(tmp_svg, tmp_png):
+        tmp_paths.append((idx, tmp_svg, tmp_png))
+
+    if tmp_paths:
+        with ThreadPoolExecutor(max_workers=min(8, len(tmp_paths))) as ex:
+            ok_flags = list(ex.map(
+                lambda t: convert_svg_to_png(t[1], t[2]), tmp_paths))
+    else:
+        ok_flags = []
+
+    for (idx, tmp_svg, tmp_png), ok in zip(tmp_paths, ok_flags):
+        img_name = f"{idx}번 사진.jpg"
+        img_path = os.path.join(out_dir, img_name)
+        if ok:
             # 2160px 원본을 1080px JPG로 — 네이버엔 충분하고 용량은 1/20.
             # 저장소·다운로드가 가벼워져 매일 복붙 가성비가 올라간다.
             im = Image.open(tmp_png).convert("RGB")
@@ -304,6 +348,7 @@ def build_one(article, out_dir):
     lines += [SPACER] + [strip_markdown(h) for h in article.get("hashtags", [])]
 
     problems = validate(lines)
+    problems += validate_image_structure(specs)
 
     # 파일명 앞 '0번'은 정렬용 — 사진(1~4번)보다 위에 오게 해서 작업 순서(본문 먼저)와 일치
     with open(os.path.join(out_dir, "0번 본문.txt"), "w", encoding="utf-8") as f:
