@@ -186,5 +186,15 @@
     "query": "trading floor",
     "카테고리": "주식증시",
     "검수": "2026-08-02 육안 확인 완료 — NYSE 트레이딩 플로어 실내(기존 0_1 외경 사진과 구도 다름)"
+  },
+  "은행_0_0.jpg": {
+    "license": "by-sa",
+    "credit": "사진 : Marine 69-71 / CC BY-SA 4.0 / wikimedia",
+    "attribution_required": true,
+    "title": "Chandler-Chandler Bank Vault-1913-3",
+    "source": "https://commons.wikimedia.org/w/index.php?curid=75455727",
+    "query": "bank vault",
+    "카테고리": "은행",
+    "검수": "2026-08-02 육안 확인 완료 — 옛 은행 금고문(빈티지), 인물·텍스트 오버레이 없음"
   }
 }
