@@ -25,6 +25,12 @@ import urllib.request
 
 UA = {"User-Agent": "Mozilla/5.0 (compatible; savemoney119-cardnews/1.0)"}
 
+# 프리미엄 스톡 API(Pexels 등)는 Cloudflare가 봇 UA(Python-urllib, 커스텀 문자열)를
+# error 1010으로 막는다. API 호출·이미지 다운로드에는 실제 브라우저 UA를 써야 통과한다.
+STOCK_UA = {"User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                           "AppleWebKit/537.36 (KHTML, like Gecko) "
+                           "Chrome/124.0.0.0 Safari/537.36")}
+
 # 후보를 모을 때의 '출처 우선순위' (숫자가 작을수록 신뢰/화질 우선). 리포트 정렬·가점에 사용.
 SOURCE_TIERS = [
     # tier 1: 공식 1차 출처 (정부/기업 뉴스룸, 퍼블릭도메인 정부 사이트) - 원본 고해상, 워터마크 없음, 라이선스 안전
@@ -484,6 +490,240 @@ def photo_candidates(query, out_dir, limit=10, min_width=1400, prefix="photo"):
         except Exception as e:
             report.append({"error": str(e)[:80], "title": c.get("title", ""),
                            "url": url})
+    return report
+
+
+# ---------- 6b) 프리미엄 스톡 API 소싱 (Pexels / Unsplash / Pixabay) ----------
+#
+# 키는 '환경변수에서만' 읽는다 — 코드/커밋에 값이 절대 들어가지 않는다.
+#   PEXELS_API_KEY, UNSPLASH_ACCESS_KEY, PIXABAY_API_KEY
+#
+# 세 곳 모두 '워터마크 없음 + 무료 상업적 재게시 허용' 라이선스라 수익형 블로그에 안전하다:
+#   - Pexels License / Unsplash License / Pixabay Content License
+#     → 상업적 이용 OK, 출처표시 '의무 아님'(권장). 사진 원본을 그대로 되팔거나
+#       재배포(사진 자체를 상품화)하는 것만 금지. 카드뉴스 배경으로 쓰는 건 허용.
+# 그래도 신뢰도·추적을 위해 photographer/출처 URL/라이선스를 index.json에 남긴다.
+#
+# 각 *_candidates()는 '메타 후보 리스트'만 돌려준다(다운로드는 stock_photo_candidates에서).
+# 공통 반환 키: url(다운로드용) / w / h / source_api / license / photographer /
+#             landing(출처 페이지) / credit / id
+
+
+def _stock_json(url, headers, timeout=25, tries=4):
+    """스톡 API JSON 조회. 429/5xx는 백오프 재시도, 그 외 예외는 즉시 전파."""
+    import time as _t
+    last = None
+    for i in range(tries):
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            return json.loads(urllib.request.urlopen(req, timeout=timeout).read().decode())
+        except Exception as e:
+            last = e
+            s = str(e)
+            if "429" in s or "500" in s or "502" in s or "503" in s:
+                _t.sleep(1.5 + i * 2.0)
+                continue
+            raise
+    raise last
+
+
+def pexels_candidates(query, per_page=15, min_width=1200, timeout=25):
+    """Pexels 검색. 원본(src.original)을 준다 — 대개 3000px+ 고해상."""
+    key = os.getenv("PEXELS_API_KEY")
+    if not key:
+        return []
+    url = "https://api.pexels.com/v1/search?" + urllib.parse.urlencode(
+        {"query": query, "per_page": per_page, "orientation": "landscape"})
+    try:
+        data = _stock_json(url, {**STOCK_UA, "Authorization": key}, timeout)
+    except Exception:
+        return []
+    out = []
+    for p in data.get("photos", []):
+        w, h = p.get("width", 0), p.get("height", 0)
+        if w < min_width:
+            continue
+        src = p.get("src", {}) or {}
+        dl = src.get("original") or src.get("large2x") or src.get("large")
+        if not dl:
+            continue
+        who = p.get("photographer", "")
+        out.append({
+            "url": dl, "w": w, "h": h, "source_api": "pexels",
+            "license": "Pexels License", "photographer": who,
+            "landing": p.get("url", ""),
+            "credit": " / ".join(x for x in [who, "Pexels"] if x),
+            "id": p.get("id"),
+        })
+    return out
+
+
+def unsplash_candidates(query, per_page=15, min_width=1200, timeout=25):
+    """Unsplash 검색. raw URL에 폭 파라미터를 붙여 1600px JPG로 받아 원본 과대용량을 피한다."""
+    key = os.getenv("UNSPLASH_ACCESS_KEY")
+    if not key:
+        return []
+    url = "https://api.unsplash.com/search/photos?" + urllib.parse.urlencode(
+        {"query": query, "per_page": per_page, "orientation": "landscape",
+         "content_filter": "high", "client_id": key})
+    try:
+        data = _stock_json(url, STOCK_UA, timeout)
+    except Exception:
+        return []
+    out = []
+    for p in data.get("results", []):
+        w, h = p.get("width", 0), p.get("height", 0)
+        if w < min_width:
+            continue
+        urls = p.get("urls", {}) or {}
+        raw = urls.get("raw")
+        # raw + 동적 리사이즈: 긴 변 2400px(→3:2면 짧은 변 1600px, 정사각 크롭에 충분),
+        # JPG q85 (원본이 6000px여도 가볍게 받는다).
+        dl = (raw + "&w=2400&q=85&fm=jpg&fit=max") if raw else (urls.get("full") or urls.get("regular"))
+        if not dl:
+            continue
+        who = (p.get("user", {}) or {}).get("name", "")
+        out.append({
+            "url": dl, "w": w, "h": h, "source_api": "unsplash",
+            "license": "Unsplash License", "photographer": who,
+            "landing": (p.get("links", {}) or {}).get("html", ""),
+            "credit": " / ".join(x for x in [who, "Unsplash"] if x),
+            "id": p.get("id"),
+        })
+    return out
+
+
+def pixabay_candidates(query, per_page=20, min_width=1200, timeout=25):
+    """Pixabay 검색. largeImageURL(긴 변 1280px)을 준다 — 가로 사진은 정사각 크롭 시
+    짧은 변이 부족할 수 있어, 실제 다운로드 후 min_side로 한 번 더 거른다."""
+    key = os.getenv("PIXABAY_API_KEY")
+    if not key:
+        return []
+    url = "https://pixabay.com/api/?" + urllib.parse.urlencode(
+        {"key": key, "q": query, "image_type": "photo", "per_page": per_page,
+         "safesearch": "true", "min_width": min_width, "order": "popular"})
+    try:
+        data = _stock_json(url, STOCK_UA, timeout)
+    except Exception:
+        return []
+    out = []
+    for p in data.get("hits", []):
+        w, h = p.get("imageWidth", 0), p.get("imageHeight", 0)   # 원본 해상도(대형)
+        # 큰 렌더부터: imageURL(원본, 권한 필요)→fullHDURL(1920)→largeImageURL(1280).
+        # 무료 키는 대개 largeImageURL(긴 변 1280)만 와서 가로 사진은 정사각 크롭에 짧다.
+        dl = (p.get("imageURL") or p.get("fullHDURL")
+              or p.get("largeImageURL") or p.get("webformatURL"))
+        if not dl:
+            continue
+        who = p.get("user", "")
+        out.append({
+            "url": dl, "w": w, "h": h, "source_api": "pixabay",
+            "license": "Pixabay Content License", "photographer": who,
+            "landing": p.get("pageURL", ""),
+            "credit": " / ".join(x for x in [who, "Pixabay"] if x),
+            "id": p.get("id"),
+        })
+    return out
+
+
+def _stock_download(url, referer=None, timeout=35, tries=3):
+    """스톡 CDN 이미지 다운로드. 브라우저 UA(+필요시 Referer)로 hotlink/Cloudflare 회피."""
+    header_variants = [dict(STOCK_UA)]
+    if referer:
+        header_variants.append({**STOCK_UA, "Referer": referer})
+    last = None
+    for h in header_variants:
+        for _ in range(tries):
+            try:
+                req = urllib.request.Request(url, headers=h)
+                return urllib.request.urlopen(req, timeout=timeout).read()
+            except Exception as e:
+                last = e
+    raise last
+
+
+STOCK_GETTERS = {
+    "pexels": pexels_candidates,
+    "unsplash": unsplash_candidates,
+    "pixabay": pixabay_candidates,
+}
+
+
+def stock_photo_candidates(query, out_dir, keep=6, min_side=1200, prefix="stock",
+                           apis=("pexels", "unsplash", "pixabay"),
+                           square=True, size=1400):
+    """3개 프리미엄 API에서 후보를 모아 실제로 내려받아 리사이즈본을 저장하고 리포트를 준다.
+
+    - 소스 다양성: api별로 면적순 정렬 후 '라운드로빈'으로 골라, 한 소스가 독식하지 않게 한다.
+    - 화질 보장: '실제 픽셀' min(w,h) >= min_side 인 것만 채택(1080px+ 요건 충족).
+    - 저장: square=True면 prepare_photo로 정사각 size(기본 1400px) + 시리즈 톤/비네트까지
+      입혀 기존 라이브러리와 톤을 맞춘다. '리사이즈본'만 남기므로 대용량 원본은 저장되지 않는다.
+
+    반환 리포트 항목:
+      {"path","w","h","src_w","src_h","source_api","license","credit",
+       "photographer","landing","attrib_required","query"}  또는  {"error"/"skipped",...}
+    """
+    import time
+    os.makedirs(out_dir, exist_ok=True)
+
+    per_api = {}
+    for api in apis:
+        try:
+            cands = STOCK_GETTERS[api](query, per_page=max(keep * 3, 15), min_width=min_side)
+        except Exception:
+            cands = []
+        cands.sort(key=lambda c: -(c["w"] * c["h"]))
+        per_api[api] = cands
+
+    # 라운드로빈 병합
+    ordered, i = [], 0
+    while any(i < len(per_api[a]) for a in apis):
+        for a in apis:
+            if i < len(per_api[a]):
+                ordered.append(per_api[a][i])
+        i += 1
+
+    report, kept, seen = [], 0, set()
+    for c in ordered:
+        if kept >= keep:
+            break
+        u = c["url"]
+        if not u or u in seen:
+            continue
+        seen.add(u)
+        try:
+            time.sleep(0.3)
+            data = _stock_download(u, referer=c.get("landing") or None)
+            rw, rh = _real_size(data)
+            if min(rw, rh) < min_side:
+                report.append({"skipped": f"짧은변 부족({rw}x{rh})",
+                               "api": c["source_api"], "id": c.get("id")})
+                continue
+            path = os.path.join(out_dir, f"{prefix}_{c['source_api']}_{kept}.jpg")
+            with open(path, "wb") as f:
+                f.write(data)
+            if square:
+                try:
+                    prepare_photo(path, path, size=size)
+                    pw = ph = size
+                except Exception as e:
+                    report.append({"error": f"가공실패 {str(e)[:50]}",
+                                   "api": c["source_api"]})
+                    if os.path.exists(path):
+                        os.remove(path)
+                    continue
+            else:
+                pw, ph = rw, rh
+            report.append({
+                "path": path, "w": pw, "h": ph, "src_w": rw, "src_h": rh,
+                "source_api": c["source_api"], "license": c["license"],
+                "credit": c["credit"], "photographer": c["photographer"],
+                "landing": c["landing"], "attrib_required": False,
+                "query": query,
+            })
+            kept += 1
+        except Exception as e:
+            report.append({"error": str(e)[:80], "api": c.get("source_api"), "url": u})
     return report
 
 
