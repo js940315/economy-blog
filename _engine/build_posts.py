@@ -336,6 +336,12 @@ def build_one(article, out_dir):
     # 이미지 1장마다 헤드리스 브라우저 프로세스를 새로 띄우는 convert_svg_to_png다.
     # 이미지끼리는 서로 완전히 독립적이므로, 그 부분만 스레드풀로 병렬 실행해
     # 벽시계 시간을 이미지 개수만큼 순차로 곱하지 않게 한다.
+    #
+    # ※ 동시 실행 브라우저 수 = 순간 메모리 사용량. 헤드리스 크로미움은 장당
+    #   수백 MB를 쓰므로 8개를 한꺼번에 띄우면 순간 2~3GB가 튄다. 여유 RAM이
+    #   적은(또는 RAM/디스크가 불안정한) 로컬에서 이 스파이크가 커널 크래시
+    #   (MEMORY_MANAGEMENT 블루스크린)의 방아쇠가 될 수 있어, 기본을 낮게(3) 잡고
+    #   환경변수 RENDER_CONCURRENCY로 조절한다. 안정적인 클라우드 러너는 8로 올려도 됨.
     tmp_paths = []
     for idx, spec in enumerate(specs, start=1):
         svg = render_image(spec, date_tag=date_tag, seq=seq, used_in_post=used_in_post)
@@ -346,7 +352,12 @@ def build_one(article, out_dir):
         tmp_paths.append((idx, tmp_svg, tmp_png))
 
     if tmp_paths:
-        with ThreadPoolExecutor(max_workers=min(8, len(tmp_paths))) as ex:
+        try:
+            workers = int(os.getenv("RENDER_CONCURRENCY", "3"))
+        except ValueError:
+            workers = 3
+        workers = max(1, min(workers, len(tmp_paths)))
+        with ThreadPoolExecutor(max_workers=workers) as ex:
             ok_flags = list(ex.map(
                 lambda t: convert_svg_to_png(t[1], t[2]), tmp_paths))
     else:

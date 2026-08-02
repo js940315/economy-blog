@@ -95,8 +95,13 @@ def main():
         else:
             entry["title"] = r["title"]
         index[os.path.basename(r["path"])] = entry
-    with open(INDEX, "w", encoding="utf-8") as f:
+    # 원자적 저장(쓰는 중 크래시로 인한 index.json 손상 방지)
+    _tmp = INDEX + ".tmp"
+    with open(_tmp, "w", encoding="utf-8") as f:
         json.dump(index, f, ensure_ascii=False, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(_tmp, INDEX)
 
     print(f"\n라이선스 기록: {INDEX}")
     print("안 쓸 사진은 파일과 index 항목을 같이 지우세요.")

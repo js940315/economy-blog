@@ -41,11 +41,28 @@ def _load_json(path, default):
 
 
 def _save_json(path, data):
+    """원자적 저장 — 임시파일에 다 쓴 뒤 os.replace로 교체한다.
+
+    쓰는 도중 시스템이 비정상 종료(블루스크린 등)해도 원본이 반쯤 쓰이거나
+    0바이트로 손상되지 않는다(교체는 원자적). photo_usage.json이 NUL로 깨져
+    엔진이 크래시했던 사고의 재발 방지."""
     d = os.path.dirname(path)
     if d:
         os.makedirs(d, exist_ok=True)
-    with open(path, "w", encoding="utf-8") as f:
+    tmp = path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, path)
+
+
+def _load_json_safe(path, default):
+    """빈/손상 JSON을 만나도 크래시 대신 default로 복구한다(불안정 환경 대비)."""
+    try:
+        return _load_json(path, default)
+    except (ValueError, OSError):
+        return default
 
 
 def _seed(*parts):
@@ -60,7 +77,7 @@ def category_pool(category):
       1) index.json에 "카테고리": "부동산" 필드가 명시된 경우 (신규 방식)
       2) 파일명이 "부동산_"로 시작하는 경우 (기존 관행 — 필드가 없어도 잡아준다)
     """
-    idx = _load_json(INDEX_PATH, {})
+    idx = _load_json_safe(INDEX_PATH, {})
     pool = []
     for fn, meta in idx.items():
         if fn.startswith("_") or not isinstance(meta, dict):
@@ -84,7 +101,7 @@ def pick_photo(category, date_tag, seq, exclude=None):
     if not pool:
         return None
 
-    usage = _load_json(USAGE_PATH, {})
+    usage = _load_json_safe(USAGE_PATH, {})
     recent = set(usage.get(category, [])[-RECENT_WINDOW:])
     candidates = [p for p in pool if p not in recent] or pool
 
@@ -96,7 +113,7 @@ def record_usage(category, filename, date_tag, seq):
     """실제로 이미지를 만든 뒤 호출 — 다음 순환 판단의 '최근 사용' 근거가 된다."""
     if not filename:
         return
-    usage = _load_json(USAGE_PATH, {})
+    usage = _load_json_safe(USAGE_PATH, {})
     lst = usage.setdefault(category, [])
     lst.append(filename)
     usage[category] = lst[-HISTORY_MAX:]

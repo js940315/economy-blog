@@ -83,8 +83,14 @@ def load_index():
 
 
 def save_index(idx):
-    with open(INDEX, "w", encoding="utf-8") as f:
+    # 원자적 저장: 임시파일에 다 쓰고 os.replace로 교체 → 쓰는 중 크래시해도
+    # index.json이 반쯤 쓰이거나 0바이트로 손상되지 않는다.
+    tmp = INDEX + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
         json.dump(idx, f, ensure_ascii=False, indent=2)
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp, INDEX)
 
 
 def build(categories, per_category, min_side, size):

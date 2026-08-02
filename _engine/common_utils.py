@@ -73,6 +73,13 @@ def convert_svg_to_png(svg_path, png_path):
         "--headless",
         "--disable-gpu",
         "--no-sandbox",  # 클라우드 컨테이너에서 root로 돌 때 필요
+        # 메모리 절약/안정화 플래그 — 순간 사용량을 낮춰 저사양·불안정 RAM에서
+        # 크래시 방아쇠가 될 확률을 줄인다(기능 변화 없음).
+        "--disable-dev-shm-usage",       # /dev/shm 대신 디스크 사용(공유메모리 고갈 방지)
+        "--disable-extensions",
+        "--disable-software-rasterizer",
+        "--no-first-run", "--no-default-browser-check",
+        "--disable-background-networking",
         f"--screenshot={os.path.abspath(png_path)}",
         f"--window-size={window_size}",
         "--force-device-scale-factor=2",
