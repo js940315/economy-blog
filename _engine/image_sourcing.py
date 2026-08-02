@@ -454,7 +454,15 @@ def photo_candidates(query, out_dir, limit=10, min_width=1400, prefix="photo"):
         url = wikimedia_thumb_url(c["url"], width=2400)
         try:
             time.sleep(1.0)   # 429 방지
-            data = fetch_image(url, referer=c.get("landing") or None)
+            try:
+                data = fetch_image(url, referer=c.get("landing") or None)
+            except Exception:
+                # Wikimedia가 임의 폭 썸네일 렌더를 400으로 거부하는 파일이 있다
+                # (허용된 사이즈 목록 정책). 이때는 원본을 그대로 받는다 —
+                # 어차피 이후 파이프라인에서 1080px로 다시 리사이즈되므로 무겁지 않다.
+                if url == c["url"]:
+                    raise
+                data = fetch_image(c["url"], referer=c.get("landing") or None)
             rw, rh = _real_size(data)
             # API 보고값이 아니라 '실제 픽셀'로 판정한다
             if rw and rw < min_width:

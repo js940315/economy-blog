@@ -39,11 +39,11 @@ def main():
     report = photo_candidates(args.query, PHOTO_DIR, limit=args.limit,
                               min_width=args.min_width, prefix=args.name)
 
-    ok = [r for r in report if "error" not in r]
+    ok = [r for r in report if "path" in r]  # error/skipped 항목은 파일이 없으므로 제외
     if not ok:
         print("후보를 못 받았습니다. 검색어를 바꾸거나 --min-width 를 낮춰보세요.")
         for r in report:
-            print("  실패:", r.get("title", "")[:40], r.get("error", "")[:50])
+            print("  실패:", r.get("title", "")[:40], r.get("error") or r.get("skipped", ""))
         return 1
 
     print(f"\n{len(ok)}장을 {PHOTO_DIR}/ 에 저장했습니다. 눈으로 확인하고 고르세요.\n")
