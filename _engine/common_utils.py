@@ -391,11 +391,10 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
                  f'{tspans(ln)}</text>')
 
     if brand:
-        bw = 34 + len(brand) * 19
-        p.append(f'<rect x="{size-38-bw}" y="{size-90}" width="{bw}" height="52" rx="26" '
-                 f'fill="#0a1018" opacity="0.72"/>')
-        p.append(f'<text x="{size-38-bw/2}" y="{size-55}" font-size="27" font-weight="700" '
-                 f'fill="#ffffff" text-anchor="middle" letter-spacing="1">{escape_html(brand)}</text>')
+        # 배경 박스(테두리) 없이 텍스트만. 밝은 사진 대비용으로 약한 외곽선만.
+        p.append(f'<text x="{size-38}" y="{size-52}" font-size="27" font-weight="700" '
+                 f'fill="#ffffff" text-anchor="end" letter-spacing="1" '
+                 f'stroke="#0a1018" stroke-width="3.5" paint-order="stroke">{escape_html(brand)}</text>')
     if tagline:
         p.append(f'<text x="62" y="{size-52}" font-size="25" font-weight="600" '
                  f'fill="#ffffff" opacity="0.70" letter-spacing="3">{escape_html(tagline)}</text>')
@@ -473,11 +472,10 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
         )
 
     if brand:
-        bw = 34 + len(brand) * 19
-        p.append(f'<rect x="{size-38-bw}" y="34" width="{bw}" height="52" rx="26" '
-                 f'fill="#0a1018" opacity="0.72"/>')
-        p.append(f'<text x="{size-38-bw/2}" y="69" font-size="27" font-weight="700" '
-                 f'fill="#ffffff" text-anchor="middle" letter-spacing="1">'
+        # 배경 박스(테두리) 없이 텍스트만. 우상단, 약한 외곽선만.
+        p.append(f'<text x="{size-38}" y="69" font-size="27" font-weight="700" '
+                 f'fill="#ffffff" text-anchor="end" letter-spacing="1" '
+                 f'stroke="#0a1018" stroke-width="3.5" paint-order="stroke">'
                  f'{escape_html(brand)}</text>')
     if tagline:
         p.append(f'<text x="62" y="{size-44}" font-size="25" font-weight="600" '
