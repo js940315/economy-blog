@@ -35,7 +35,14 @@ def convert_svg_to_png(svg_path, png_path):
     """헤드리스 브라우저로 SVG를 스크린샷 떠서 PNG로 바꾼다.
     (네이버는 SVG 업로드를 거부하므로 항상 PNG로 변환해서 써야 한다)
     브라우저를 못 찾으면 False를 반환한다 — 호출부에서 apt-get/pip 등으로
-    설치를 시도하거나, 실패를 기록하고 다음 이미지로 넘어가야 한다."""
+    설치를 시도하거나, 실패를 기록하고 다음 이미지로 넘어가야 한다.
+
+    ※ .svg 파일을 브라우저에 '문서'로 직접 열면(file:// + 확장자 .svg) 크로미움이
+    루트 <svg>를 항상 뷰포트에 꽉 채워주지 않는다 — 실제 렌더 크기가 window-size보다
+    작게 잡히면서 스크롤 가능한 여백(빈 페이지, 기본 흰 배경)이 오른쪽/아래에 남고
+    스크롤바까지 찍히는 경우가 있었다(실측 확인, 2026-08-02). 그래서 SVG를 얇은 HTML
+    래퍼에 넣고 CSS로 뷰포트에 강제로 꽉 채운 뒤, 그 .html을 스크린샷한다 —
+    브라우저 버전에 기대지 않는 확실한 full-bleed 방법이다."""
     browser = find_browser()
     if not browser:
         print("  [경고] 헤드리스 브라우저를 못 찾아서 SVG->PNG 변환을 건너뜁니다.")
@@ -50,7 +57,17 @@ def convert_svg_to_png(svg_path, png_path):
         w, h = 640, 380
     window_size = f"{int(w)},{int(h)}"
 
-    file_url = "file:///" + os.path.abspath(svg_path).replace("\\", "/")
+    html_path = os.path.splitext(svg_path)[0] + "_wrap.html"
+    html = (
+        "<!doctype html><html><head><meta charset=\"utf-8\"><style>"
+        "html,body{margin:0;padding:0;overflow:hidden;background:#000}"
+        "svg{display:block;width:100vw;height:100vh}"
+        "</style></head><body>" + svg_content + "</body></html>"
+    )
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(html)
+
+    file_url = "file:///" + os.path.abspath(html_path).replace("\\", "/")
     cmd = [
         browser,
         "--headless",
@@ -59,6 +76,7 @@ def convert_svg_to_png(svg_path, png_path):
         f"--screenshot={os.path.abspath(png_path)}",
         f"--window-size={window_size}",
         "--force-device-scale-factor=2",
+        "--hide-scrollbars",
         "--default-background-color=FFFFFFFF",
         file_url,
     ]
@@ -68,6 +86,9 @@ def convert_svg_to_png(svg_path, png_path):
     except Exception as e:
         print(f"  [경고] SVG->PNG 변환 실패: {e}")
         return False
+    finally:
+        if os.path.exists(html_path):
+            os.remove(html_path)
 
 
 def escape_html(text):
@@ -197,12 +218,14 @@ def fit_copy_font_size(line1, line2, size=1080, max_fs=92, min_fs=42,
     return fs
 
 
-CARD_BLEED = 4  # 스크린샷 변환 시 반올림으로 흰 테두리가 비치지 않도록 배경을 살짝 넘겨 채운다
-
-
 def _card_open(accent):
-    """4종 카드가 공유하는 배경·그라데이션. 시리즈 통일감의 핵심."""
-    b = CARD_BLEED
+    """4종 카드가 공유하는 배경·그라데이션. 시리즈 통일감의 핵심.
+
+    캔버스를 정확히 0,0~CARD_W,CARD_H로 채운다. 예전엔 스크린샷 시 흰 여백이
+    비치는 걸 막으려 배경을 몇 px 더 크게 그리는 임시방편(bleed)을 썼지만,
+    진짜 원인은 convert_svg_to_png()가 .svg를 문서로 직접 열어 뷰포트를 안
+    꽉 채우던 것이었다 — 그건 HTML 래퍼로 근본 수정했으니 여기서는 다시
+    깔끔하게 정확한 캔버스 크기로만 그린다."""
     return (
         f'<svg viewBox="0 0 {CARD_W} {CARD_H}" xmlns="http://www.w3.org/2000/svg" '
         f'font-family="Pretendard, \'Malgun Gothic\', system-ui, sans-serif">'
@@ -214,7 +237,7 @@ def _card_open(accent):
         f'<stop offset="0%" stop-color="{accent}" stop-opacity="0.16"/>'
         f'<stop offset="100%" stop-color="{accent}" stop-opacity="0"/></radialGradient>'
         '</defs>'
-        f'<rect x="{-b}" y="{-b}" width="{CARD_W+2*b}" height="{CARD_H+2*b}" fill="url(#bg)"/>'
+        f'<rect width="{CARD_W}" height="{CARD_H}" fill="url(#bg)"/>'
         f'<circle cx="{CARD_W-40}" cy="-40" r="620" fill="url(#glow)"/>'
     )
 
@@ -365,7 +388,7 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
         f'<stop offset="100%" stop-color="#05080f" stop-opacity="0.86"/></linearGradient>'
         '</defs>'
     )
-    p.append(f'<rect x="-4" y="-4" width="{size+8}" height="{size+8}" fill="url(#sbg)"/>')
+    p.append(f'<rect width="{size}" height="{size}" fill="url(#sbg)"/>')
 
     # 배경 로고 워터마크 (있을 때). 정사각 박스 + 판(plate) 없이 로고만 얹는다 —
     # 이전엔 폭이 2배 넓은 박스에 원형 로고를 'meet'로 맞추다 보니 로고 양옆으로
@@ -491,9 +514,9 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
         '<stop offset="100%" stop-color="#000000" stop-opacity="0.52"/></linearGradient>'
         '</defs>'
     )
-    p.append(f'<image href="{uri}" x="-4" y="-4" width="{size+8}" height="{size+8}" '
+    p.append(f'<image href="{uri}" x="0" y="0" width="{size}" height="{size}" '
              f'preserveAspectRatio="xMidYMid slice"/>')
-    p.append(f'<rect x="-4" y="-4" width="{size+8}" height="{size+8}" fill="url(#tscrim)"/>')
+    p.append(f'<rect width="{size}" height="{size}" fill="url(#tscrim)"/>')
     # 배경이 시끄러운 사진(웨이퍼·전광판 등)은 dim을 올려 글자와의 경쟁을 없앤다
     if dim > 0:
         p.append(f'<rect width="{size}" height="{size}" fill="#050a12" opacity="{dim}"/>')
@@ -558,12 +581,11 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
         '<stop offset="100%" stop-color="#050d1a" stop-opacity="0"/></linearGradient>'
         '</defs>'
     )
-    # slice = 비율 유지하며 꽉 채우기 (여백 없이 crop). 스크린샷 변환 시 흰 테두리가
-    # 비치지 않도록 캔버스보다 살짝 크게(bleed) 그린다.
-    p.append(f'<image href="{uri}" x="-4" y="-4" width="{CARD_W+8}" height="{CARD_H+8}" '
+    # slice = 비율 유지하며 꽉 채우기 (여백 없이 crop)
+    p.append(f'<image href="{uri}" x="0" y="0" width="{CARD_W}" height="{CARD_H}" '
              f'preserveAspectRatio="xMidYMid slice"/>')
-    p.append(f'<rect x="-4" y="-4" width="{CARD_W+8}" height="{CARD_H+8}" fill="url(#scrim)"/>')
-    p.append(f'<rect x="-4" y="-4" width="{CARD_W+8}" height="300" fill="url(#topfade)"/>')
+    p.append(f'<rect width="{CARD_W}" height="{CARD_H}" fill="url(#scrim)"/>')
+    p.append(f'<rect width="{CARD_W}" height="300" fill="url(#topfade)"/>')
 
     p.append(logo_tag(logo_path, CARD_W - 88 - 260, 84, 260, 78))
     p.append(f'<rect x="88" y="96" width="8" height="66" rx="4" fill="{accent}"/>')

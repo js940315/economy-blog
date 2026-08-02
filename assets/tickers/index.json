@@ -320,7 +320,8 @@
         "file": "bitcoin_1.png",
         "title": "File:Bitcoin logo clean.svg",
         "license": "CC0",
-        "score": 10
+        "score": 10,
+        "주의": "배경이 투명이 아니라 불투명 흰색으로 저장돼 있음(실측 확인, 2026-08-02). stock_thumbnail처럼 반투명 워터마크로 얹으면 회색 박스처럼 보이므로 그 용도로는 bitcoin_0.png를 쓸 것."
       }
     ],
     "검수": "2026-08-02 육안 확인 완료"
