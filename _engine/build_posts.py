@@ -25,26 +25,53 @@ from common_utils import (build_bar_card_svg, build_number_card_svg,
                           build_rank_bar_card_svg, build_summary_card_svg,
                           build_stock_thumbnail_svg, build_thumbnail_svg,
                           convert_svg_to_png)
+from photo_library import pick_photo, record_usage, variation_seed
 
 
 def _asset(kind, name):
     return os.path.join("assets", kind, name) if name else None
 
 
-def render_image(spec):
+def resolve_photo(spec, date_tag, seq, used_in_post):
+    """spec["photo"](파일명 직접 지정) 또는 spec["photo_category"](카테고리
+    지정 — 날짜·순번 기반 순환)을 실제 파일명으로 해석한다.
+
+    photo_category를 쓰면 같은 카테고리를 하루이틀 연속으로 써도 자동으로
+    다른 사진이 뽑힌다(photo_library.pick_photo). used_in_post는 같은
+    포스트 안에서 이미 쓴 파일명 집합 — 썸네일과 실물이 같은 사진으로
+    겹치는 걸 막는다."""
+    if spec.get("photo"):
+        return spec["photo"], None
+    category = spec.get("photo_category")
+    if not category:
+        return None, None
+    chosen = pick_photo(category, date_tag, seq, exclude=used_in_post)
+    return chosen, category
+
+
+def render_image(spec, date_tag=None, seq=None, used_in_post=None):
     """images 배열의 한 원소를 SVG 문자열로 만든다.
 
     type 값에 따라 4종 카드 중 하나를 고른다. 전부 같은 배경·서체를 쓰기 때문에
     한 포스팅 안에서 4장이 한 세트로 보인다."""
+    used_in_post = used_in_post if used_in_post is not None else set()
     kind = spec.get("type", "bar_card")
     brand = spec.get("brand", "경제비버")
     tagline = spec.get("tagline", "THE ECONOMY BEAVER")
     if kind == "thumbnail":
+        fname, category = resolve_photo(spec, date_tag, seq, used_in_post)
+        if not fname:
+            raise ValueError("thumbnail: photo 또는 photo_category 중 하나가 필요합니다")
+        used_in_post.add(fname)
+        if category:
+            record_usage(category, fname, date_tag, seq)
+        var = variation_seed(fname, date_tag, seq) if date_tag is not None else None
         return build_thumbnail_svg(
-            photo_path=_asset("photos", spec["photo"]),
+            photo_path=_asset("photos", fname),
             line1=spec["line1"], line2=spec["line2"],
             brand=brand, tagline=tagline,
-            accent_words=spec.get("accent_words"), dim=spec.get("dim", 0.0))
+            accent_words=spec.get("accent_words"), dim=spec.get("dim", 0.0),
+            variation=var)
     if kind == "stock_thumbnail":
         return build_stock_thumbnail_svg(
             line1=spec["line1"], line2=spec["line2"],
@@ -54,14 +81,22 @@ def render_image(spec):
             logo_path=_asset("tickers", spec.get("logo")),
             accent_words=spec.get("accent_words"), series=spec.get("series"))
     if kind == "photo_card":
+        fname, category = resolve_photo(spec, date_tag, seq, used_in_post)
+        if not fname:
+            raise ValueError("photo_card: photo 또는 photo_category 중 하나가 필요합니다")
+        used_in_post.add(fname)
+        if category:
+            record_usage(category, fname, date_tag, seq)
+        var = variation_seed(fname, date_tag, seq) if date_tag is not None else None
         return build_photo_card_svg(
-            photo_path=_asset("photos", spec["photo"]),
+            photo_path=_asset("photos", fname),
             eyebrow=spec["eyebrow"],
             headline_lines=spec.get("headline_lines", []),
             credit=spec.get("credit", ""),
             number=spec.get("number"), number_unit=spec.get("number_unit", ""),
             delta=spec.get("delta", ""), direction=spec.get("direction", "up"),
-            logo_path=_asset("logos", spec.get("logo")))
+            logo_path=_asset("logos", spec.get("logo")),
+            variation=var)
     if kind == "number_card":
         return build_number_card_svg(
             eyebrow=spec["eyebrow"], number=spec["number"],
@@ -289,6 +324,12 @@ def build_one(article, out_dir):
     image_map = {}
     specs = article.get("images", [])
 
+    # out_dir은 항상 ".../{date_tag}/{seq}" 형태(samples든 실제 발행이든)라
+    # 여기서 순환picks 시드로 쓸 (date_tag, seq)를 그대로 뽑아낸다.
+    parts = [p for p in out_dir.replace("\\", "/").split("/") if p]
+    date_tag, seq = (parts[-2], parts[-1]) if len(parts) >= 2 else (parts[-1], "1")
+    used_in_post = set()   # 한 포스트 안에서 사진이 겹치지 않게 추적
+
     from PIL import Image
 
     # SVG 작성 자체는 순수 CPU/문자열 작업이라 거의 공짜다. 시간을 잡아먹는 건
@@ -297,7 +338,7 @@ def build_one(article, out_dir):
     # 벽시계 시간을 이미지 개수만큼 순차로 곱하지 않게 한다.
     tmp_paths = []
     for idx, spec in enumerate(specs, start=1):
-        svg = render_image(spec)
+        svg = render_image(spec, date_tag=date_tag, seq=seq, used_in_post=used_in_post)
         tmp_svg = os.path.join(out_dir, f"_tmp{idx}.svg")
         tmp_png = os.path.join(out_dir, f"_tmp{idx}.png")
         with open(tmp_svg, "w", encoding="utf-8") as f:

@@ -331,6 +331,33 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
     return "".join(p)
 
 
+def _variation_filter(var, filter_id):
+    """photo_library.variation_seed()가 만든 dict(align/saturate/hue/bright)로
+    SVG <filter> 정의와 preserveAspectRatio 값을 만든다.
+
+    같은 원본 사진이라도 '오늘 이 순번'마다 크롭 위치·톤이 살짝 달라 보이게
+    해서 라이브러리를 돌려써도 매번 같은 컷이라는 티가 덜 나게 한다.
+    var가 없으면(기존 방식대로 파일명을 직접 지정한 경우 등) 무보정 기본값."""
+    if not var:
+        return "", "xMidYMid slice"
+    align = var.get("align", "xMidYMid")
+    sat = var.get("saturate", 1.0)
+    hue = var.get("hue", 0)
+    bright = var.get("bright", 1.0)
+    filt = (
+        f'<filter id="{filter_id}" color-interpolation-filters="sRGB">'
+        f'<feColorMatrix type="hueRotate" values="{hue}"/>'
+        f'<feColorMatrix type="saturate" values="{sat}"/>'
+        f'<feComponentTransfer>'
+        f'<feFuncR type="linear" slope="{bright}"/>'
+        f'<feFuncG type="linear" slope="{bright}"/>'
+        f'<feFuncB type="linear" slope="{bright}"/>'
+        f'</feComponentTransfer>'
+        f'</filter>'
+    )
+    return filt, f"{align} slice"
+
+
 THUMB_INK = "#ffffff"
 THUMB_STROKE = "#0a1018"
 THUMB_ACCENT = "#7dffce"     # 민트 — 숫자·종목명 강조용
@@ -465,7 +492,7 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
 
 
 def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
-                        accent_words=None, size=1080, dim=0.0):
+                        accent_words=None, size=1080, dim=0.0, variation=None):
     """홈판 썸네일. 사진 위에 2줄 카피를 두꺼운 외곽선으로 얹는다.
 
     설계 근거 (상위 블로그 구조 분석):
@@ -504,6 +531,7 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
     gap = int(fs * 1.16)
     base_y = int(size * 0.70)
 
+    filt_def, par = _variation_filter(variation, "var-thumb")
     p = [f'<svg viewBox="0 0 {size} {size}" xmlns="http://www.w3.org/2000/svg" '
          f'font-family="Pretendard, \'Malgun Gothic\', sans-serif">']
     p.append(
@@ -512,10 +540,12 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
         '<stop offset="0%" stop-color="#000000" stop-opacity="0.30"/>'
         '<stop offset="45%" stop-color="#000000" stop-opacity="0.14"/>'
         '<stop offset="100%" stop-color="#000000" stop-opacity="0.52"/></linearGradient>'
+        + filt_def +
         '</defs>'
     )
+    filt_attr = ' filter="url(#var-thumb)"' if filt_def else ""
     p.append(f'<image href="{uri}" x="0" y="0" width="{size}" height="{size}" '
-             f'preserveAspectRatio="xMidYMid slice"/>')
+             f'preserveAspectRatio="{par}"{filt_attr}/>')
     p.append(f'<rect width="{size}" height="{size}" fill="url(#tscrim)"/>')
     # 배경이 시끄러운 사진(웨이퍼·전광판 등)은 dim을 올려 글자와의 경쟁을 없앤다
     if dim > 0:
@@ -549,7 +579,7 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
 
 def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
                          number=None, number_unit="", delta="", direction="up",
-                         accent=CARD_ACCENT_UP, logo_path=None):
+                         accent=CARD_ACCENT_UP, logo_path=None, variation=None):
     """실사 사진을 꽉 채우고 그 위에 카피를 얹는 카드.
 
     핵심은 스크림(scrim)이다. 사진 위에 흰 글씨를 그냥 얹으면 밝은 부분에서 글자가
@@ -565,6 +595,7 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
     with open(photo_path, "rb") as f:
         uri = f"data:{mime};base64," + base64.b64encode(f.read()).decode()
 
+    filt_def, par = _variation_filter(variation, "var-photocard")
     p = [f'<svg viewBox="0 0 {CARD_W} {CARD_H}" xmlns="http://www.w3.org/2000/svg" '
          f'font-family="Pretendard, \'Malgun Gothic\', system-ui, sans-serif">']
     p.append(
@@ -579,11 +610,13 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
         '<linearGradient id="topfade" x1="0" y1="0" x2="0" y2="1">'
         '<stop offset="0%" stop-color="#050d1a" stop-opacity="0.55"/>'
         '<stop offset="100%" stop-color="#050d1a" stop-opacity="0"/></linearGradient>'
+        + filt_def +
         '</defs>'
     )
+    filt_attr = ' filter="url(#var-photocard)"' if filt_def else ""
     # slice = 비율 유지하며 꽉 채우기 (여백 없이 crop)
     p.append(f'<image href="{uri}" x="0" y="0" width="{CARD_W}" height="{CARD_H}" '
-             f'preserveAspectRatio="xMidYMid slice"/>')
+             f'preserveAspectRatio="{par}"{filt_attr}/>')
     p.append(f'<rect width="{CARD_W}" height="{CARD_H}" fill="url(#scrim)"/>')
     p.append(f'<rect width="{CARD_W}" height="300" fill="url(#topfade)"/>')
 
