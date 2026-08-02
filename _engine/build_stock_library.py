@@ -52,6 +52,8 @@ TOPICS = {
             "microchip circuit board semiconductor technology"],
     "금리통화": ["korean won banknote cash money",
              "interest rate percent finance calculator money"],
+    "물가소비": ["grocery supermarket shopping cart aisle",
+             "fresh produce market vegetables prices"],
 }
 
 # 기업 7종 (일반 스톡이라 '주제성' 사진이 온다 — 실제 사옥/깃발 아님).

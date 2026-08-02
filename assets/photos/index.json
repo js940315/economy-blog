@@ -1333,32 +1333,6 @@
     "검수": "스톡 API(워터마크 없음) — 스팟체크",
     "유형": "주제성 스톡(실제 사옥/깃발 아님, 브랜드 미검증)"
   },
-  "금리통화_0_pexels_0.jpg": {
-    "카테고리": "금리통화",
-    "source_api": "pexels",
-    "license": "Pexels License",
-    "credit": "Ejov Igor / Pexels",
-    "photographer": "Ejov Igor",
-    "attribution_required": false,
-    "원본해상도": "6000x4000",
-    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
-    "검색어": "korean won banknote cash money",
-    "source": "https://www.pexels.com/photo/close-up-of-vintage-rubles-17539479/",
-    "검수": "스톡 API(워터마크 없음) — 스팟체크"
-  },
-  "금리통화_0_unsplash_1.jpg": {
-    "카테고리": "금리통화",
-    "source_api": "unsplash",
-    "license": "Unsplash License",
-    "credit": "Vardan Papikyan / Unsplash",
-    "photographer": "Vardan Papikyan",
-    "attribution_required": false,
-    "원본해상도": "2400x1800",
-    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
-    "검색어": "korean won banknote cash money",
-    "source": "https://unsplash.com/photos/a-close-up-of-a-bunch-of-money-on-a-table-HF3OeZMOR7A",
-    "검수": "스톡 API(워터마크 없음) — 스팟체크"
-  },
   "금리통화_0_pexels_2.jpg": {
     "카테고리": "금리통화",
     "source_api": "pexels",
@@ -1396,6 +1370,71 @@
     "처리": "정사각 1400px + 시리즈 톤 + 비네트",
     "검색어": "interest rate percent finance calculator money",
     "source": "https://unsplash.com/photos/white-percentage-sign-on-a-brick-wall-kdbe0_1kSDU",
+    "검수": "스톡 API(워터마크 없음) — 스팟체크"
+  },
+  "물가소비_0_pexels_0.jpg": {
+    "카테고리": "물가소비",
+    "source_api": "pexels",
+    "license": "Pexels License",
+    "credit": "Nothing Ahead / Pexels",
+    "photographer": "Nothing Ahead",
+    "attribution_required": false,
+    "원본해상도": "6000x4000",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "grocery supermarket shopping cart aisle",
+    "source": "https://www.pexels.com/photo/cart-park-in-modern-supermarket-7451964/",
+    "검수": "스톡 API(워터마크 없음) — 스팟체크"
+  },
+  "물가소비_0_unsplash_1.jpg": {
+    "카테고리": "물가소비",
+    "source_api": "unsplash",
+    "license": "Unsplash License",
+    "credit": "Joschka Silzle / Unsplash",
+    "photographer": "Joschka Silzle",
+    "attribution_required": false,
+    "원본해상도": "2400x1600",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "grocery supermarket shopping cart aisle",
+    "source": "https://unsplash.com/photos/a-person-shopping-in-a-supermarket-vegetable-aisle-GMTaA26Yj9M",
+    "검수": "스톡 API(워터마크 없음) — 스팟체크"
+  },
+  "물가소비_0_pexels_2.jpg": {
+    "카테고리": "물가소비",
+    "source_api": "pexels",
+    "license": "Pexels License",
+    "credit": "Gustavo Fring / Pexels",
+    "photographer": "Gustavo Fring",
+    "attribution_required": false,
+    "원본해상도": "6000x4000",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "grocery supermarket shopping cart aisle",
+    "source": "https://www.pexels.com/photo/girls-standing-on-shopping-cart-3985065/",
+    "검수": "스톡 API(워터마크 없음) — 스팟체크"
+  },
+  "물가소비_1_pexels_0.jpg": {
+    "카테고리": "물가소비",
+    "source_api": "pexels",
+    "license": "Pexels License",
+    "credit": "Michael Li / Pexels",
+    "photographer": "Michael Li",
+    "attribution_required": false,
+    "원본해상도": "9361x6230",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "fresh produce market vegetables prices",
+    "source": "https://www.pexels.com/photo/vibrant-farmers-market-stall-with-fresh-produce-33773928/",
+    "검수": "스톡 API(워터마크 없음) — 스팟체크"
+  },
+  "물가소비_1_unsplash_1.jpg": {
+    "카테고리": "물가소비",
+    "source_api": "unsplash",
+    "license": "Unsplash License",
+    "credit": "Dean Xavier / Unsplash",
+    "photographer": "Dean Xavier",
+    "attribution_required": false,
+    "원본해상도": "2400x1800",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "fresh produce market vegetables prices",
+    "source": "https://unsplash.com/photos/assorted-spices-3vMwvstMCvw",
     "검수": "스톡 API(워터마크 없음) — 스팟체크"
   }
 }
