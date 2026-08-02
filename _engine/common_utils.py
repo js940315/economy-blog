@@ -193,12 +193,8 @@ def _card_head(eyebrow, title_lines, accent):
 
 
 def _card_note(note):
-    """하단 출처. 길면 폰트를 줄여 카드 밖으로 넘치지 않게 한다."""
-    if not note:
-        return ""
-    size = 32 if len(note) <= 34 else (27 if len(note) <= 46 else 23)
-    return (f'<text x="88" y="{CARD_H-64}" font-size="{size}" fill="#7f8da3">'
-            f'{escape_html(note)}</text>')
+    """하단 출처/자료 표기 — 사용자 요청으로 표시하지 않는다 (항상 빈 문자열)."""
+    return ""
 
 
 def build_rank_bar_card_svg(eyebrow, title_lines, items, note="", accent=CARD_ACCENT_UP):
@@ -549,9 +545,7 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
             p.append(f'<text x="{88 + 12}" y="{y+58}" font-size="40" font-weight="700" '
                      f'fill="{accent}">{arrow} {escape_html(delta)}</text>')
 
-    if credit:
-        p.append(f'<text x="88" y="{CARD_H-52}" font-size="24" fill="#ffffff" '
-                 f'opacity="0.62">{escape_html(credit)}</text>')
+    # 출처/자료 표기는 사용자 요청으로 표시하지 않는다 (credit 무시)
     p.append("</svg>")
     return "".join(p)
 
