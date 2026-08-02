@@ -164,6 +164,27 @@ v2를 정식 채택하면 루틴 프롬프트·PROMPT_V1.md를 v2 기준으로 �
 3. prepare_photo에 크롭위치·톤·비네트 랜덤화 → 같은 원본도 매번 다르게 보이게
    (Date.now/random 클라우드서 못 쓰니 날짜·순번 기반 시드로)
 
+## 2026-08-02 두 번째 자동 실행 (추가 발행 + git 동기화 이슈 발견/수정)
+- 같은 날 두 번째 루틴 실행에서 output/0802에 이미 1~8이 있는 걸 확인 →
+  덮어쓰지 않고 9~12로 이어붙임(주식증시/가상자산/글로벌경제/금리통화 4건).
+  build_report.json problems 0건. seen_articles.json 갱신, push 완료.
+- ⚠️ 중요: 세션 시작 시 로컬 `main`과 `origin/main`이 전부 최초 커밋(4063bbd,
+  "initial: v1.0 prompt...")에 멈춰 있었고, 실제 하루치 작업(8건 발행,
+  이미지 파이프라인 수정, v2/v3 샘플, 핸드오프 문서 등 45개 커밋)은 전부
+  detached HEAD 상태로만 존재 — 즉 그동안 원격에 실제로 push된 적이 없었던
+  것으로 보인다(SYSTEM_STATE 이전 기록의 "push 성공"은 detached HEAD 로컬
+  커밋 성공을 오인한 것일 가능성). `git branch -f main HEAD` 로 main을
+  안전하게 fast-forward(45커밋 모두 main의 조상 관계 확인 후)한 뒤 push해서
+  해결 — origin/main도 이제 정상 동기화됨. 다음 세션은 시작 시
+  `git branch -vv`로 detached HEAD 여부를 먼저 확인할 것.
+- 헤드리스 브라우저(SVG→PNG 변환)가 이 실행 환경에선 PATH에 없어서 렌더가
+  전부 스킵됐었다 → `/opt/pw-browsers/chromium-1194/chrome-linux/chrome`를
+  `/usr/local/bin/chromium`에 symlink해서 해결(세션 한정, 컨테이너 재시작 시
+  다시 필요할 수 있음). PIL(pillow)도 미설치 상태라 `pip install pillow` 필요했음.
+- output/0802/{9~12}는 build_posts.py main()을 그대로 쓰면 1번부터 덮어쓰므로,
+  build_one()을 직접 호출해 시작 인덱스를 9로 지정하는 임시 드라이버 스크립트를
+  scratchpad에 만들어 실행함(_engine 코드는 손대지 않음).
+
 ## 그 다음 할 일
 1. [사용자] 오늘 output/0802/1~8 중 하나를 네이버에 실제 발행 → 홈판 노출·저품질 검증
 2. [사용자] output/samples/0802_v2/1~3 톤 피드백 → v2 채택 여부 결정.
