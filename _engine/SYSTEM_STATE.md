@@ -70,7 +70,30 @@ GitHub 링크 공유 방식으로 무한 확장. 새 주제 = 새 저장소 복�
 3. 새 저장소 Public → 담당자에게 output 폴더 링크 공유 → 각자 복붙
 4. 주제별로 분리돼야 유사문서 회피됨 (같은 공장 티 안 남)
 
-## 다음 할 일 (우선순위)
-1. [사용자] 경제 output/0802/1 을 네이버에 실제 발행 → 홈판 노출·저품질·문단·이미지 검증
-2. 발행 중 걸린 디테일만 새 짧은 대화로 수정
-3. 검증되면 config.json으로 주제설정 중앙화(복제 5분화) → 자동차/건강 복제
+## 2026-08-02 진행 상황 (중요)
+- 첫 자동 실행(08-02 06:00) 성공: 경제비버 8건 생성 → output/0802/1~8 에 GitHub push 완료.
+  사용자는 GitHub Desktop Fetch → PC 문서/GitHub/economy-blog 폴더에서 받아 발행하는 흐름 셋팅 완료.
+- 겪은 이슈들(전부 해결):
+  a) 자동화 프롬프트가 옛버전이었음 → _engine 경로/build_posts/0번본문·N번사진.jpg 최신으로 교체.
+  b) git push 403 "Resource not accessible by integration" (GitHub App 쓰기권한 부족)
+     → 결국 권한 열려 push 성공. 단 GitHub Settings>Installed Apps엔 Claude 없고 Cursor만 보임
+     (claude.ai 쪽 연동). 재발 시 claude.ai 저장소 재연결로 쓰기권한 부여.
+  c) 알림 채널(email/push/slack) 전부 false → 폰 알림 안 감. 필요시 claude.ai 앱 알림만 켜면 됨.
+     (당장은 GitHub Desktop Fetch로 폴더 생겼나 확인 = 알림 대용)
+
+## 최근 반영한 디자인 피드백 (커밋됨)
+- images 1번 = 반드시 홈판 대표 썸네일(thumbnail/stock_thumbnail). 데이터카드 금지. (PROMPT 7절)
+- 썸네일 브랜드 배지 '경제비버'의 배경 박스(테두리) 제거 → 텍스트만 (외곽선 약하게).
+- 모든 카드 이미지에서 하단 출처/자료 표기 제거 (_card_note는 항상 "" 반환, photo credit 무시).
+
+## ⚠️ 다음 대화에서 풀 것 — 사진 돌려쓰기 방지 (사용자 지적)
+카테고리당 사진 1~4장뿐이라 매일 쓰면 반복돼 보임(유사문서·식상함 리스크). 보완책:
+1. build_photo_library.py 로 카테고리당 15~20장 대량 확충 + 매일 랜덤/순환 사용 로직
+2. 종목 기사는 stock_thumbnail(매번 다른 종목·가격·차트라 안 겹침) 비중 늘리기
+3. prepare_photo에 크롭위치·톤·비네트 랜덤화 → 같은 원본도 매번 다르게 보이게
+   (Date.now/random 클라우드서 못 쓰니 날짜·순번 기반 시드로)
+
+## 그 다음 할 일
+1. [사용자] 오늘 output/0802/1~8 중 하나를 네이버에 실제 발행 → 홈판 노출·저품질 검증
+2. 사진 다양성 보완 (위 3가지)
+3. 검증되면 config.json으로 주제설정 중앙화 → 자동차/건강 복제 (GitHub 링크 공유로 확장)
