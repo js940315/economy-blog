@@ -26,6 +26,8 @@ from common_utils import (build_bar_card_svg, build_number_card_svg,
                           build_stock_thumbnail_svg, build_thumbnail_svg,
                           convert_svg_to_png)
 from photo_library import pick_photo, record_usage, variation_seed
+from photo_match import (STRONG_SCORE, best_photo, review_match,
+                         suggest_stock_thumbnail)
 
 
 def _asset(kind, name):
@@ -81,24 +83,62 @@ def auto_logo(*texts):
     return None
 
 
-def resolve_photo(spec, date_tag, seq, used_in_post):
+def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=None):
     """spec["photo"](파일명 직접 지정) 또는 spec["photo_category"](카테고리
     지정 — 날짜·순번 기반 순환)을 실제 파일명으로 해석한다.
 
     photo_category를 쓰면 같은 카테고리를 하루이틀 연속으로 써도 자동으로
     다른 사진이 뽑힌다(photo_library.pick_photo). used_in_post는 같은
     포스트 안에서 이미 쓴 파일명 집합 — 썸네일과 실물이 같은 사진으로
-    겹치는 걸 막는다."""
+    겹치는 걸 막는다.
+
+    article_text(제목+카피)를 주면 두 가지를 더 한다:
+      1) photo/photo_category 가 둘 다 없을 때 → 제목에 가장 맞는 사진을 자동 선택
+      2) 어떤 경로로 골랐든 → 그 사진이 이 기사에 맞는지 스스로 재검토하고,
+         약하면 warnings 에 남긴다(build_report 로 올라가 사람이 잡는다).
+    순환 선택(pick_photo)은 '돌려쓰기 방지'만 할 뿐 주제 적합성은 안 보기 때문에,
+    검증을 따로 붙이지 않으면 엉뚱한 사진이 조용히 나간다."""
+    def _review(fname, category):
+        """고른 사진을 스스로 재검토하고, 명백히 틀렸으면 갈아끼운다.
+
+        자동 교체는 '점수 0(기사와 접점이 아예 없음) + 확실히 맞는 대안 존재'
+        일 때만 한다. 애매한 경우까지 건드리면 작성자의 의도적인 선택
+        (분위기용 사진 등)을 망가뜨리므로, 그때는 경고만 남기고 사람에게 맡긴다."""
+        if not (fname and article_text and warnings is not None):
+            return fname
+        score, warn = review_match(fname, article_text, category)
+        if not warn:
+            return fname
+        alt, alt_score, alt_hits = best_photo(article_text, category,
+                                              exclude=used_in_post)
+        if score <= 0.0 and alt and alt_score >= STRONG_SCORE:
+            warnings.append(
+                f"이미지 자동 교체: {fname} → {alt} "
+                f"(적합도 {score:.1f}→{alt_score:.1f}, {', '.join(alt_hits[:2])})")
+            print(f"  [자동교체] {fname} → {alt} ({alt_score:.1f})")
+            return alt
+        warnings.append(warn)
+        return fname
+
     if spec.get("photo"):
-        return spec["photo"], None
+        return _review(spec["photo"], spec.get("photo_category")), None
+
     category = spec.get("photo_category")
     if not category:
+        # 카테고리조차 안 정해줬으면 제목·카피를 읽고 가장 맞는 사진을 고른다
+        if article_text:
+            fname, score, hits = best_photo(article_text, exclude=used_in_post)
+            if fname:
+                print(f"  [자동매칭] {fname} (점수 {score:.1f}: {', '.join(hits[:2])})")
+                return _review(fname, None), None
         return None, None
+
     chosen = pick_photo(category, date_tag, seq, exclude=used_in_post)
-    return chosen, category
+    return _review(chosen, category), category
 
 
-def render_image(spec, date_tag=None, seq=None, used_in_post=None):
+def render_image(spec, date_tag=None, seq=None, used_in_post=None,
+                 article_text="", warnings=None):
     """images 배열의 한 원소를 SVG 문자열로 만든다.
 
     type 값에 따라 4종 카드 중 하나를 고른다. 전부 같은 배경·서체를 쓰기 때문에
@@ -108,7 +148,8 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None):
     brand = spec.get("brand", "경제비버")
     tagline = spec.get("tagline", "THE ECONOMY BEAVER")
     if kind == "thumbnail":
-        fname, category = resolve_photo(spec, date_tag, seq, used_in_post)
+        fname, category = resolve_photo(spec, date_tag, seq, used_in_post,
+                                        article_text, warnings)
         if not fname:
             raise ValueError("thumbnail: photo 또는 photo_category 중 하나가 필요합니다")
         used_in_post.add(fname)
@@ -134,7 +175,8 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None):
                        else auto_logo(spec.get("line1"), spec.get("line2"))),
             accent_words=spec.get("accent_words"), series=spec.get("series"))
     if kind == "photo_card":
-        fname, category = resolve_photo(spec, date_tag, seq, used_in_post)
+        fname, category = resolve_photo(spec, date_tag, seq, used_in_post,
+                                        article_text, warnings)
         if not fname:
             raise ValueError("photo_card: photo 또는 photo_category 중 하나가 필요합니다")
         used_in_post.add(fname)
@@ -383,6 +425,15 @@ def build_one(article, out_dir):
     date_tag, seq = (parts[-2], parts[-1]) if len(parts) >= 2 else (parts[-1], "1")
     used_in_post = set()   # 한 포스트 안에서 사진이 겹치지 않게 추적
 
+    # 이미지 매칭 자기검증용 — 제목과 썸네일 카피가 '이 기사가 무슨 얘긴지'를
+    # 가장 압축해서 담고 있어서, 사진 적합성 판단의 기준으로 삼기 좋다.
+    match_text = " ".join(filter(None, [
+        str(article.get("title", "")),
+        *(f'{s.get("line1", "")} {s.get("line2", "")}' for s in specs
+          if s.get("type") in ("thumbnail", "stock_thumbnail")),
+    ]))
+    img_warnings = []
+
     from PIL import Image
 
     # SVG 작성 자체는 순수 CPU/문자열 작업이라 거의 공짜다. 시간을 잡아먹는 건
@@ -397,7 +448,9 @@ def build_one(article, out_dir):
     #   환경변수 RENDER_CONCURRENCY로 조절한다. 안정적인 클라우드 러너는 8로 올려도 됨.
     tmp_paths = []
     for idx, spec in enumerate(specs, start=1):
-        svg = render_image(spec, date_tag=date_tag, seq=seq, used_in_post=used_in_post)
+        svg = render_image(spec, date_tag=date_tag, seq=seq,
+                           used_in_post=used_in_post,
+                           article_text=match_text, warnings=img_warnings)
         tmp_svg = os.path.join(out_dir, f"_tmp{idx}.svg")
         tmp_png = os.path.join(out_dir, f"_tmp{idx}.png")
         with open(tmp_svg, "w", encoding="utf-8") as f:
@@ -460,6 +513,13 @@ def build_one(article, out_dir):
 
     problems = validate(lines)
     problems += validate_image_structure(specs)
+    # 이미지 매칭 자기검증 결과도 problems 로 올린다 — 조용히 나가는 것보다 낫다
+    problems += img_warnings
+    # 등락 기사인데 사진 썸네일을 쓰면 톤이 반대로 읽힌다(폭락 기사에 제품 자랑 사진)
+    if specs and specs[0].get("type") == "thumbnail":
+        tip = suggest_stock_thumbnail(match_text)
+        if tip:
+            problems.append(tip)
 
     # 파일명 앞 '0번'은 정렬용 — 사진(1~4번)보다 위에 오게 해서 작업 순서(본문 먼저)와 일치
     with open(os.path.join(out_dir, "0번 본문.txt"), "w", encoding="utf-8") as f:
