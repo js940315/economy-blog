@@ -219,7 +219,7 @@ def to_blocks(value):
     return out
 
 
-def place_images_evenly(body_lines, n_images):
+def place_images_evenly(body_lines, n_images, start=1):
     """본문 문단들 사이에 이미지 마커 N개를 '글자수 기준 균등'으로 끼워넣는다.
 
     이미지가 한곳에 몰리거나(스크롤 초반만 화려) 큰 빈 구간이 생기면(중반 이탈)
@@ -254,7 +254,7 @@ def place_images_evenly(body_lines, n_images):
         acc += para_lens[i]
         # 현재 누적이 다음 목표를 넘었고, 여기가 삽입 가능한 경계면 마커 삽입
         while ti < n_images and acc >= targets[ti] and boundary_after[i]:
-            out.append(f"【{ti+1}번 사진】")
+            out.append(f"【{ti+start}번 사진】")
             out.append(SPACER)
             ti += 1
     # 남은 이미지(마지막 등)는 본문 맨 끝에 순서대로
@@ -385,9 +385,15 @@ def build_one(article, out_dir):
     body_wo_markers = [p for p in article["body_paragraphs"]
                        if not MARKER_RE.match(strip_markdown(str(p)))]
     body_lines = to_blocks(body_wo_markers)
-    body_lines = place_images_evenly(body_lines, len(article.get("images", [])))
+    n_img = len(article.get("images", []))
+    # 2~N번 사진만 본문에 균등 배치(1번은 아래에서 '맨 위'로 뺀다).
+    body_lines = place_images_evenly(body_lines, max(0, n_img - 1), start=2)
 
     lines = []
+    # ★ 1번 사진(대표 썸네일)을 제목 바로 밑·도입부 위에 둔다 — 모바일로 들어오자마자
+    #   보이게 해 초반 이탈을 막고, 홈판 대표 썸네일로도 확실히 잡히게 한다.
+    if n_img >= 1:
+        lines += ["【1번 사진】", SPACER]
     lines += to_blocks(article["intro"])
     lines += [SPACER] + body_lines
     lines += [SPACER, EDITOR_HEADING, SPACER] + to_blocks(article["editor_comment"])
