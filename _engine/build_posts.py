@@ -407,7 +407,7 @@ def place_images_evenly(body_lines, n_images, start=1):
     while ti < n_images:
         if out and out[-1] != SPACER:
             out.append(SPACER)
-        out.append(f"【{ti+1}번 사진】")
+        out.append(f"【{ti+start}번 사진】")
         out.append(SPACER)
         ti += 1
     return out
