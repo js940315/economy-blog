@@ -175,6 +175,29 @@ v2를 정식 채택하면 루틴 프롬프트·PROMPT_V1.md를 v2 기준으로 �
   "3줄 자동전환은 안전장치일 뿐, 길게 써도 되는 핑계가 아니다"까지 명시.
 미리보기 도구: `python _engine/preview_thumbs.py` → output/preview_thumb/ 에 짧/중/긴/종목 5종 렌더
 
+## ✅ 썸네일 기업 로고 — 도입 완료 (2026-08-03)
+사용자 지적: "하이닉스 폭락왔다 썸네일 이미지 매칭 최악. 회사 브랜드 로고 건물
+적극적으로 가져와서 이미지 퀄리티 올려."
+현실: Commons에 한국 기업 사옥 사진이 거의 없다(SK하이닉스=메모리 제품뿐,
+네이버·삼성·거래소=0건). 그래서 **로고로 푸는 게 정답**.
+
+- `build_thumbnail_svg(logo_path=)` → 좌상단 흰 판 배지(우상단 경제비버와 대칭)
+- `build_posts.auto_logo(line1, line2)` → `assets/logos/brand_map.json` 을 보고
+  카피에 기업명이 있으면 **자동 부착**. 기사 JSON에 logo를 안 써도 된다.
+  긴 키워드 우선 매칭('삼성바이오로직스' > '삼성'). 오탐 없음(밥상 물가 → 없음).
+  직접 지정하려면 "logo":"파일명" (tickers→logos 순으로 탐색, 없으면 경고 출력).
+- 로고 라이브러리: assets/tickers/ 34종 + assets/logos/ 에 LG·POSCO·한국은행·
+  하나금융·신한은행·한국거래소·삼성바이오로직스 추가(전부 Public domain, 육안 검증).
+- ⛔ 로고는 상표다. 그 기업을 실제로 다루는 기사에만 쓴다.
+- 새 로고 받을 때: `python _engine/fetch_logo.py "Company Name" --name slug`
+  → Commons가 자회사·PDF 등 쓰레기를 반드시 섞어주므로 **Read로 눈으로 확인 후 선별**.
+
+## 🔧 Wikimedia 429의 진짜 원인 = User-Agent (2026-08-03, 삽질 방지)
+`HTTP 429 Too many requests` 가 떠서 rate limit 으로 보이지만, 실제로는 Wikimedia의
+UA 정책 위반이었다. 제품명+버전+**연락처 URL**이 없는 UA는 이 에러로 막는다.
+기다려도 안 풀리고 UA만 고치면 즉시 원본까지 받아진다. `image_sourcing.UA` 참고.
+`fetch_image()` 에 429/503 백오프도 추가했다(`_get`에만 있었음).
+
 ## ⚠️ 다음 대화에서 풀 것 — 사진 돌려쓰기 방지 (사용자 지적)
 카테고리당 사진 1~4장뿐이라 매일 쓰면 반복돼 보임(유사문서·식상함 리스크). 보완책:
 1. build_photo_library.py 로 카테고리당 15~20장 대량 확충 + 매일 랜덤/순환 사용 로직
