@@ -1436,5 +1436,23 @@
     "검색어": "fresh produce market vegetables prices",
     "source": "https://unsplash.com/photos/assorted-spices-3vMwvstMCvw",
     "검수": "스톡 API(워터마크 없음) — 스팟체크"
+  },
+  "SK하이닉스실물_0.jpg": {
+    "license": "by",
+    "credit": "사진 : 4300streetcar / CC BY 4.0 / wikimedia",
+    "attribution_required": true,
+    "source": "https://commons.wikimedia.org/w/index.php?curid=167677826",
+    "query": "SK Hynix DDR5 memory",
+    "title": "SK Hynix DDR5 form factors",
+    "카테고리": "SK하이닉스"
+  },
+  "한국은행실물_0.jpg": {
+    "license": "by-sa",
+    "credit": "사진 : Tristan Surtel / CC BY-SA 4.0 / wikimedia",
+    "attribution_required": true,
+    "source": "https://commons.wikimedia.org/w/index.php?curid=89970679",
+    "query": "Bank of Korea building",
+    "title": "Namdaemun-ro, Seoul",
+    "카테고리": "금리통화"
   }
 }

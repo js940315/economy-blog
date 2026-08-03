@@ -1,0 +1,49 @@
+{
+  "_comment": "썸네일 카피에 이 키워드가 있으면 해당 로고를 자동으로 좌상단에 붙인다. build_posts.py 의 auto_logo()가 읽는다. 긴 키워드가 먼저 매칭되므로 '삼성바이오로직스'가 '삼성'보다 우선한다. 파일은 assets/tickers/ 를 먼저, 없으면 assets/logos/ 를 찾는다.",
+
+  "SK하이닉스": "skhynix_0.png",
+  "하이닉스": "skhynix_0.png",
+
+  "삼성바이오로직스": "sambio_2.png",
+  "삼성전자": "samsung_0.png",
+  "삼성": "samsung_0.png",
+
+  "LG전자": "lg_0.png",
+  "LG": "lg_0.png",
+
+  "현대차": "hyundai_0.png",
+  "현대자동차": "hyundai_0.png",
+  "기아": "kia_0.png",
+
+  "네이버": "naver_0.png",
+  "카카오": "kakao_0.png",
+  "셀트리온": "celltrion_0.png",
+  "포스코": "posco_3.png",
+
+  "한국은행": "bok_0.png",
+  "한은": "bok_0.png",
+  "KB금융": "kbfg_0.png",
+  "국민은행": "kbfg_0.png",
+  "신한": "shinhan_2.png",
+  "하나금융": "hana_1.png",
+  "하나은행": "hana_1.png",
+  "한국거래소": "krx_1.png",
+  "코스피": "krx_1.png",
+  "코스닥": "krx_1.png",
+
+  "비트코인": "bitcoin_0.png",
+  "이더리움": "ethereum_0.png",
+  "도지코인": "dogecoin_0.png",
+
+  "엔비디아": "nvidia_0.png",
+  "테슬라": "tesla_0.png",
+  "애플": "apple_1.png",
+  "구글": "google_0.png",
+  "마이크로소프트": "microsoft_0.png",
+  "아마존": "amazon_0.png",
+  "메타": "meta_0.png",
+  "넷플릭스": "netflix_0.png",
+  "브로드컴": "broadcom_0.png",
+  "TSMC": "tsmc_0.png",
+  "AMD": "amd_0.png"
+}

@@ -2,7 +2,6 @@
   "_주의": "로고는 상표다. 해당 기업을 실제로 다루는 기사에만 쓴다. 기업이 이 블로그를 후원·보증하는 것처럼 보이게 쓰지 않는다.",
   "_추가방법": "python fetch_logo.py \"회사 영문명\" --name 저장이름  → 후보가 여러 개 받아지므로 눈으로 확인하고 진짜만 남긴 뒤 이름을 정리한다",
   "_검수기록": "2026-08-01 삼성전자·SK하이닉스 육안 확인 완료. 검색 결과에 회로기판 사진·Galaxy 제품 로고가 섞여 나왔고 전부 폐기함.",
-
   "삼성전자": {
     "file": "samsung_electronics.png",
     "license": "Public domain",
@@ -14,5 +13,125 @@
     "license": "Public domain",
     "source": "Wikimedia Commons - File:SK Hynix.svg",
     "attribution_required": false
-  }
+  },
+  "LG Electronics": [
+    {
+      "file": "lg_0.png",
+      "license": "Public domain",
+      "title": "File:LG Electronics Logo (modern).svg"
+    },
+    {
+      "file": "lg_1.png",
+      "license": "Public domain",
+      "title": "File:LG Electronics logo 2015 (english).svg"
+    }
+  ],
+  "POSCO": [
+    {
+      "file": "posco_0.png",
+      "license": "Public domain",
+      "title": "File:POSCO Chemical EN.svg"
+    },
+    {
+      "file": "posco_3.png",
+      "license": "Public domain",
+      "title": "File:POSCO logo.svg"
+    }
+  ],
+  "Shinhan Financial Group": [
+    {
+      "file": "shinhan_0.png",
+      "license": "OGL 3",
+      "title": "File:EUR 2003-708.pdf"
+    },
+    {
+      "file": "shinhan_1.png",
+      "license": "OGL 3",
+      "title": "File:EUR 2008-320.pdf"
+    }
+  ],
+  "Hana Financial Group": [
+    {
+      "file": "hana_1.png",
+      "license": "Public domain",
+      "title": "File:Hana Financial Group Logo (kor).svg"
+    }
+  ],
+  "Woori Bank": [
+    {
+      "file": "woori_0.png",
+      "license": "OGL 3",
+      "title": "File:EUR 2003-708.pdf"
+    },
+    {
+      "file": "woori_1.png",
+      "license": "CC BY-SA 4.0",
+      "title": "File:LOGO BWS Biru.png"
+    }
+  ],
+  "Bank of Korea": [
+    {
+      "file": "bok_0.png",
+      "license": "Public domain",
+      "title": "File:Bank of Korea Logo.svg"
+    },
+    {
+      "file": "bok_1.png",
+      "license": "Public domain",
+      "title": "File:Bank of Korea Logo (1946-2010).svg"
+    },
+    {
+      "file": "bok_2.png",
+      "license": "Public domain",
+      "title": "File:Hana Bank Logo (eng).svg"
+    }
+  ],
+  "Shinhan Bank": [
+    {
+      "file": "shinhan_1.png",
+      "license": "Public domain",
+      "title": "File:Shinhan Bank Japan logo.jpg"
+    },
+    {
+      "file": "shinhan_2.png",
+      "license": "Public domain",
+      "title": "File:Shinhan Bank Logo (ENG).svg"
+    }
+  ],
+  "Woori Financial Group": [
+    {
+      "file": "woori_0.png",
+      "license": "OGL 3",
+      "title": "File:EUR 2003-708.pdf"
+    },
+    {
+      "file": "woori_1.png",
+      "license": "OGL 3",
+      "title": "File:EUR 2008-320.pdf"
+    }
+  ],
+  "Korea Exchange": [
+    {
+      "file": "krx_0.png",
+      "license": "Public domain",
+      "title": "File:Korea Exchance logo.svg"
+    },
+    {
+      "file": "krx_1.png",
+      "license": "Public domain",
+      "title": "File:Korea Exchange Logo.svg"
+    }
+  ],
+  "Samsung Biologics": [
+    {
+      "file": "sambio_0.png",
+      "license": "CC BY 2.5",
+      "title": "File:2june2005.pdf"
+    },
+    {
+      "file": "sambio_2.png",
+      "license": "Public domain",
+      "title": "File:Samsung Biologics Logo.svg"
+    }
+  ]
 }

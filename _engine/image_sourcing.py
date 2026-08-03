@@ -23,7 +23,13 @@ import re
 import urllib.parse
 import urllib.request
 
-UA = {"User-Agent": "Mozilla/5.0 (compatible; savemoney119-cardnews/1.0)"}
+# ※ Wikimedia(Commons/upload.wikimedia.org)는 User-Agent 정책이 엄격하다.
+#   제품명+버전+연락처(URL)가 없는 '봇 같은' UA는 429 Too many requests 로 막는데,
+#   에러 문구가 '요청 과다'라서 rate limit 으로 오진하기 딱 좋다 —
+#   실제로는 몇 시간을 기다려도 안 풀리고, UA만 고치면 즉시 원본까지 받아진다(실측 2026-08-03).
+#   그래서 연락 가능한 저장소 URL을 반드시 포함한다.
+UA = {"User-Agent": ("economy-beaver/1.0 "
+                     "(https://github.com/js940315/economy-blog; blog asset sourcing)")}
 
 # 프리미엄 스톡 API(Pexels 등)는 Cloudflare가 봇 UA(Python-urllib, 커스텀 문자열)를
 # error 1010으로 막는다. API 호출·이미지 다운로드에는 실제 브라우저 UA를 써야 통과한다.
@@ -74,7 +80,13 @@ def fetch_image(url, referer=None, timeout=25, tries=2):
     """이미지 바이너리를 견고하게 받아온다. 뉴스 CDN의 hotlink 차단(403) 대비로
     'UA만' -> 'UA+Referer(자동: 해당 호스트 루트)' 순으로 재시도한다.
     ※ 이미지/로고 같은 '바이너리 자산'은 반드시 이 방식(urllib)으로 받는다.
-      WebFetch 계열 도구는 페이지 '텍스트'용이라 이미지 바이트를 못 준다 (예가 실패하던 흔한 원인)."""
+      WebFetch 계열 도구는 페이지 '텍스트'용이라 이미지 바이트를 못 준다 (예가 실패하던 흔한 원인).
+
+    429(요청 과다)는 즉시 재시도하면 100% 또 막힌다 — 기다려야만 풀린다.
+    _get() 에는 백오프가 있었는데 여기엔 없어서, 로고를 연달아 받은 직후
+    사진 소싱이 통째로 '후보 없음'으로 실패했다(실측, 2026-08-03).
+    Wikimedia는 대용량 원본의 썸네일 생성에 특히 빡빡한 제한을 건다."""
+    import time as _t
     from urllib.parse import urlparse
     header_variants = [dict(UA)]
     if referer:
@@ -84,12 +96,14 @@ def fetch_image(url, referer=None, timeout=25, tries=2):
         header_variants.append({**UA, "Referer": f"{p.scheme}://{p.netloc}/"})
     last = None
     for h in header_variants:
-        for _ in range(tries):
+        for i in range(tries):
             try:
                 req = urllib.request.Request(url, headers=h)
                 return urllib.request.urlopen(req, timeout=timeout).read()
             except Exception as e:
                 last = e
+                if "429" in str(e) or "503" in str(e):
+                    _t.sleep(3.0 + i * 4.0)   # 점점 길게 쉬어야 풀린다
     raise last
 
 

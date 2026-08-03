@@ -585,7 +585,8 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
 
 
 def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
-                        accent_words=None, size=1080, dim=0.0, variation=None):
+                        accent_words=None, size=1080, dim=0.0, variation=None,
+                        logo_path=None):
     """홈판 썸네일. 사진 위에 2줄 카피를 두꺼운 외곽선으로 얹는다.
 
     설계 근거 (상위 블로그 구조 분석):
@@ -597,6 +598,11 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
       4) 숫자·종목명만 색을 바꿔 시선을 그쪽으로 먼저 보낸다
 
     accent_words: 강조할 단어 리스트 (예: ["하이닉스", "150만원"])
+    logo_path  : 기업 로고 (assets/tickers 또는 assets/logos). 특정 기업 기사면
+                 반드시 넣는다 — 무료 스톡에는 '그 회사' 사진이 없어서 배경은
+                 어차피 범용 이미지가 되는데, 좌상단 로고 하나면 "무슨 회사
+                 얘기인지"가 0.1초에 잡힌다. 매칭 품질을 올리는 가장 싼 방법.
+                 ※ 상표이므로 그 기업을 실제로 다루는 기사에만 쓴다.
     """
     import base64
     import mimetypes
@@ -655,6 +661,11 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
             f'stroke-linejoin="round" paint-order="stroke" letter-spacing="-2">'
             f'{tspans(line)}</text>'
         )
+
+    # 기업 로고 — 좌상단(우상단 브랜드 배지와 좌우 대칭). 흰 판을 깔아 어떤
+    # 사진 위에서도 로고가 묻히지 않게 한다.
+    if logo_path and os.path.exists(logo_path):
+        p.append(logo_tag(logo_path, 62, 46, 214, 84, plate=True))
 
     if brand:
         # 배경 박스(테두리) 없이 텍스트만. 우상단, 약한 외곽선만.

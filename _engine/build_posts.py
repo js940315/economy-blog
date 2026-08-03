@@ -32,6 +32,55 @@ def _asset(kind, name):
     return os.path.join("assets", kind, name) if name else None
 
 
+def _logo_asset(name):
+    """로고 파일명을 tickers -> logos 순으로 찾는다.
+
+    종목 로고는 assets/tickers/(34종), 그 외 기업 로고는 assets/logos/ 에 있다.
+    기사 JSON이 어느 폴더인지까지 신경 쓰게 하면 오타로 로고가 조용히 빠지므로,
+    파일명만 주면 양쪽을 훑어서 찾아준다."""
+    if not name:
+        return None
+    for kind in ("tickers", "logos"):
+        path = os.path.join("assets", kind, name)
+        if os.path.exists(path):
+            return path
+    print(f"  [경고] 로고를 못 찾았습니다: {name} (assets/tickers, assets/logos 확인)")
+    return None
+
+
+_BRAND_MAP = None
+
+
+def auto_logo(*texts):
+    """썸네일 카피에서 기업명을 찾아 로고 파일을 자동으로 물려준다.
+
+    무료 스톡에는 '그 회사' 사진이 없어서 배경은 어차피 범용 이미지가 된다.
+    그때 좌상단 로고 하나가 "무슨 회사 얘기인지"를 0.1초에 알려주므로,
+    썸네일 매칭 품질을 올리는 가장 값싼 수단이다. 다만 기사 JSON을 만드는
+    에이전트에게 파일명을 외우게 하면 반드시 빠뜨리므로, 카피에 기업명이
+    보이면 빌더가 알아서 붙인다(카피에 이름이 있다 = 그 기업 기사다).
+
+    긴 키워드부터 확인해 '삼성바이오로직스'가 '삼성'보다 먼저 잡히게 한다."""
+    global _BRAND_MAP
+    if _BRAND_MAP is None:
+        path = os.path.join("assets", "logos", "brand_map.json")
+        try:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+            _BRAND_MAP = sorted(
+                ((k, v) for k, v in data.items() if not k.startswith("_")),
+                key=lambda kv: -len(kv[0]))
+        except (OSError, ValueError):
+            _BRAND_MAP = []
+    blob = " ".join(t for t in texts if t)
+    for keyword, fname in _BRAND_MAP:
+        if keyword in blob:
+            path = _logo_asset(fname)
+            if path:
+                return path
+    return None
+
+
 def resolve_photo(spec, date_tag, seq, used_in_post):
     """spec["photo"](파일명 직접 지정) 또는 spec["photo_category"](카테고리
     지정 — 날짜·순번 기반 순환)을 실제 파일명으로 해석한다.
@@ -71,14 +120,18 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None):
             line1=spec["line1"], line2=spec["line2"],
             brand=brand, tagline=tagline,
             accent_words=spec.get("accent_words"), dim=spec.get("dim", 0.0),
-            variation=var)
+            variation=var,
+            # logo를 명시하면 그걸 쓰고, 없으면 카피에서 기업명을 찾아 자동으로 붙인다
+            logo_path=(_logo_asset(spec["logo"]) if spec.get("logo")
+                       else auto_logo(spec.get("line1"), spec.get("line2"))))
     if kind == "stock_thumbnail":
         return build_stock_thumbnail_svg(
             line1=spec["line1"], line2=spec["line2"],
             price=spec.get("price", ""), delta=spec.get("delta", ""),
             down=spec.get("down", True),
             brand=brand, tagline=tagline,
-            logo_path=_asset("tickers", spec.get("logo")),
+            logo_path=(_logo_asset(spec["logo"]) if spec.get("logo")
+                       else auto_logo(spec.get("line1"), spec.get("line2"))),
             accent_words=spec.get("accent_words"), series=spec.get("series"))
     if kind == "photo_card":
         fname, category = resolve_photo(spec, date_tag, seq, used_in_post)
