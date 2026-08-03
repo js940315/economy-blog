@@ -101,6 +101,13 @@ def build(date_tag):
         ty = cy + CELL + 6
         draw.text((cx + 2, ty), f"{seq}. " + (title[:24] or "(제목 없음)"),
                   font=f_title, fill=FG)
+        # 온디맨드로 새로 받은 사진은 육안 검수를 한 번도 안 거쳤다.
+        # 타사 로고·사람 얼굴이 박힌 사진이 올 수 있으므로 가장 눈에 띄게 표시한다.
+        fresh = [p for p in problems if "온디맨드" in str(p)]
+        if fresh:
+            draw.rectangle([cx, cy, cx + CELL, cy + 34], fill=(200, 40, 60))
+            draw.text((cx + 8, cy + 5), "NEW - 검수 필요", font=f_warn, fill=(255, 255, 255))
+
         # 매칭 경고가 있으면 빨갛게 — 이 칸부터 보라는 신호.
         # ※ 이모지(⚠)는 기본 폰트에 없어 두부(□)로 깨진다. ASCII 로만 쓴다.
         if problems:

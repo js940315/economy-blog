@@ -541,13 +541,14 @@ def _stock_json(url, headers, timeout=25, tries=4):
     raise last
 
 
-def pexels_candidates(query, per_page=15, min_width=1200, timeout=25):
+def pexels_candidates(query, per_page=15, min_width=1200, timeout=25, page=1):
     """Pexels 검색. 원본(src.original)을 준다 — 대개 3000px+ 고해상."""
     key = os.getenv("PEXELS_API_KEY")
     if not key:
         return []
     url = "https://api.pexels.com/v1/search?" + urllib.parse.urlencode(
-        {"query": query, "per_page": per_page, "orientation": "landscape"})
+        {"query": query, "per_page": per_page, "orientation": "landscape",
+         "page": page})
     try:
         data = _stock_json(url, {**STOCK_UA, "Authorization": key}, timeout)
     except Exception:
@@ -572,14 +573,14 @@ def pexels_candidates(query, per_page=15, min_width=1200, timeout=25):
     return out
 
 
-def unsplash_candidates(query, per_page=15, min_width=1200, timeout=25):
+def unsplash_candidates(query, per_page=15, min_width=1200, timeout=25, page=1):
     """Unsplash 검색. raw URL에 폭 파라미터를 붙여 1600px JPG로 받아 원본 과대용량을 피한다."""
     key = os.getenv("UNSPLASH_ACCESS_KEY")
     if not key:
         return []
     url = "https://api.unsplash.com/search/photos?" + urllib.parse.urlencode(
         {"query": query, "per_page": per_page, "orientation": "landscape",
-         "content_filter": "high", "client_id": key})
+         "content_filter": "high", "client_id": key, "page": page})
     try:
         data = _stock_json(url, STOCK_UA, timeout)
     except Exception:
@@ -607,7 +608,7 @@ def unsplash_candidates(query, per_page=15, min_width=1200, timeout=25):
     return out
 
 
-def pixabay_candidates(query, per_page=20, min_width=1200, timeout=25):
+def pixabay_candidates(query, per_page=20, min_width=1200, timeout=25, page=1):
     """Pixabay 검색. largeImageURL(긴 변 1280px)을 준다 — 가로 사진은 정사각 크롭 시
     짧은 변이 부족할 수 있어, 실제 다운로드 후 min_side로 한 번 더 거른다."""
     key = os.getenv("PIXABAY_API_KEY")
@@ -615,7 +616,8 @@ def pixabay_candidates(query, per_page=20, min_width=1200, timeout=25):
         return []
     url = "https://pixabay.com/api/?" + urllib.parse.urlencode(
         {"key": key, "q": query, "image_type": "photo", "per_page": per_page,
-         "safesearch": "true", "min_width": min_width, "order": "popular"})
+         "safesearch": "true", "min_width": min_width, "order": "popular",
+         "page": page})
     try:
         data = _stock_json(url, STOCK_UA, timeout)
     except Exception:
@@ -665,7 +667,7 @@ STOCK_GETTERS = {
 
 def stock_photo_candidates(query, out_dir, keep=6, min_side=1200, prefix="stock",
                            apis=("pexels", "unsplash", "pixabay"),
-                           square=True, size=1400):
+                           square=True, size=1400, page=1):
     """3개 프리미엄 API에서 후보를 모아 실제로 내려받아 리사이즈본을 저장하고 리포트를 준다.
 
     - 소스 다양성: api별로 면적순 정렬 후 '라운드로빈'으로 골라, 한 소스가 독식하지 않게 한다.
@@ -683,7 +685,10 @@ def stock_photo_candidates(query, out_dir, keep=6, min_side=1200, prefix="stock"
     per_api = {}
     for api in apis:
         try:
-            cands = STOCK_GETTERS[api](query, per_page=max(keep * 3, 15), min_width=min_side)
+            # page: 같은 검색어의 1페이지는 매번 동일하므로, 재소싱 때는
+            # 페이지를 넘겨야 실제로 '새로운' 사진을 만난다(실측 확인).
+            cands = STOCK_GETTERS[api](query, per_page=max(keep * 3, 15),
+                                       min_width=min_side, page=page)
         except Exception:
             cands = []
         cands.sort(key=lambda c: -(c["w"] * c["h"]))

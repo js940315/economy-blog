@@ -26,10 +26,16 @@ from common_utils import (build_bar_card_svg, build_number_card_svg,
                           build_stock_thumbnail_svg, build_thumbnail_svg,
                           convert_svg_to_png)
 from photo_library import pick_photo, record_usage, variation_seed
-from photo_match import (STRONG_SCORE, best_photo, photo_category_of,
-                         pick_matching_photo, review_match,
+from photo_match import (MIN_SCORE, STRONG_SCORE, best_photo,
+                         photo_category_of, pick_matching_photo, review_match,
                          suggest_stock_thumbnail)
+from photo_ondemand import source_for_article
 from photo_quality import suggest_dim
+
+# 라이브러리에 맞는 사진이 없을 때 그 자리에서 새로 소싱할지.
+# 네트워크가 막힌 환경에서 빌드를 돌릴 때 ONDEMAND=0 으로 끌 수 있다
+# (꺼도 기존 라이브러리로 정상 발행된다 — 보강 기능이지 필수 경로가 아니다).
+ENABLE_ONDEMAND = os.getenv("ONDEMAND", "1") != "0"
 
 
 def _asset(kind, name):
@@ -133,6 +139,21 @@ def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=N
             # 상위권 안에서 최근 안 쓴 것으로 회전시킨다.
             fname, score, hits = pick_matching_photo(
                 article_text, date_tag=date_tag, seq=seq, exclude=used_in_post)
+
+            # 라이브러리에 정말 맞는 사진이 없을 때만 그 자리에서 보강한다.
+            # (매일 전부 소싱하면 저장소도 안 줄고 다양성도 안 생긴다 —
+            #  photo_ondemand 모듈 주석의 실측 근거 참고)
+            if score < MIN_SCORE and ENABLE_ONDEMAND:
+                fresh = source_for_article(article_text)
+                if fresh:
+                    new_score, _ = review_match(fresh, article_text)
+                    if new_score > score:
+                        if warnings is not None:
+                            warnings.append(
+                                f"온디맨드 소싱: {fresh} (적합도 {score:.1f}→"
+                                f"{new_score:.1f}) — 검수시트에서 눈으로 확인할 것")
+                        fname, score = fresh, new_score
+
             if fname:
                 print(f"  [자동매칭] {fname} (점수 {score:.1f}: {', '.join(hits[:2])})")
                 # 실제 카테고리를 함께 돌려줘야 record_usage 가 호출되고,
