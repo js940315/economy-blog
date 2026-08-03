@@ -106,6 +106,17 @@
     ],
     "images": [
       {
+        "type": "thumbnail",
+        "photo": "port_terminal.jpg",
+        "line1": "역대 2위 기록인데",
+        "line2": "41%는 반도체 혼자",
+        "accent_words": [
+          "41%",
+          "반도체"
+        ],
+        "dim": 0.18
+      },
+      {
         "type": "photo_card",
         "photo": "port_terminal.jpg",
         "eyebrow": "2026년 7월 수출입동향",

@@ -196,33 +196,119 @@ def logo_tag(logo_path, x, y, box_w, box_h, plate=True):
     return plate_rect + img_tag
 
 
-def fit_copy_font_size(line1, line2, size=1080, max_fs=92, min_fs=42,
-                       left_margin=62, right_margin=48):
-    """썸네일 2줄 카피가 캔버스 폭을 넘기지 않는 최대 폰트 크기를 계산한다.
+# ---- 썸네일 카피 레이아웃 (폰트를 줄이지 말고 줄을 늘린다) ----
+# 모바일 홈판 목록에서 썸네일은 손톱만 하게 줄어든다. 글자가 작아지는 순간
+# 카피는 없는 것과 같아지므로, 카피가 길다고 폰트를 깎는 건 최악의 선택이다.
+# 원칙: 폰트 크기를 먼저 지키고, 안 담기면 '줄 수'를 늘려서 해결한다.
+COPY_MAX_FS = 118      # 짧은 카피(6~8자)일 때 쓰는 초대형 크기
+COPY_PREFER_FS = 86    # 이 크기 밑으로 내려갈 바에는 줄을 하나 더 쓴다
+COPY_MIN_FS = 76       # 절대 하한 — 어떤 경우에도 이보다 작게 쓰지 않는다
 
-    이전엔 '11자 이하면 92, 아니면 80' 이분법이라 승인된 장문 카피(12자+)가
-    오른쪽으로 잘려나가는 문제가 있었다. 문자 종류별 평균 폭을 추정해서
-    (한글류는 거의 정사각형, 라틴/숫자/기호는 더 좁음) 실제 폭이 가용 폭을
-    넘지 않는 선까지 2px 단위로 줄인다. 정확한 폰트 메트릭이 없는 상태의
-    근사치이므로 우측에 넉넉히 여백(right_margin)을 남겨 안전 마진을 둔다."""
+
+def _est_text_width(text, fs, stroke_ratio=0.17):
+    """문자 종류별 평균 폭으로 렌더 폭을 추정한다(정확한 폰트 메트릭 대용).
+
+    한글은 거의 정사각형, 라틴·숫자는 좁고, 공백·마침표는 더 좁다.
+    주의할 함정 두 가지 — 둘 다 실측에서 오른쪽이 잘려 발견했다(2026-08-03):
+      1) '%'는 좁은 기호가 아니다. 대부분의 서체에서 한글에 가깝게 넓다.
+         '41%는'을 좁게 잡았다가 두 번째 줄이 캔버스 밖으로 밀렸다.
+      2) 썸네일 글자는 fs*0.17 두께의 외곽선을 두르므로, 그 절반이 좌우로
+         각각 삐져나온다. 글리프 폭만 재면 딱 그만큼 넘친다.
+    굵은 웨이트(800) 기준이라 표준 폭보다 살짝 넉넉하게 잡는다."""
+    wide_symbols = "%&@※₩"
+    w = 0.0
+    for ch in text:
+        if not ch.isascii():
+            w += fs * 1.00      # 한글 등 전각 문자
+        elif ch in wide_symbols:
+            w += fs * 0.95      # 퍼센트 등 — 사실상 전각에 가깝다
+        elif ch.isalnum():
+            w += fs * 0.60      # 라틴 문자·숫자
+        else:
+            w += fs * 0.30      # 공백·마침표·쉼표
+    return w + fs * stroke_ratio    # 외곽선이 좌우로 삐져나오는 몫
+
+
+def _balanced_wrap(words, n, fit, prefer_cut=None):
+    """어절 리스트를 n줄로 나눈다. 우선순위는 (1) 폰트 크기 (2) 작성자 의도 (3) 균형.
+
+    줄마다 길이가 들쭉날쭉하면 폰트는 제일 긴 줄에 끌려 내려가고 보기에도 엉성하다.
+    그래서 먼저 폰트가 가장 크게 나오는 분할을 찾는다. 폰트 크기가 같은 분할이
+    여럿이면(정수로 끊기니 흔하다) 작성자가 원래 끊어둔 자리(prefer_cut)를 그대로
+    쓰는 쪽을 택한다 — 의미 단위가 안 깨져야 읽는 맛이 산다. 그래도 같으면
+    줄 길이 편차가 작은(제곱합 최소) 쪽으로 간다.
+
+    어절 수가 적으므로(보통 3~8개) 모든 분할을 그냥 다 따져본다.
+    fit: 줄 리스트를 받아 그 배치에서 쓸 수 있는 폰트 크기를 돌려주는 함수."""
+    import itertools
+    if n <= 1:
+        return [" ".join(words)]
+    if len(words) <= n:
+        return list(words)
+
+    best, best_key = None, None
+    for cuts in itertools.combinations(range(1, len(words)), n - 1):
+        bounds = (0,) + cuts + (len(words),)
+        lines = [" ".join(words[bounds[i]:bounds[i + 1]]) for i in range(n)]
+        widths = [_est_text_width(ln, 100) for ln in lines]
+        key = (-fit(lines),                                  # 폰트 큰 쪽 우선
+               0 if (prefer_cut is not None and prefer_cut in cuts) else 1,
+               sum(w * w for w in widths))                   # 균형 좋은 쪽
+        if best_key is None or key < best_key:
+            best, best_key = lines, key
+    return best
+
+
+def layout_thumb_copy(line1, line2, size=1080, left_margin=62, right_margin=48,
+                      max_fs=COPY_MAX_FS, prefer_fs=COPY_PREFER_FS,
+                      min_fs=COPY_MIN_FS, max_lines=4):
+    """썸네일 카피를 (줄 리스트, 폰트크기)로 확정한다.
+
+    동작 순서:
+      1) 작성자가 준 2줄 그대로 썼을 때 prefer_fs(86px) 이상이면 그대로 존중한다
+         — 의도한 끊는 위치가 대개 가장 자연스럽다.
+      2) 안 되면 어절 단위로 2줄 → 3줄 → (최후) 4줄까지 늘려가며,
+         prefer_fs 이상이 나오는 가장 적은 줄 수를 채택한다.
+      3) 그래도 안 되면 그중 폰트가 가장 큰 배치를 쓰고 min_fs로 바닥을 받친다.
+
+    반환 폰트는 max_fs에서 잘리므로 짧은 카피는 자동으로 초대형이 된다."""
     max_width = size - left_margin - right_margin
 
-    def est_width(text, fs):
-        w = 0.0
-        for ch in text:
-            if not ch.isascii():
-                w += fs * 0.98      # 한글 등 전각 문자
-            elif ch.isalnum():
-                w += fs * 0.58      # 라틴 문자·숫자
-            else:
-                w += fs * 0.34      # 공백·기호
-        return w
+    def fit(lines):
+        """이 줄 배치가 캔버스 폭에 들어가는 최대 폰트 크기."""
+        widest = max(_est_text_width(ln, 100) for ln in lines) / 100.0
+        if widest <= 0:
+            return max_fs
+        return int(min(max_fs, max_width / widest))
 
-    longest = max((line1 or "", line2 or ""), key=len)
-    fs = max_fs
-    while fs > min_fs and est_width(longest, fs) > max_width:
-        fs -= 2
-    return fs
+    given = [ln.strip() for ln in (line1, line2) if ln and ln.strip()]
+    if not given:
+        return [], max_fs
+
+    # 1) 작성자가 끊어준 대로 충분히 크게 들어가면 그대로 간다
+    if len(given) >= 2:
+        fs_given = fit(given)
+        if fs_given >= prefer_fs:
+            return given, fs_given
+
+    # 2) 어절 단위 재배치 — 줄 수를 늘려가며 큰 폰트를 찾는다
+    words = " ".join(given).split()
+    # 작성자가 끊어준 자리(= 1줄의 어절 수)를 재배치할 때도 되도록 살린다
+    prefer_cut = len(given[0].split()) if len(given) >= 2 else None
+    best_lines, best_fs = given, fit(given)
+    for n in range(2, max_lines + 1):
+        if n > len(words):
+            break
+        lines = _balanced_wrap(words, n, fit, prefer_cut)
+        fs = fit(lines)
+        if fs > best_fs:
+            best_lines, best_fs = lines, fs
+        if fs >= prefer_fs:
+            # 원하는 크기를 만족하는 가장 적은 줄 수에서 멈춘다
+            return lines, fs
+
+    # 3) 최후 방어 — 폰트는 하한 아래로 내리지 않는다
+    return best_lines, max(best_fs, min_fs)
 
 
 def _card_open(accent):
@@ -474,13 +560,13 @@ def build_stock_thumbnail_svg(line1, line2, price="", delta="", down=True,
         return "".join(f'<tspan fill="{THUMB_ACCENT}">{escape_html(x)}</tspan>'
                        if x in accent_words else escape_html(x) for x in parts)
 
-    fs = fit_copy_font_size(line1, line2, size)
+    # 카피는 아래쪽 기준선에 붙여 쌓는다 — 3줄이 되면 위로 자라야
+    # 하단 브랜드·태그라인을 밀지 않는다.
+    lines, fs = layout_thumb_copy(line1, line2, size)
     gap = int(fs * 1.16)
-    base_y = int(size * 0.72)
-    for i, ln in enumerate([line1, line2]):
-        if not ln:
-            continue
-        y = base_y + i * gap
+    last_y = int(size * 0.72) + int(92 * 1.16)   # 기존 2줄 배치의 둘째 줄 위치
+    for i, ln in enumerate(lines):
+        y = last_y - (len(lines) - 1 - i) * gap
         p.append(f'<text x="62" y="{y}" font-size="{fs}" font-weight="800" '
                  f'fill="{THUMB_INK}" stroke="{THUMB_STROKE}" stroke-width="{fs*0.17:.0f}" '
                  f'stroke-linejoin="round" paint-order="stroke" letter-spacing="-2">'
@@ -505,7 +591,8 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
     설계 근거 (상위 블로그 구조 분석):
       1) 사진은 분위기만 담당하고 정보는 텍스트가 전담한다.
          -> 기사와 딱 맞는 사진을 못 구해도 톤만 맞으면 쓸 수 있다
-      2) 무조건 2줄. 모바일 목록에서 잘리지 않는 최대 분량이다
+      2) 기본 2줄. 단 카피가 길어 2줄에 크게 안 담기면 폰트를 줄이는 대신
+         layout_thumb_copy가 3줄로 재배치한다 (모바일 가독성 > 줄 수)
       3) 외곽선(paint-order: stroke)이 핵심. 이게 없으면 밝은 사진에서 글자가 사라진다
       4) 숫자·종목명만 색을 바꿔 시선을 그쪽으로 먼저 보낸다
 
@@ -534,9 +621,10 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
                 out.append(escape_html(p))
         return "".join(out)
 
-    fs = fit_copy_font_size(line1, line2, size)
+    # 아래쪽 기준선에 붙여 쌓는다 — 3줄이 되면 위로 자란다(하단 태그라인 보호)
+    lines, fs = layout_thumb_copy(line1, line2, size)
     gap = int(fs * 1.16)
-    base_y = int(size * 0.70)
+    last_y = int(size * 0.70) + int(92 * 1.16)   # 기존 2줄 배치의 둘째 줄 위치
 
     filt_def, par = _variation_filter(variation, "var-thumb")
     p = [f'<svg viewBox="0 0 {size} {size}" xmlns="http://www.w3.org/2000/svg" '
@@ -558,11 +646,9 @@ def build_thumbnail_svg(photo_path, line1, line2, brand="", tagline="",
     if dim > 0:
         p.append(f'<rect width="{size}" height="{size}" fill="#050a12" opacity="{dim}"/>')
 
-    # 카피 2줄 — 외곽선을 글자 뒤로 깔아야(paint-order) 획이 안 갉힌다
-    for i, line in enumerate([line1, line2]):
-        if not line:
-            continue
-        y = base_y + i * gap
+    # 카피 — 외곽선을 글자 뒤로 깔아야(paint-order) 획이 안 갉힌다
+    for i, line in enumerate(lines):
+        y = last_y - (len(lines) - 1 - i) * gap
         p.append(
             f'<text x="62" y="{y}" font-size="{fs}" font-weight="800" '
             f'fill="{THUMB_INK}" stroke="{THUMB_STROKE}" stroke-width="{fs*0.17:.0f}" '
