@@ -129,7 +129,25 @@ def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=N
         return fname
 
     if spec.get("photo"):
-        return _review(spec["photo"], spec.get("photo_category")), None
+        fname = spec["photo"]
+        # 한 포스트 안에서 같은 사진을 두 번 쓰면 독자가 바로 알아챈다.
+        # photo_category 경로는 pick_photo가 exclude로 막아주지만, 파일명을
+        # 직접 지정하면 그 방어가 통째로 건너뛰어진다 — 실제로 1번 썸네일과
+        # 2번 photo_card가 같은 항만 사진으로 나갔다(실측 2026-08-03).
+        if fname in used_in_post:
+            cat = photo_category_of(fname)
+            alt = pick_photo(cat, date_tag, seq, exclude=used_in_post)
+            if alt:
+                if warnings is not None:
+                    warnings.append(
+                        f"같은 포스트에 같은 사진 반복: {fname} → {alt} 로 교체")
+                print(f"  [중복회피] {fname} → {alt}")
+                fname = alt
+            elif warnings is not None:
+                warnings.append(
+                    f"같은 포스트에 같은 사진이 두 번 쓰입니다: {fname} "
+                    f"(카테고리 '{cat}'에 대체 사진이 없음)")
+        return _review(fname, spec.get("photo_category")), None
 
     category = spec.get("photo_category")
     if not category:
@@ -437,6 +455,21 @@ def validate_image_structure(specs):
             problems.append(
                 f"5장 구성(썸네일1+실물1+카드3)인데 2번(실물) 슬롯이 photo_card가 "
                 f"아니라 '{slot2}'임 — 실물 사진을 넣거나 4장 구성으로 바꿀 것")
+
+    # 썸네일 카피를 본문 카드가 그대로 반복하면, 독자는 같은 문장을 두 번 읽는다.
+    # 실측: 1번 썸네일 '역대 2위 기록인데 / 41%는 반도체 혼자' 가 2번 photo_card
+    # headline_lines 에 똑같이 들어가 사진까지 같아서 완전히 겹쳐 보였다.
+    thumb_copy = " ".join(str(specs[0].get(k, "")).strip()
+                          for k in ("line1", "line2")).strip()
+    if thumb_copy:
+        for i, spec in enumerate(specs[1:], start=2):
+            body_copy = " ".join(str(x).strip()
+                                 for x in spec.get("headline_lines", [])).strip()
+            if body_copy and body_copy == thumb_copy:
+                problems.append(
+                    f"{i}번 이미지의 문구가 썸네일 카피와 똑같습니다 "
+                    f"('{thumb_copy[:22]}...') — 본문 카드는 다른 각도의 "
+                    f"문장으로 바꿔야 읽는 맛이 산다")
     return problems
 
 

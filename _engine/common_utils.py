@@ -366,8 +366,16 @@ def build_rank_bar_card_svg(eyebrow, title_lines, items, note="", accent=CARD_AC
     y += 40
     max_val = max(abs(v) for _, v, _ in items) or 1
     bar_x, bar_max_w = 88, 700
-    # 남은 세로 공간에 행을 균등 배치해 아래쪽이 비지 않게 한다
-    row_h = max(96, min(132, (CARD_H - 150 - y) // max(1, len(items))))
+    # 남은 세로 공간에 행을 균등 배치해 아래쪽이 비지 않게 한다.
+    #
+    # 예전엔 하단 150px를 note(출처 표기) 자리로 비워뒀는데, 출처 표기를 없앤
+    # 뒤로는 그 150px가 그냥 빈 공간으로 남아 카드 아래가 휑하게 보였다(실측).
+    # 또 '마지막 행의 막대 높이(BOTTOM)'를 안 빼서 실제보다 더 위에서 끝났다.
+    # 이제 마지막 막대가 하단 여백 직전에 놓이도록 역산한다.
+    BOTTOM, MARGIN = 48, 72          # 마지막 행이 차지하는 높이 / 하단 여백
+    space = CARD_H - MARGIN - BOTTOM - y
+    row_h = space // (len(items) - 1) if len(items) > 1 else space
+    row_h = max(96, min(150, row_h))
     for i, (label, value, display) in enumerate(items):
         # 값이 작아도 막대가 점으로 보이지 않도록 최소 길이를 준다
         w = max(56, abs(value) / max_val * bar_max_w)
@@ -403,6 +411,15 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
     p.append(head)
 
     y += 56
+    # 항목 사이 간격을 남은 높이에 맞춰 벌린다. 고정 간격(54)이면 항목이 위로
+    # 몰리고 카드 아래가 200px씩 비어 '만들다 만' 느낌이 났다(실측).
+    LINE_H, BOTTOM_MARGIN = 58, 96
+    text_h = sum((len(pt) if isinstance(pt, list) else 1) * LINE_H
+                 for pt in points)
+    free = CARD_H - BOTTOM_MARGIN - y - text_h
+    gap = free // (len(points) - 1) if len(points) > 1 else 54
+    gap = max(44, min(120, gap))
+
     for i, point in enumerate(points, start=1):
         lines = point if isinstance(point, list) else [point]
         p.append(f'<circle cx="118" cy="{y-14}" r="30" fill="{accent}" opacity="0.18"/>')
@@ -416,8 +433,8 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
                 f'<text x="172" y="{ty}" font-size="44" font-weight="600" fill="#ffffff">'
                 f'{escape_html(line)}</text>'
             )
-            ty += 58
-        y = ty + 54
+            ty += LINE_H
+        y = ty + gap
 
     p.append(_card_note(note))
     p.append("</svg>")
@@ -762,7 +779,9 @@ def build_bar_card_svg(eyebrow, title_lines, categories, values, displays=None,
     p.append(head)
 
     displays = displays or [f"{v:,.0f}" for v in values]
-    top, bottom = y + 70, CARD_H - 190
+    # 하단 예약은 '카테고리 라벨(baseline +56)'에 필요한 만큼만 둔다.
+    # 예전 190은 없어진 note(출처 표기) 자리까지 잡고 있어서 카드 아래가 휑했다.
+    top, bottom = y + 70, CARD_H - 150
     plot_h = bottom - top
     max_val = max(values) or 1
     n = len(categories)
