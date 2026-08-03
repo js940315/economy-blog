@@ -98,6 +98,37 @@ CONCEPTS = {
     "고용": ["office", "workspace", "manufacturing"],
 }
 
+# 개념 -> 사진 카테고리 직결 매핑.
+#
+# 왜 필요한가: 사진 메타의 영문 '검색어'에만 기대면 취약하다. 실제로 인덱스를
+# 복구(reindex)한 사진 109장은 검색어가 유실돼 파일명·카테고리만 남았고,
+# 그 결과 '코스피' 기사가 주식증시 사진을 0점으로 평가해 엉뚱한 사진이 뽑혔다.
+# 한글 개념과 우리 카테고리 체계를 직접 이어두면 메타가 부실해도 매칭이 선다.
+CONCEPT_CATEGORIES = {
+    "반도체": "반도체", "메모리": "SK하이닉스", "하이닉스": "SK하이닉스",
+    "삼성전자": "삼성전자", "스마트폰": "삼성전자", "가전": "LG",
+    "수출": "수출무역", "무역": "수출무역", "관세": "수출무역",
+    "부동산": "부동산", "아파트": "부동산", "전세": "부동산",
+    "월세": "부동산", "청약": "부동산",
+    "금리": "금리통화", "한국은행": "금리통화",
+    "대출": "은행", "예금": "은행", "은행": "은행",
+    "적금": "통장", "통장": "통장", "월급": "통장",
+    "주식": "주식증시", "증시": "주식증시", "코스피": "주식증시",
+    "코스닥": "주식증시", "상장": "주식증시", "배당": "주식증시",
+    "비트코인": "가상자산", "코인": "가상자산", "가상자산": "가상자산",
+    "이더리움": "가상자산",
+    "환율": "환율", "달러": "환율", "원화": "금리통화",
+    "물가": "물가소비", "소비": "물가소비", "장바구니": "물가소비",
+    "마트": "물가소비",
+    "정부": "경제정책", "정책": "경제정책", "지원금": "경제정책",
+    "예산": "경제정책", "국회": "경제정책", "세금": "경제정책",
+    "연금": "노년층", "노후": "노년층", "고령": "노년층", "은퇴": "노년층",
+    "미국": "글로벌경제", "월가": "글로벌경제", "나스닥": "글로벌경제",
+    "연준": "글로벌경제",
+    "자동차": "현대차", "현대차": "현대차", "기아": "기아",
+    "네이버": "네이버", "카카오": "카카오",
+}
+
 # 이 단어가 제목·카피에 있으면 '종목 등락' 기사다 -> 사진보다 stock_thumbnail(차트)이 정답.
 VOLATILITY_WORDS = ["폭락", "급락", "폭등", "급등", "신고가", "신저가", "하한가", "상한가",
                     "떡락", "떡상", "곤두박질", "반토막", "급반등", "패닉셀"]
@@ -123,6 +154,14 @@ def photo_text(fname, meta):
             if v:
                 parts.append(str(v))
     return " ".join(parts).lower()
+
+
+def photo_category_of(fname):
+    """사진이 속한 카테고리. index 에 없으면 파일명 접두어로 유추한다."""
+    meta = _load_index().get(fname)
+    if isinstance(meta, dict) and meta.get("카테고리"):
+        return meta["카테고리"]
+    return fname.split("_")[0]
 
 
 def article_concepts(text):
@@ -155,7 +194,15 @@ def score_photo(fname, meta, text, concepts, category_hint=None):
         score += 5.0
         hits.append(f"지정 카테고리 '{category_hint}'")
 
-    # 3) 개념 사전 대조. 개념 하나당 한 번만 가산한다(중복 가산 방지).
+    # 3) 개념이 가리키는 카테고리와 사진 카테고리가 일치하면 강하게 가산.
+    #    사진 메타(영문 검색어)가 부실해도 이 경로로 매칭이 선다.
+    for c in concepts:
+        if CONCEPT_CATEGORIES.get(c) == cat:
+            score += 4.0
+            hits.append(f"{c}->{cat}")
+            break
+
+    # 4) 개념 사전 대조. 개념 하나당 한 번만 가산한다(중복 가산 방지).
     #    index.json 에는 '용도: 수출·무역·물류 주제' 처럼 한글 설명도 들어있으므로
     #    한글 개념어가 그대로 박혀 있으면 영문 유의어보다 확실한 신호로 본다 —
     #    이걸 안 보면 port_terminal.jpg 같은 정답 사진이 저점을 받아 오탐이 난다.
@@ -200,6 +247,45 @@ def best_photo(text, category_hint=None, exclude=None):
     if not ranked:
         return None, 0.0, []
     return ranked[0]
+
+
+# 최고점과 이만큼 이내면 '똑같이 잘 맞는 후보'로 보고 회전 대상에 넣는다.
+# 점수는 키워드 대조라 소수점 차이에 의미가 없다 — 1등만 쓰면 비슷한 기사마다
+# 늘 같은 사진이 나와서, 매칭 기능이 오히려 돌려쓰기를 만든다.
+TIE_MARGIN = 3.0
+
+
+def pick_matching_photo(text, date_tag=None, seq=None, category_hint=None,
+                        exclude=None):
+    """기사에 맞는 사진들 중에서 '최근에 안 쓴 것'을 골라 돌려준다.
+
+    적합도 1등만 뽑으면 물가 기사마다 같은 사진이 나온다. 그래서
+    상위권(최고점 - TIE_MARGIN 이내)을 동급으로 보고, 그 안에서
+    photo_library 의 순환 규칙(최근 사용분 배제 + 날짜·순번 해시)을 적용한다.
+    → '맞는 사진' 안에서 '안 겹치게' 고르는 두 조건을 동시에 만족시킨다.
+
+    반환: (파일명|None, 점수, 근거)"""
+    ranked = rank_photos(text, category_hint, exclude)
+    if not ranked:
+        return None, 0.0, []
+    top_score = ranked[0][1]
+    if top_score <= 0:
+        return ranked[0]
+    tied = [r for r in ranked if r[1] >= top_score - TIE_MARGIN]
+    if len(tied) == 1 or date_tag is None:
+        return tied[0]
+
+    # 순환: 최근 쓴 사진을 뺀 뒤 결정론적으로 하나 고른다.
+    from photo_library import _load_json_safe, _seed, USAGE_PATH, recent_window
+    usage = _load_json_safe(USAGE_PATH, {})
+    used_recent = set()
+    window = recent_window(len(tied))
+    if window:
+        for hist in usage.values():          # 카테고리 경계 없이 '최근 사용'을 본다
+            used_recent.update(hist[-window:])
+    fresh = [r for r in tied if r[0] not in used_recent] or tied
+    idx = _seed("match", text[:40], date_tag, seq) % len(fresh)
+    return fresh[idx]
 
 
 def review_match(fname, text, category_hint=None):

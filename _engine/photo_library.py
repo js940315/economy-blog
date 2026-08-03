@@ -25,8 +25,23 @@ PHOTO_DIR = os.path.join("assets", "photos")
 INDEX_PATH = os.path.join(PHOTO_DIR, "index.json")
 USAGE_PATH = os.path.join("state", "photo_usage.json")
 
-RECENT_WINDOW = 3     # 카테고리 안에서 최근 이만큼은 재사용을 피한다
-HISTORY_MAX = 40       # usage 로그가 무한히 커지지 않게 카테고리당 이만큼만 보관
+# 카테고리 안에서 '최근 이만큼'은 재사용을 피한다. 풀 크기에 비례해서 정한다.
+#
+# 예전엔 3 고정이었다. 풀이 20장이어도 최근 3장만 피하니, 남은 17장 중에서
+# 해시로 아무거나 뽑혀 같은 사진이 며칠 간격으로 계속 재등장했다
+# (사용자: "같은 사진 중복 최악"). 풀의 일정 비율을 통째로 막아야
+# 한 바퀴를 거의 다 돌고 나서 다시 나온다.
+RECENT_RATIO = 0.7     # 풀의 70%를 최근 사용분으로 간주해 배제
+RECENT_WINDOW_MIN = 3  # 풀이 아주 작을 때의 하한
+HISTORY_MAX = 60       # usage 로그가 무한히 커지지 않게 카테고리당 이만큼만 보관
+
+
+def recent_window(pool_size):
+    """풀 크기에 맞는 '최근 배제' 개수. 최소 1장은 항상 남긴다."""
+    if pool_size <= 1:
+        return 0
+    window = max(RECENT_WINDOW_MIN, int(pool_size * RECENT_RATIO))
+    return min(window, pool_size - 1)   # 후보가 0이 되면 안 된다
 
 ALIGNS = ["xMinYMin", "xMidYMin", "xMaxYMin",
           "xMinYMid", "xMidYMid", "xMaxYMid",
@@ -102,7 +117,8 @@ def pick_photo(category, date_tag, seq, exclude=None):
         return None
 
     usage = _load_json_safe(USAGE_PATH, {})
-    recent = set(usage.get(category, [])[-RECENT_WINDOW:])
+    window = recent_window(len(pool))
+    recent = set(usage.get(category, [])[-window:]) if window else set()
     candidates = [p for p in pool if p not in recent] or pool
 
     idx = _seed(category, date_tag, seq) % len(candidates)

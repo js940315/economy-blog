@@ -1,30 +1,44 @@
 {
-  "주식증시": [
-    "주식증시_0_pexels_2.jpg",
-    "주식증시_1_pexels_2.jpg",
-    "주식증시_0_1.jpg",
-    "주식증시_0_pexels_0.jpg",
-    "주식증시_0_pexels_2.jpg"
-  ],
-  "가상자산": [
-    "가상자산_1_pexels_0.jpg",
-    "가상자산_1_unsplash_1.jpg",
-    "가상자산_0_pexels_0.jpg",
-    "가상자산_1_pexels_2.jpg",
-    "가상자산_1_pexels_0.jpg"
-  ],
-  "글로벌경제": [
-    "글로벌경제_0_1.jpg",
-    "글로벌경제_0_0.jpg",
-    "글로벌경제_0_1.jpg",
-    "글로벌경제_0_1.jpg",
-    "글로벌경제_0_1.jpg"
+  "은행": [
+    "은행_0_pexels_0.jpg",
+    "은행_1_pexels_2.jpg",
+    "은행_0_pexels_2.jpg",
+    "은행_1_unsplash_1.jpg",
+    "은행_3_pexels_2.jpg"
   ],
   "물가소비": [
     "물가소비_0_unsplash_1.jpg",
-    "물가소비_1_1.jpg",
-    "물가소비_1_pexels_0.jpg",
+    "물가소비_6_pexels_2.jpg",
+    "물가소비_0_pexels_0.jpg",
     "물가소비_1_unsplash_1.jpg",
-    "물가소비_0_unsplash_1.jpg"
+    "물가소비_1_pexels_2.jpg"
+  ],
+  "부동산": [
+    "부동산_1_pexels_0.jpg",
+    "부동산_2_pexels_2.jpg",
+    "부동산_0_pexels_2.jpg",
+    "부동산_0_pexels_0.jpg",
+    "부동산_2_pexels_0.jpg"
+  ],
+  "반도체": [
+    "반도체_4_unsplash_1.jpg",
+    "반도체_1_0.jpg",
+    "반도체_2_pexels_2.jpg",
+    "반도체_5_unsplash_1.jpg",
+    "반도체_2_unsplash_1.jpg"
+  ],
+  "노년층": [
+    "노년층_5_pexels_0.jpg",
+    "노년층_5_pexels_2.jpg",
+    "노년층_4_pexels_0.jpg",
+    "노년층_5_unsplash_1.jpg",
+    "노년층_4_unsplash_1.jpg"
+  ],
+  "주식증시": [
+    "주식증시_5_pexels_2.jpg",
+    "주식증시_0_pexels_2.jpg",
+    "주식증시_4_pexels_0.jpg",
+    "주식증시_6_pexels_2.jpg",
+    "주식증시_4_unsplash_1.jpg"
   ]
 }

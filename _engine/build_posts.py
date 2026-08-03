@@ -26,8 +26,10 @@ from common_utils import (build_bar_card_svg, build_number_card_svg,
                           build_stock_thumbnail_svg, build_thumbnail_svg,
                           convert_svg_to_png)
 from photo_library import pick_photo, record_usage, variation_seed
-from photo_match import (STRONG_SCORE, best_photo, review_match,
+from photo_match import (STRONG_SCORE, best_photo, photo_category_of,
+                         pick_matching_photo, review_match,
                          suggest_stock_thumbnail)
+from photo_quality import suggest_dim
 
 
 def _asset(kind, name):
@@ -127,10 +129,17 @@ def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=N
     if not category:
         # 카테고리조차 안 정해줬으면 제목·카피를 읽고 가장 맞는 사진을 고른다
         if article_text:
-            fname, score, hits = best_photo(article_text, exclude=used_in_post)
+            # 1등만 뽑으면 비슷한 기사마다 같은 사진이 나오므로,
+            # 상위권 안에서 최근 안 쓴 것으로 회전시킨다.
+            fname, score, hits = pick_matching_photo(
+                article_text, date_tag=date_tag, seq=seq, exclude=used_in_post)
             if fname:
                 print(f"  [자동매칭] {fname} (점수 {score:.1f}: {', '.join(hits[:2])})")
-                return _review(fname, None), None
+                # 실제 카테고리를 함께 돌려줘야 record_usage 가 호출되고,
+                # 그래야 다음번 회전이 '최근에 쓴 사진'으로 인식해서 피한다.
+                # (여기서 None을 주면 자동매칭분은 이력에 안 남아 계속 재등장한다)
+                chosen = _review(fname, None)
+                return chosen, photo_category_of(chosen)
         return None, None
 
     chosen = pick_photo(category, date_tag, seq, exclude=used_in_post)
@@ -160,7 +169,10 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None,
             photo_path=_asset("photos", fname),
             line1=spec["line1"], line2=spec["line2"],
             brand=brand, tagline=tagline,
-            accent_words=spec.get("accent_words"), dim=spec.get("dim", 0.0),
+            accent_words=spec.get("accent_words"),
+            # 사진의 실제 밝기를 재서 흰 카피가 읽히는 최소 dim을 보장한다.
+            # (기사 JSON이 더 크게 줬으면 그쪽을 존중 — 더 어둡게만 허용)
+            dim=suggest_dim(_asset("photos", fname), spec.get("dim", 0.0)),
             variation=var,
             # logo를 명시하면 그걸 쓰고, 없으면 카피에서 기업명을 찾아 자동으로 붙인다
             logo_path=(_logo_asset(spec["logo"]) if spec.get("logo")

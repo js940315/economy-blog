@@ -12,5 +12,12 @@ _tmp*_wrap.html
 
 # 사진 라이브러리 원본 후보 - 소싱 직후엔 미검수 상태이므로 기본적으로 커밋 제외.
 # 육안 검수 후 최종 확정한 사진만 `git add -f assets/photos/<파일명>`으로 개별 추가할 것.
+#
+# ⚠️ 함정: index.json 은 git 이 추적하는데 사진 파일은 추적하지 않는다.
+#   그래서 `git checkout -- assets/photos/` 같은 명령으로 index.json 만 과거로
+#   돌아가면, 디스크에 멀쩡히 있는 사진이 통째로 '없는 사진'이 된다
+#   (photo_library.category_pool 이 index.json 기준으로 풀을 만들기 때문).
+#   실제로 이렇게 77장이 한 번에 사라진 적 있다(2026-08-03).
+#   → 복구: python _engine/photo_quality.py reindex
 assets/photos/*
 !assets/photos/index.json
