@@ -58,9 +58,15 @@ def convert_svg_to_png(svg_path, png_path):
     window_size = f"{int(w)},{int(h)}"
 
     html_path = os.path.splitext(svg_path)[0] + "_wrap.html"
+    # 래퍼 배경은 '카드에 절대 등장하지 않는 색'(마젠타)으로 깐다.
+    # 클라우드 헤드리스는 뷰포트가 window-size와 어긋나며 가장자리에 배경색
+    # 띠(레터박스)를 남기는데, 그 위치·크기가 실행마다 달라서 검은 배경으로는
+    # '검은 띠'와 '어두운 카드 가장자리'를 구분할 수 없었다(패턴 추정 가드가
+    # 두 번 뚫림, 2026-08-04~05 실측). 마젠타는 오탐이 원천 불가능하므로
+    # 후처리(crop_letterbox)가 이 색만 정확히 잘라낸다.
     html = (
         "<!doctype html><html><head><meta charset=\"utf-8\"><style>"
-        "html,body{margin:0;padding:0;overflow:hidden;background:#000}"
+        "html,body{margin:0;padding:0;overflow:hidden;background:#f0f}"
         "svg{display:block;width:100vw;height:100vh}"
         "</style></head><body>" + svg_content + "</body></html>"
     )
@@ -84,7 +90,8 @@ def convert_svg_to_png(svg_path, png_path):
         f"--window-size={window_size}",
         "--force-device-scale-factor=2",
         "--hide-scrollbars",
-        "--default-background-color=FFFFFFFF",
+        # 브라우저 기본 배경도 마젠타(ARGB) — 몸통 밖 영역까지 같은 키 색으로
+        "--default-background-color=FFFF00FF",
         file_url,
     ]
     try:
@@ -435,6 +442,26 @@ def build_rank_bar_card_svg(eyebrow, title_lines, items, note="", accent=CARD_AC
     return "".join(p)
 
 
+# 요약 카드에서 색으로 강조할 토큰: 숫자 + 단위(%, 조원, 억, 년, 배, 위 …).
+# 홈판 독자는 카드를 1~2초 훑는다 — 숫자가 흰 본문에 묻히면 카드의 정보값이 죽는다.
+_EMPH_RE = re.compile(
+    r"[+\-▲▼]?\d[\d,.]*\s?(?:%p|%|조\s?원|억\s?원|만\s?원|천\s?원|조|억|만|원|"
+    r"년째|년|개월|월|일째|일|주째|주|배|건|명|곳|호|p|포인트|kg|위|세|%대)?")
+
+
+def _emphasize(line, accent):
+    """문장 속 숫자 토큰만 강조색 tspan 으로 감싼다. 나머지는 흰색 유지."""
+    out, last = [], 0
+    for m in _EMPH_RE.finditer(line):
+        if m.start() > last:
+            out.append(escape_html(line[last:m.start()]))
+        out.append(f'<tspan fill="{accent}" font-weight="800">'
+                   f'{escape_html(m.group(0))}</tspan>')
+        last = m.end()
+    out.append(escape_html(line[last:]))
+    return "".join(out)
+
+
 def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GOLD):
     """마무리 정리 카드. points = ["한 줄", "한 줄", "한 줄"]
 
@@ -445,9 +472,20 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
     p.append(head)
 
     y += 56
+    # 폰트: 모바일에서 읽히는 최대 크기. 예전 44px는 360px 폰 화면에서 ~15px로
+    # 줄어들어 잘았다. 기본 52px로 올리되, 가장 긴 줄이 캔버스 폭을 넘으면
+    # (넘치면 한 줄이 잘리거나 접혀 보인다) 들어올 때까지만 줄인다.
+    all_lines = [ln for pt in points
+                 for ln in (pt if isinstance(pt, list) else [pt])]
+    fs = 52
+    avail = CARD_W - 172 - 72          # 번호 배지 오른쪽 ~ 우측 여백
+    while fs > 42 and all_lines and \
+            max(_est_text_width(ln, fs) for ln in all_lines) > avail:
+        fs -= 2
+
     # 항목 사이 간격을 남은 높이에 맞춰 벌린다. 고정 간격(54)이면 항목이 위로
     # 몰리고 카드 아래가 200px씩 비어 '만들다 만' 느낌이 났다(실측).
-    LINE_H, BOTTOM_MARGIN = 58, 96
+    LINE_H, BOTTOM_MARGIN = int(fs * 1.32), 96
     text_h = sum((len(pt) if isinstance(pt, list) else 1) * LINE_H
                  for pt in points)
     free = CARD_H - BOTTOM_MARGIN - y - text_h
@@ -463,9 +501,10 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
         )
         ty = y + 2
         for line in lines:
+            # 숫자·단위는 강조색으로 — 흰 본문 속에서 정보가 먼저 눈에 들어온다
             p.append(
-                f'<text x="172" y="{ty}" font-size="44" font-weight="600" fill="#ffffff">'
-                f'{escape_html(line)}</text>'
+                f'<text x="172" y="{ty}" font-size="{fs}" font-weight="600" '
+                f'fill="#ffffff">{_emphasize(line, accent)}</text>'
             )
             ty += LINE_H
         y = ty + gap

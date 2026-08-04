@@ -50,58 +50,52 @@ from photo_quality import suggest_dim
 ENABLE_ONDEMAND = os.getenv("ONDEMAND", "1") != "0"
 
 
-def crop_letterbox(im, threshold=6):
-    """스크린샷 가장자리의 '순수 검정' 띠(레터박스)를 잘라낸다.
+def crop_letterbox(im):
+    """스크린샷 가장자리의 마젠타(레터박스 키 색) 띠를 잘라낸다.
 
-    왜 필요한가 (2026-08-04 실측):
-      클라우드(리눅스) 헤드리스 브라우저에서는 뷰포트 높이가 --window-size 보다
-      작게 잡히는 경우가 있다. 그러면 svg{width:100vw;height:100vh} 가 그 작은
-      높이에 맞춰 축소되고(정사각 viewBox라 좌우에 레터박스), 스크린샷은 창
-      전체를 찍어서 남는 부분이 래퍼 배경색(#000)으로 남는다.
-      실제 루틴 출력에서 좌 43px / 하 87px 검은 띠가 생겼다.
-      → 환경마다 다르게 나오므로 원인을 브라우저에서 잡기보다, 결과 픽셀에서
-        확실히 제거한다. 카드 배경은 순수 검정이 아닌 남색 계열(#0a1428 등)이라
-        threshold 14 로 안전하게 구분된다.
+    클라우드 헤드리스는 뷰포트가 --window-size 와 어긋나며 가장자리에 래퍼
+    배경색 띠를 남긴다. 위치·크기가 실행마다 달라서(하 87px, 좌우+하 등)
+    '검은 띠'를 패턴으로 추정하는 가드는 두 번 뚫렸다(2026-08-04~05 실측:
+    어두운 카드 가장자리와 구분 불가). 그래서 래퍼 배경을 카드에 절대
+    등장하지 않는 마젠타(#f0f)로 바꾸고, 여기서는 그 색만 기계적으로
+    잘라낸다 — 추정이 없으므로 오탐도, 미탐도 원천적으로 불가능하다.
+    로컬처럼 띠가 없는 환경에서는 마젠타가 0픽셀이라 아무것도 안 한다."""
+    im = im.convert("RGB")
+    w, h = im.size
+    px = im.load()
 
-    검정이 없으면 원본을 그대로 돌려주므로 정상 환경에서는 아무 영향이 없다."""
-    from PIL import ImageStat
-    gray = im.convert("L")
-    w, h = gray.size
+    def key(p):
+        return p[0] > 200 and p[2] > 200 and p[1] < 90
 
-    def line_mean(x0, y0, x1, y1):
-        return ImageStat.Stat(gray.crop((x0, y0, x1, y1))).mean[0]
+    def col_is_key(x):
+        return all(key(px[x, y]) for y in range(0, h, 7))
 
-    # 픽셀 하나씩 보면 JPEG 압축 잡티(검은 띠 안의 밝은 점 몇 개)에 뚫린다.
-    # 실제로 그 때문에 좌측 띠를 못 잘라낸 적이 있다 → '줄 전체의 평균'으로 판정한다.
-    # 카드 배경(#0a1428 등)은 회색조 평균이 19 이상이라 threshold 와 확실히 갈린다.
+    def row_is_key(y):
+        return all(key(px[x, y]) for x in range(0, w, 7))
+
     left = 0
-    while left < w // 2 and line_mean(left, 0, left + 1, h) < threshold:
+    while left < w // 2 and col_is_key(left):
         left += 1
     right = w
-    while right > w // 2 and line_mean(right - 1, 0, right, h) < threshold:
+    while right > w // 2 and col_is_key(right - 1):
         right -= 1
     top = 0
-    while top < h // 2 and line_mean(0, top, w, top + 1) < threshold:
+    while top < h // 2 and row_is_key(top):
         top += 1
     bottom = h
-    while bottom > h // 2 and line_mean(0, bottom - 1, w, bottom) < threshold:
+    while bottom > h // 2 and row_is_key(bottom - 1):
         bottom -= 1
 
-    box = (left, top, right, bottom)
-    if box == (0, 0, w, h):
-        return im                      # 잘라낼 것 없음(정상 환경)
+    if (left, top, right, bottom) == (0, 0, w, h):
+        return im                      # 띠 없음(정상 환경) — 손대지 않는다
 
-    cw, ch = right - left, bottom - top
-    # ⚠ 오탐 방지 — 밤 사진처럼 가장자리가 진짜로 검은 카드를 잘라먹으면
-    #   내용이 날아간다(실측: 2160 정사각이 1549x1977 로 잘렸다).
-    #   레터박스는 '균일 축소'에서 생기므로 남는 영역은 반드시 정사각이다.
-    #   정사각이 아니거나 잘리는 양이 크면 레터박스가 아니라고 본다.
-    if abs(cw - ch) > max(cw, ch) * 0.02:
-        return im                      # 정사각이 아니다 = 레터박스가 아니다
-    if cw < w * 0.80 or ch < h * 0.80:
-        print(f"  [경고] 레터박스 감지가 과도해 원본을 유지합니다 ({cw}x{ch})")
-        return im
-    print(f"  [레터박스 제거] {w}x{h} -> {cw}x{ch}")
+    # 경계의 안티앨리어싱 블렌드(마젠타 섞인 1~2px)까지 마저 걷어낸다
+    PAD = 2
+    box = (min(left + PAD, w // 2) if left else 0,
+           min(top + PAD, h // 2) if top else 0,
+           max(right - PAD, w // 2) if right < w else w,
+           max(bottom - PAD, h // 2) if bottom < h else h)
+    print(f"  [레터박스 제거] {w}x{h} -> {box[2]-box[0]}x{box[3]-box[1]}")
     return im.crop(box)
 
 
