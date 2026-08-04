@@ -134,11 +134,25 @@ def build_number_card_svg(eyebrow, number, number_unit, headline_lines,
         f'<text x="122" y="248" font-size="40" fill="#a9b6cc" '
         f'letter-spacing="1">{escape_html(eyebrow)}</text>'
     )
-    # 주인공 숫자
+    # 주인공 숫자 + 단위. 둘을 한 줄에 그리므로 폭을 재서 캔버스를 넘지 않게 한다.
+    #
+    # 예전엔 200px/76px 고정이라, 단위가 길면('만원으로 상향', '엔캐리 청산 당시')
+    # 오른쪽으로 그대로 밀려나가 글자가 잘렸다(실측 2026-08-04).
+    # 숫자가 주인공이니 단위를 먼저 더 줄이고, 그래도 모자라면 둘 다 함께 줄인다.
+    num_fs, unit_fs = 200, 76
+    avail = CARD_W - 88 - 60            # 좌측 시작점과 우측 안전여백
+    gap = 18
+    while unit_fs > 46 and (_est_text_width(number, num_fs) + gap
+                            + _est_text_width(number_unit, unit_fs)) > avail:
+        unit_fs -= 2
+    while num_fs > 110 and (_est_text_width(number, num_fs) + gap
+                            + _est_text_width(number_unit, unit_fs)) > avail:
+        num_fs -= 4
+        unit_fs = min(unit_fs, int(num_fs * 0.42))
     p.append(
-        f'<text x="88" y="470" font-size="200" font-weight="800" fill="#ffffff" '
+        f'<text x="88" y="470" font-size="{num_fs}" font-weight="800" fill="#ffffff" '
         f'letter-spacing="-4">{escape_html(number)}'
-        f'<tspan font-size="76" font-weight="700" fill="#d5dded" dx="18">'
+        f'<tspan font-size="{unit_fs}" font-weight="700" fill="#d5dded" dx="{gap}">'
         f'{escape_html(number_unit)}</tspan></text>'
     )
     if delta:
@@ -757,9 +771,18 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
         y += 84
     if number:
         y += 34
-        p.append(f'<text x="88" y="{y}" font-size="112" font-weight="800" fill="#ffffff" '
+        # number_card와 같은 이유로 폭을 재서 줄인다 — 단위가 길면 잘려나간다
+        num_fs, unit_fs, gap = 112, 48, 14
+        avail = CARD_W - 88 - 60
+        while unit_fs > 32 and (_est_text_width(str(number), num_fs) + gap
+                                + _est_text_width(number_unit, unit_fs)) > avail:
+            unit_fs -= 2
+        while num_fs > 70 and (_est_text_width(str(number), num_fs) + gap
+                               + _est_text_width(number_unit, unit_fs)) > avail:
+            num_fs -= 3
+        p.append(f'<text x="88" y="{y}" font-size="{num_fs}" font-weight="800" fill="#ffffff" '
                  f'letter-spacing="-3">{escape_html(str(number))}'
-                 f'<tspan font-size="48" fill="#d5dded" dx="14">'
+                 f'<tspan font-size="{unit_fs}" fill="#d5dded" dx="{gap}">'
                  f'{escape_html(number_unit)}</tspan></text>')
         if delta:
             arrow = "▲" if direction == "up" else "▼"

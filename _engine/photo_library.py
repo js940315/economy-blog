@@ -99,7 +99,12 @@ def category_pool(category):
             continue
         cat = meta.get("카테고리")
         if cat == category or (cat is None and fn.startswith(category + "_")):
-            pool.append(fn)
+            # index.json 에는 있는데 실물 파일이 없는 항목을 걸러낸다.
+            # 중복 정리(photo_quality audit --fix)로 파일만 지워졌거나 git
+            # 작업으로 인덱스와 디스크가 어긋나면, 여기서 안 막을 경우
+            # 빌드가 FileNotFoundError 로 통째로 죽는다(실측 2026-08-04).
+            if os.path.exists(os.path.join(PHOTO_DIR, fn)):
+                pool.append(fn)
     return sorted(pool)
 
 
