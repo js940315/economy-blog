@@ -18,7 +18,19 @@ import os
 import re
 import sys
 from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
+
+KST = timezone(timedelta(hours=9))
+
+
+def kst_date_tag():
+    """오늘 날짜(MMDD)를 '한국 시간' 기준으로 만든다.
+
+    ⚠ 클라우드 루틴은 UTC 머신에서 돈다. 새벽 06:00 KST 는 UTC 로 전날 21:00 이라,
+    시스템 날짜를 그대로 쓰면 output 폴더가 전날 이름으로 만들어진다.
+    실제로 08-05 06:00 실행분이 output/0804 에 들어가 '오늘자 스탠바이 없음'
+    사고가 났다(실측 2026-08-05). 날짜는 반드시 이 함수로만 정한다."""
+    return datetime.now(KST).strftime("%m%d")
 
 from common_utils import (build_bar_card_svg, build_number_card_svg,
                           build_page_html, build_photo_card_svg,
@@ -687,7 +699,7 @@ def build_one(article, out_dir):
 
 def main():
     src = sys.argv[1] if len(sys.argv) > 1 else "articles.json"
-    date_tag = sys.argv[2] if len(sys.argv) > 2 else datetime.now().strftime("%m%d")
+    date_tag = sys.argv[2] if len(sys.argv) > 2 else kst_date_tag()
 
     with open(src, encoding="utf-8") as f:
         articles = json.load(f)

@@ -124,8 +124,9 @@ def build(date_tag):
 
 
 if __name__ == "__main__":
-    tag = sys.argv[1] if len(sys.argv) > 1 else None
-    if not tag:
-        print("사용법: python _engine/contact_sheet.py {MMDD}")
-        sys.exit(2)
+    # 날짜를 생략하면 KST 오늘 날짜를 쓴다. 클라우드(UTC)에서 새벽에 돌 때
+    # 시스템 날짜가 전날이라 에이전트가 날짜를 잘못 계산하는 사고 방지
+    # (build_posts.kst_date_tag 와 같은 이유).
+    from build_posts import kst_date_tag
+    tag = sys.argv[1] if len(sys.argv) > 1 else kst_date_tag()
     sys.exit(build(tag))
