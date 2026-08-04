@@ -327,6 +327,10 @@ SPACER = "⠀" * 3   # 점자 빈칸 — 네이버 붙여넣기에서 살아남�
 # ※ 문장 중간에는 절대 줄바꿈(\n)을 넣지 않는다 — 네이버가 화면 폭에 맞춰
 #   알아서 감싸기 때문에, 우리가 하드 줄바꿈을 박으면 어색한 데서 끊긴다.
 MAX_PARA_CHARS = 110
+# 본문 분량(공백 제외) 규격. PROMPT_V1.md 5절과 같은 값이어야 한다.
+# ±50 여유는 build_one 의 검증에서 준다.
+BODY_MIN_CHARS = 1350
+BODY_MAX_CHARS = 1650
 EDITOR_HEADING = "📝 한눈에 보는 경제 노트"
 DIVIDER = "━" * 19   # 소제목 밑 구분선. 모바일에서 딱 한 줄로 꽉 차는 길이
 
@@ -446,7 +450,13 @@ def place_images_evenly(body_lines, n_images, start=1):
     if total == 0 or n_images == 0:
         return body_lines
 
-    targets = [total * (k + 1) / (n_images + 1) for k in range(n_images)]
+    # 마지막 이미지는 본문 맨 끝(정리 카드)에 고정하고, 나머지를 '본문 전체'에
+    # 균등 배치한다.
+    #   예전엔 전부 (n+1)등분해서 마지막만 끝으로 밀었더니, 앞의 이미지들이
+    #   본문 앞 2/3에만 몰리고 67~100% 구간이 통째로 비었다.
+    #   실측: 구간 글자수가 [368, 322, 150, 240, 426] 처럼 최대 3배까지 벌어짐.
+    #   이제 n등분이라 마지막 직전 구간도 다른 구간과 비슷해진다.
+    targets = [total * (k + 1) / n_images for k in range(n_images)]
     targets[-1] = total + 1   # 마지막 이미지는 본문 맨 끝으로 민다
 
     out, acc, ti = [], 0, 0
@@ -630,7 +640,18 @@ def build_one(article, out_dir):
         lines += [SPACER] + to_blocks(article["closing_question"])
     if article.get("disclaimer"):
         lines += [SPACER] + to_blocks(article["disclaimer"])
-    lines += [SPACER] + [strip_markdown(h) for h in article.get("hashtags", [])]
+    # 해시태그는 '한 줄'로 합친다. 한 줄에 하나씩 두면 네이버에서 각각 문단이 되어
+    # 태그 8개가 화면 한 바닥을 잡아먹고 스팸처럼 보인다(실측: 8건 모두 8줄).
+    tags = [strip_markdown(h) for h in article.get("hashtags", []) if str(h).strip()]
+    if tags:
+        lines += [SPACER, " ".join(tags)]
+
+    # 연속된 빈 줄을 하나로 합친다. 위에서 블록마다 SPACER를 붙이다 보면
+    # 앞 블록이 이미 SPACER로 끝난 자리에 또 붙어 간격이 두 배로 벌어진다
+    # (실측: 8건 전부 '경제 노트' 헤딩 앞에 빈 줄 2개). 조립 순서를 바꿔도
+    # 재발하지 않도록 마지막에 한 번에 정리한다.
+    lines = [ln for i, ln in enumerate(lines)
+             if not (ln == SPACER and i > 0 and lines[i - 1] == SPACER)]
 
     problems = validate(lines)
     problems += validate_image_structure(specs)
@@ -648,6 +669,19 @@ def build_one(article, out_dir):
 
     body_only = to_blocks(article["body_paragraphs"])
     body_len = len("".join(l for l in body_only if l != SPACER).replace(" ", ""))
+    # 분량 검증 — PROMPT 규격은 공백 제외 1,400~1,600자다. 그동안 아무도 안 봐서
+    # 8건 전부 1,294~1,369자로 조용히 미달한 채 나갔다(실측 2026-08-04).
+    # 짧으면 검색 노출·완독 깊이에서 손해라, 눈에 띄게 problems 로 올린다.
+    # 경계는 규격에 약간의 여유(±50)를 둬서 사소한 편차로 재작성이 반복되지 않게 한다.
+    if body_len < BODY_MIN_CHARS:
+        problems.append(
+            f"본문이 짧습니다: {body_len}자 (규격 {BODY_MIN_CHARS}~{BODY_MAX_CHARS}자) "
+            f"— 2챕터(원인)나 3챕터(영향)를 보강할 것. 수식어로 늘리지 말 것")
+    elif body_len > BODY_MAX_CHARS:
+        problems.append(
+            f"본문이 깁니다: {body_len}자 (규격 {BODY_MIN_CHARS}~{BODY_MAX_CHARS}자) "
+            f"— 2챕터를 남기고 1·3챕터에서 덜어낼 것")
+
     return body_len, len(image_map), problems
 
 

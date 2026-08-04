@@ -111,6 +111,25 @@ CARD_ACCENT_DOWN = "#2f80ed"    # 하락 = 파랑
 CARD_GOLD = "#ffc83d"
 
 
+_NEG_RE = re.compile(r"-\s*\d|▼|하락|급락|하회|순매도|감소|축소|마이너스")
+_POS_RE = re.compile(r"\+\s*\d|▲|상승|급등|상회|순매수|증가|확대")
+
+
+def infer_direction(delta, direction="up"):
+    """delta 문구를 보고 화살표 방향을 정한다. 문구가 항상 진실이다.
+
+    기사 JSON의 direction 필드는 사람이 손으로 쓰다 보니 문구와 어긋난다.
+    실제로 '외국인 -2.83조 · 기관 -1.95조'(순매도)에 direction="up"이 붙어
+    빨간 ▲ 위에 음수가 찍혔다(실측 2026-08-04). 보는 사람은 문구를 읽으므로
+    문구에 하락 신호가 있으면 그쪽을 따른다."""
+    text = str(delta or "")
+    if _NEG_RE.search(text) and not _POS_RE.search(text):
+        return "down"
+    if _POS_RE.search(text) and not _NEG_RE.search(text):
+        return "up"
+    return direction        # 판단 불가(둘 다 있거나 없음) — 작성자 지정을 존중
+
+
 def build_number_card_svg(eyebrow, number, number_unit, headline_lines,
                           delta="", direction="up", footnote="", logo_path=None):
     """큰 숫자 하나를 주인공으로 세운 정사각 카드.
@@ -122,6 +141,7 @@ def build_number_card_svg(eyebrow, number, number_unit, headline_lines,
     delta          : 증감 표기 (예: 전년 대비 +62.8%)
     direction      : up = 빨강, down = 파랑
     """
+    direction = infer_direction(delta, direction)   # 문구와 어긋나면 문구를 따른다
     accent = CARD_ACCENT_UP if direction == "up" else CARD_ACCENT_DOWN
     arrow = "▲" if direction == "up" else "▼"
     # 나머지 3종 카드와 같은 배경을 써야 한 세트로 보인다
@@ -785,7 +805,9 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
                  f'<tspan font-size="{unit_fs}" fill="#d5dded" dx="{gap}">'
                  f'{escape_html(number_unit)}</tspan></text>')
         if delta:
-            arrow = "▲" if direction == "up" else "▼"
+            dr = infer_direction(delta, direction)
+            arrow = "▲" if dr == "up" else "▼"
+            accent = CARD_ACCENT_UP if dr == "up" else CARD_ACCENT_DOWN
             p.append(f'<text x="{88 + 12}" y="{y+58}" font-size="40" font-weight="700" '
                      f'fill="{accent}">{arrow} {escape_html(delta)}</text>')
 
