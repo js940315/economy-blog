@@ -51,52 +51,78 @@ ENABLE_ONDEMAND = os.getenv("ONDEMAND", "1") != "0"
 
 
 def crop_letterbox(im):
-    """스크린샷 가장자리의 마젠타(레터박스 키 색) 띠를 잘라낸다.
+    """스크린샷 가장자리의 마젠타(레터박스 키 색) 띠를 제거한다.
 
-    클라우드 헤드리스는 뷰포트가 --window-size 와 어긋나며 가장자리에 래퍼
-    배경색 띠를 남긴다. 위치·크기가 실행마다 달라서(하 87px, 좌우+하 등)
-    '검은 띠'를 패턴으로 추정하는 가드는 두 번 뚫렸다(2026-08-04~05 실측:
-    어두운 카드 가장자리와 구분 불가). 그래서 래퍼 배경을 카드에 절대
-    등장하지 않는 마젠타(#f0f)로 바꾸고, 여기서는 그 색만 기계적으로
-    잘라낸다 — 추정이 없으므로 오탐도, 미탐도 원천적으로 불가능하다.
-    로컬처럼 띠가 없는 환경에서는 마젠타가 0픽셀이라 아무것도 안 한다."""
+    래퍼 배경을 카드에 절대 없는 마젠타로 깔아두고, 여기서 그 색만 걷어낸다.
+    세 번 재발한 문제라 방어를 3중으로 둔다:
+      1) 가장자리 스캔은 '전부 마젠타'가 아니라 '대부분 마젠타'(비율)로 판정한다.
+         글자가 띠 안으로 흘러들어오면 all() 조건이 깨져 크롭이 통째로
+         건너뛰어졌다(실측 2026-08-08 — 넘친 글자가 띠를 침범).
+      2) 크롭 후 경계의 안티앨리어싱 blend 를 PAD 만큼 더 깎는다.
+      3) 그래도 남은 마젠타 픽셀은 좌우 인접 색으로 덮어 칠한다.
+         => 어떤 경우에도 마젠타가 발행물에 나가지 않는다."""
     im = im.convert("RGB")
     w, h = im.size
     px = im.load()
 
     def key(p):
-        return p[0] > 200 and p[2] > 200 and p[1] < 90
+        return p[0] > 180 and p[2] > 180 and p[1] < 110
 
-    def col_is_key(x):
-        return all(key(px[x, y]) for y in range(0, h, 7))
+    def col_ratio(x):
+        ys = range(0, h, 5)
+        return sum(1 for y in ys if key(px[x, y])) / len(list(ys))
 
-    def row_is_key(y):
-        return all(key(px[x, y]) for x in range(0, w, 7))
+    def row_ratio(y):
+        xs = range(0, w, 5)
+        return sum(1 for x in xs if key(px[x, y])) / len(list(xs))
 
+    R = 0.80        # 이 비율 이상이면 레터박스 띠로 본다
     left = 0
-    while left < w // 2 and col_is_key(left):
+    while left < w // 2 and col_ratio(left) >= R:
         left += 1
     right = w
-    while right > w // 2 and col_is_key(right - 1):
+    while right > w // 2 and col_ratio(right - 1) >= R:
         right -= 1
     top = 0
-    while top < h // 2 and row_is_key(top):
+    while top < h // 2 and row_ratio(top) >= R:
         top += 1
     bottom = h
-    while bottom > h // 2 and row_is_key(bottom - 1):
+    while bottom > h // 2 and row_ratio(bottom - 1) >= R:
         bottom -= 1
 
-    if (left, top, right, bottom) == (0, 0, w, h):
-        return im                      # 띠 없음(정상 환경) — 손대지 않는다
+    if (left, top, right, bottom) != (0, 0, w, h):
+        PAD = 2
+        box = (min(left + PAD, w // 2) if left else 0,
+               min(top + PAD, h // 2) if top else 0,
+               max(right - PAD, w // 2) if right < w else w,
+               max(bottom - PAD, h // 2) if bottom < h else h)
+        print(f"  [레터박스 제거] {w}x{h} -> {box[2]-box[0]}x{box[3]-box[1]}")
+        im = im.crop(box)
+        w, h = im.size
+        px = im.load()
 
-    # 경계의 안티앨리어싱 블렌드(마젠타 섞인 1~2px)까지 마저 걷어낸다
-    PAD = 2
-    box = (min(left + PAD, w // 2) if left else 0,
-           min(top + PAD, h // 2) if top else 0,
-           max(right - PAD, w // 2) if right < w else w,
-           max(bottom - PAD, h // 2) if bottom < h else h)
-    print(f"  [레터박스 제거] {w}x{h} -> {box[2]-box[0]}x{box[3]-box[1]}")
-    return im.crop(box)
+    # 최후 보루: 남은 키 색 픽셀을 인접한 정상 색으로 덮는다.
+    leftovers = 0
+    for y in range(h):
+        for x in range(w):
+            if not key(px[x, y]):
+                continue
+            leftovers += 1
+            fill = None
+            for nx in range(x - 1, -1, -1):          # 왼쪽에서 정상색 찾기
+                if not key(px[nx, y]):
+                    fill = px[nx, y]
+                    break
+            if fill is None:
+                for nx in range(x + 1, w):           # 없으면 오른쪽
+                    if not key(px[nx, y]):
+                        fill = px[nx, y]
+                        break
+            px[x, y] = fill or (10, 20, 40)          # 그래도 없으면 카드 배경색
+    if leftovers:
+        print(f"  [경고] 잔여 키색 {leftovers}px 를 덮어 칠했습니다 "
+              f"(레터박스 크롭이 완전하지 않았음 — 원인 확인 필요)")
+    return im
 
 
 def _asset(kind, name):

@@ -64,10 +64,18 @@ def convert_svg_to_png(svg_path, png_path):
     # '검은 띠'와 '어두운 카드 가장자리'를 구분할 수 없었다(패턴 추정 가드가
     # 두 번 뚫림, 2026-08-04~05 실측). 마젠타는 오탐이 원천 불가능하므로
     # 후처리(crop_letterbox)가 이 색만 정확히 잘라낸다.
+    # ⚠ 크기는 vw/vh 가 아니라 '고정 픽셀'로 준다.
+    #   100vw/100vh 는 뷰포트에 의존하는데, 클라우드 헤드리스는 뷰포트가
+    #   --window-size 와 어긋나는 경우가 있다. 그러면 SVG가 축소되며 가장자리에
+    #   배경색 띠(레터박스)가 남고, 그 위치·크기가 실행마다 달라 후처리로도
+    #   완전히 막기 어려웠다(2026-08-04~08 세 차례 재발).
+    #   viewBox 와 똑같은 픽셀 크기를 박으면 뷰포트와 무관하게 항상 원본 크기로
+    #   그려지므로 애초에 띠가 생기지 않는다.
     html = (
         "<!doctype html><html><head><meta charset=\"utf-8\"><style>"
-        "html,body{margin:0;padding:0;overflow:hidden;background:#f0f}"
-        "svg{display:block;width:100vw;height:100vh}"
+        f"html,body{{margin:0;padding:0;overflow:hidden;background:#f0f;"
+        f"width:{int(w)}px;height:{int(h)}px}}"
+        f"svg{{display:block;width:{int(w)}px;height:{int(h)}px}}"
         "</style></head><body>" + svg_content + "</body></html>"
     )
     with open(html_path, "w", encoding="utf-8") as f:
@@ -462,8 +470,36 @@ def _emphasize(line, accent):
     return "".join(out)
 
 
+def _wrap_to_width(text, fs, max_w):
+    """어절 단위로 감싸 max_w 를 넘지 않는 줄 리스트로 만든다.
+
+    한 어절이 그 자체로 폭을 넘으면(긴 영문·숫자 조합) 글자 단위로 쪼갠다.
+    폰트만 줄이고 줄바꿈을 안 하면 캔버스 밖으로 나가 글자가 잘린다 —
+    실제로 42px 하한에서도 297px 넘치는 줄이 나왔다(실측 2026-08-08)."""
+    words, lines, cur = text.split(), [], ""
+    for wd in words:
+        trial = (cur + " " + wd).strip()
+        if not cur or _est_text_width(trial, fs) <= max_w:
+            cur = trial
+            continue
+        lines.append(cur)
+        if _est_text_width(wd, fs) <= max_w:
+            cur = wd
+        else:                       # 어절 하나가 너무 길다 -> 글자 단위
+            cur = ""
+            for ch in wd:
+                if _est_text_width(cur + ch, fs) <= max_w:
+                    cur += ch
+                else:
+                    lines.append(cur)
+                    cur = ch
+    if cur:
+        lines.append(cur)
+    return lines or [""]
+
+
 def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GOLD):
-    """마무리 정리 카드. points = ["한 줄", "한 줄", "한 줄"]
+    """마무리 정리 카드. points = ["한 줄", ...] 또는 [["윗줄","아랫줄"], ...]
 
     '저장해두고 싶은' 카드를 만들어 스크랩을 유도한다.
     스크랩·공유는 체류시간만큼이나 노출에 영향을 준다."""
@@ -472,28 +508,33 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
     p.append(head)
 
     y += 56
-    # 폰트: 모바일에서 읽히는 최대 크기. 예전 44px는 360px 폰 화면에서 ~15px로
-    # 줄어들어 잘았다. 기본 52px로 올리되, 가장 긴 줄이 캔버스 폭을 넘으면
-    # (넘치면 한 줄이 잘리거나 접혀 보인다) 들어올 때까지만 줄인다.
-    all_lines = [ln for pt in points
-                 for ln in (pt if isinstance(pt, list) else [pt])]
-    fs = 52
     avail = CARD_W - 172 - 72          # 번호 배지 오른쪽 ~ 우측 여백
-    while fs > 42 and all_lines and \
-            max(_est_text_width(ln, fs) for ln in all_lines) > avail:
-        fs -= 2
+    BOTTOM_MARGIN, MIN_GAP = 96, 40
 
-    # 항목 사이 간격을 남은 높이에 맞춰 벌린다. 고정 간격(54)이면 항목이 위로
-    # 몰리고 카드 아래가 200px씩 비어 '만들다 만' 느낌이 났다(실측).
-    LINE_H, BOTTOM_MARGIN = int(fs * 1.32), 96
-    text_h = sum((len(pt) if isinstance(pt, list) else 1) * LINE_H
-                 for pt in points)
+    # 폰트를 크게 잡되(모바일 가독성), 폭은 '줄바꿈'으로 맞추고 세로가 넘칠 때만
+    # 줄인다. 예전엔 폭을 폰트로만 맞추려다 하한(42px)에서 포기하고 그대로
+    # 넘쳐 흘러 글자가 잘렸다.
+    for fs in range(52, 33, -2):
+        wrapped = [_wrap_to_width(ln, fs, avail)
+                   for pt in points
+                   for ln in (pt if isinstance(pt, list) else [pt])]
+        # 원래 point 단위로 다시 묶는다
+        grouped, k = [], 0
+        for pt in points:
+            n = len(pt) if isinstance(pt, list) else 1
+            grouped.append([w for sub in wrapped[k:k + n] for w in sub])
+            k += n
+        line_h = int(fs * 1.30)
+        text_h = sum(len(g) for g in grouped) * line_h
+        need = text_h + MIN_GAP * (len(points) - 1)
+        if need <= CARD_H - BOTTOM_MARGIN - y:
+            break
+
     free = CARD_H - BOTTOM_MARGIN - y - text_h
     gap = free // (len(points) - 1) if len(points) > 1 else 54
-    gap = max(44, min(120, gap))
+    gap = max(MIN_GAP, min(120, gap))
 
-    for i, point in enumerate(points, start=1):
-        lines = point if isinstance(point, list) else [point]
+    for i, lines in enumerate(grouped, start=1):
         p.append(f'<circle cx="118" cy="{y-14}" r="30" fill="{accent}" opacity="0.18"/>')
         p.append(
             f'<text x="118" y="{y}" font-size="34" font-weight="800" fill="{accent}" '
@@ -506,7 +547,7 @@ def build_summary_card_svg(eyebrow, title_lines, points, note="", accent=CARD_GO
                 f'<text x="172" y="{ty}" font-size="{fs}" font-weight="600" '
                 f'fill="#ffffff">{_emphasize(line, accent)}</text>'
             )
-            ty += LINE_H
+            ty += line_h
         y = ty + gap
 
     p.append(_card_note(note))
