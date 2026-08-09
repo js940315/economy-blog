@@ -21,3 +21,9 @@ _tmp*_wrap.html
 #   → 복구: python _engine/photo_quality.py reindex
 assets/photos/*
 !assets/photos/index.json
+
+# 기사 원문 대표사진 소싱 캐시(photo_news.py) - og:image 후보를 전부 내려받아
+# 픽셀 비교하는 작업 디렉토리라 채택 실패한 저해상도 후보까지 섞여 있다.
+# 실제로 채택된 사진만 news_hero_photo()가 assets/photos/뉴스_*.jpg 로 복사하므로
+# 여기는 순수 캐시 - 커밋 대상 아님.
+state/news_photos/
