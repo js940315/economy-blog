@@ -178,6 +178,39 @@ def auto_logo(*texts):
     return None
 
 
+_PERSON_MAP = None
+
+
+def auto_portrait(*texts):
+    """기사에 실존 인물 이름이 있으면 그 사람 사진을 배경으로 돌려준다.
+
+    세금·정책·지원금 기사에 외국인 회의 스톡을 깔면 "느낌이 아예 안 온다"는
+    지적을 받았다(2026-08-09). 그 자리에 실제 당사자 얼굴이 있으면 독자가
+    0.1초에 '내 얘기 맞네'를 판정한다 — 뉴스 카드가 늘 인물을 쓰는 이유다.
+
+    ⚠ 직책이 아니라 '이름'으로만 매칭한다. '경제부총리 = OOO' 식으로 박아두면
+      개각 뒤에 엉뚱한 사람 얼굴이 조용히 나간다. 사람을 잘못 지목하는 건
+      사진이 밋밋한 것과 비교가 안 되게 큰 사고다.
+    반환: assets/portraits/ 기준 파일명 또는 None"""
+    global _PERSON_MAP
+    if _PERSON_MAP is None:
+        path = os.path.join("assets", "portraits", "person_map.json")
+        try:
+            with open(path, encoding="utf-8") as f:
+                data = json.load(f)
+            _PERSON_MAP = sorted(
+                ((k, v) for k, v in data.items() if not k.startswith("_")),
+                key=lambda kv: -len(kv[0]))
+        except (OSError, ValueError):
+            _PERSON_MAP = []
+    blob = " ".join(t for t in texts if t)
+    for name, fname in _PERSON_MAP:
+        if name in blob and os.path.exists(
+                os.path.join("assets", "portraits", fname)):
+            return fname
+    return None
+
+
 def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=None):
     """spec["photo"](파일명 직접 지정) 또는 spec["photo_category"](카테고리
     지정 — 날짜·순번 기반 순환)을 실제 파일명으로 해석한다.
@@ -283,6 +316,34 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None,
     brand = spec.get("brand", "경제비버")
     tagline = spec.get("tagline", "THE ECONOMY BEAVER")
     if kind == "thumbnail":
+        # 기사 주인공이 실존 인물이면 그 사람 사진이 어떤 스톡보다 강하다.
+        # (기사 JSON이 photo 를 직접 지정했으면 작성자 의도를 존중해 건너뛴다)
+        portrait = (None if spec.get("photo") else
+                    auto_portrait(article_text, spec.get("line1"),
+                                  spec.get("line2")))
+        if portrait:
+            print(f"  [인물사진] {portrait}")
+            if warnings is not None:
+                warnings.append(
+                    f"인물 사진 사용: {portrait} — 검수시트에서 인물이 기사 "
+                    f"주인공과 맞는지 확인할 것")
+            # 인물 사진은 크롭 정렬을 위쪽으로 고정한다. 원본이 대개 세로라
+            # 무작위 정렬이면 얼굴이 가운데로 와서 하단 카피가 입·턱을 덮는다.
+            var = (variation_seed(portrait, date_tag, seq)
+                   if date_tag is not None else None)
+            if var:
+                var = {**var, "align": "xMidYMin"}
+            ppath = _asset("portraits", portrait)
+            return build_thumbnail_svg(
+                photo_path=ppath,
+                line1=spec["line1"], line2=spec["line2"],
+                brand=brand, tagline=tagline,
+                accent_words=spec.get("accent_words"),
+                dim=suggest_dim(ppath, spec.get("dim", 0.0)),
+                variation=var,
+                logo_path=(_logo_asset(spec["logo"]) if spec.get("logo")
+                           else auto_logo(spec.get("line1"), spec.get("line2"))))
+
         fname, category = resolve_photo(spec, date_tag, seq, used_in_post,
                                         article_text, warnings)
         if not fname:

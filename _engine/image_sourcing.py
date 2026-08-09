@@ -753,6 +753,11 @@ def stock_photo_candidates(query, out_dir, keep=6, min_side=1200, prefix="stock"
 PORTRAIT_OK_PATTERNS = [
     "public domain", "pdm", "cc0",
     "cc by", "cc by-sa", "kogl", "공공누리",
+    # Commons 는 CC BY 를 LicenseShortName "Attribution" 으로 표기하는 파일이 많다.
+    # 이 표기를 빠뜨려서 멀쩡한 CC BY 인물 사진이 통째로 걸러졌다(실측 2026-08-09).
+    # 비상업(nc)·변형금지(nd)는 _portrait_license_ok 앞단에서 이미 차단하므로,
+    # 여기에 'attribution' 을 넣어도 기준이 느슨해지지 않는다.
+    "attribution",
 ]
 
 
