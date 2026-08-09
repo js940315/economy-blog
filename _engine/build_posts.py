@@ -41,6 +41,7 @@ from photo_library import pick_photo, record_usage, variation_seed
 from photo_match import (MIN_SCORE, STRONG_SCORE, best_photo,
                          photo_category_of, pick_matching_photo, review_match,
                          suggest_stock_thumbnail)
+from photo_news import news_hero_photo
 from photo_ondemand import source_for_article
 from photo_quality import suggest_dim
 
@@ -48,6 +49,9 @@ from photo_quality import suggest_dim
 # 네트워크가 막힌 환경에서 빌드를 돌릴 때 ONDEMAND=0 으로 끌 수 있다
 # (꺼도 기존 라이브러리로 정상 발행된다 — 보강 기능이지 필수 경로가 아니다).
 ENABLE_ONDEMAND = os.getenv("ONDEMAND", "1") != "0"
+# 기사 원문 대표사진 사용 여부. 네트워크가 막힌 환경에선 NEWS_HERO=0 으로 끈다
+# (꺼도 인물 사진 -> 스톡 라이브러리 순으로 정상 발행된다).
+ENABLE_NEWS_HERO = os.getenv("NEWS_HERO", "1") != "0"
 
 
 def crop_letterbox(im):
@@ -306,7 +310,7 @@ def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=N
 
 
 def render_image(spec, date_tag=None, seq=None, used_in_post=None,
-                 article_text="", warnings=None):
+                 article_text="", warnings=None, source_urls=None):
     """images 배열의 한 원소를 SVG 문자열로 만든다.
 
     type 값에 따라 4종 카드 중 하나를 고른다. 전부 같은 배경·서체를 쓰기 때문에
@@ -316,7 +320,29 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None,
     brand = spec.get("brand", "경제비버")
     tagline = spec.get("tagline", "THE ECONOMY BEAVER")
     if kind == "thumbnail":
-        # 기사 주인공이 실존 인물이면 그 사람 사진이 어떤 스톡보다 강하다.
+        # ① 기사 원문의 대표사진이 최우선. 인스타(save_money_119)가 잘 뽑는 이유가
+        #    이것이다 — 그 기사가 실제로 쓴 사진이니 주제와 100% 맞는다.
+        #    화질 미달이면 채택하지 않고 다음 단계로 내려간다(업스케일 금지).
+        if not spec.get("photo") and source_urls and ENABLE_NEWS_HERO:
+            hero, meta = news_hero_photo(source_urls, f"{date_tag}_{seq}")
+            if hero:
+                if warnings is not None:
+                    warnings.append(
+                        f"기사 원문 사진 사용: {hero} (출처 {meta['출처호스트']}, "
+                        f"원본 {meta['원본해상도']}) — 검수시트에서 확인할 것")
+                hpath = _asset("photos", hero)
+                return build_thumbnail_svg(
+                    photo_path=hpath,
+                    line1=spec["line1"], line2=spec["line2"],
+                    brand=brand, tagline=tagline,
+                    accent_words=spec.get("accent_words"),
+                    dim=suggest_dim(hpath, spec.get("dim", 0.0)),
+                    variation=None,          # 보도사진은 톤·크롭을 건드리지 않는다
+                    logo_path=(_logo_asset(spec["logo"]) if spec.get("logo")
+                               else auto_logo(spec.get("line1"), spec.get("line2"))))
+            print(f"  [원문사진 미채택] {meta}")
+
+        # ② 기사 주인공이 실존 인물이면 그 사람 사진이 어떤 스톡보다 강하다.
         # (기사 JSON이 photo 를 직접 지정했으면 작성자 의도를 존중해 건너뛴다)
         portrait = (None if spec.get("photo") else
                     auto_portrait(article_text, spec.get("line1"),
@@ -674,7 +700,8 @@ def build_one(article, out_dir):
     for idx, spec in enumerate(specs, start=1):
         svg = render_image(spec, date_tag=date_tag, seq=seq,
                            used_in_post=used_in_post,
-                           article_text=match_text, warnings=img_warnings)
+                           article_text=match_text, warnings=img_warnings,
+                           source_urls=article.get("source_urls"))
         tmp_svg = os.path.join(out_dir, f"_tmp{idx}.svg")
         tmp_png = os.path.join(out_dir, f"_tmp{idx}.png")
         with open(tmp_svg, "w", encoding="utf-8") as f:
