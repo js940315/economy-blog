@@ -3034,5 +3034,14 @@
     "source": "https://commons.wikimedia.org/w/index.php?curid=15598861",
     "query": "drought field",
     "title": "Scorched corn fields, Castroville, TX, 2011 IMG 3231"
+  },
+  "뉴스_0810_4.jpg": {
+    "카테고리": "뉴스원문",
+    "source": "https://image.fnnews.com/resource/media/image/2026/08/08/202608080700518188.jpg",
+    "출처호스트": "image.fnnews.com",
+    "tier": 4,
+    "원본해상도": "5581x2806",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트 (focus=top)",
+    "검수": "기사 원문 대표사진 — 출처 확인 후 사용"
   }
 }
