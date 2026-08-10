@@ -323,7 +323,11 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None,
         # ① 기사 원문의 대표사진이 최우선. 인스타(save_money_119)가 잘 뽑는 이유가
         #    이것이다 — 그 기사가 실제로 쓴 사진이니 주제와 100% 맞는다.
         #    화질 미달이면 채택하지 않고 다음 단계로 내려간다(업스케일 금지).
-        if not spec.get("photo") and source_urls and ENABLE_NEWS_HERO:
+        # photo 를 직접 지정했더라도 원문 사진이 있으면 그쪽을 쓴다.
+        #   에이전트가 찍는 photo 는 카테고리 감으로 고른 스톡이라, 그 기사가
+        #   실제로 쓴 사진을 이길 수 없다. 실제로 '신용점수 문턱' 기사에
+        #   은행 금고 사진이 지정돼 원문 사진이 통째로 건너뛰어졌다(2026-08-10).
+        if source_urls and ENABLE_NEWS_HERO:
             hero, meta = news_hero_photo(source_urls, f"{date_tag}_{seq}")
             if hero:
                 if warnings is not None:

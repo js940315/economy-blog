@@ -96,6 +96,49 @@ CONCEPTS = {
     "월급": ["office", "money", "cash", "savings"],
     "일자리": ["office", "workspace", "manufacturing"],
     "고용": ["office", "workspace", "manufacturing"],
+
+    # ── 구체 소재(SUBJECT) ────────────────────────────────────────────────
+    # 제목이 '종이컵 금지'인데 국회 분수대가 나오는 사고를 막는다(2026-08-10).
+    # 카테고리(경제정책)로 뭉개면 소재가 사라진다. 눈에 보이는 물건이 제목에
+    # 있으면 그 물건을 그대로 보여주는 게 언제나 정답이다.
+    "종이컵": ["paper cup", "disposable cup", "coffee cup", "takeaway cup"],
+    "일회용": ["disposable", "paper cup", "plastic waste", "takeaway"],
+    "플라스틱": ["plastic waste", "plastic bottle", "recycling"],
+    "카페": ["cafe", "coffee shop", "barista", "coffee cup"],
+    "커피": ["coffee", "cafe", "coffee cup", "barista"],
+    "배달": ["delivery", "courier", "food delivery", "scooter"],
+    "편의점": ["convenience store", "shelves", "retail store"],
+    "신용점수": ["credit score", "credit report", "loan approval", "bank counter"],
+    "신용": ["credit score", "credit card", "loan", "bank"],
+    "대출심사": ["loan approval", "bank counter", "document signing", "mortgage"],
+    "전기요금": ["electricity meter", "power bill", "air conditioner", "utility"],
+    "전기": ["electricity", "power line", "electricity meter"],
+    "가스요금": ["gas meter", "utility bill", "heating"],
+    "가전": ["home appliance", "electronics store", "refrigerator", "washing machine"],
+    # 유통 기업은 Commons 에 로고가 없는 경우가 많다(하이마트 검색 0건).
+    # 그럴 때 '그 회사가 파는 매장' 사진이 카테고리 사진(증권거래소)보다 훨씬 맞다.
+    "하이마트": ["electronics store", "home appliance", "appliance showroom"],
+    "전자랜드": ["electronics store", "home appliance", "appliance showroom"],
+    "이마트": ["supermarket", "grocery store", "retail aisle"],
+    "롯데마트": ["supermarket", "grocery store", "retail aisle"],
+    "홈플러스": ["supermarket", "grocery store", "retail aisle"],
+    "다이소": ["variety store", "retail shelves", "discount store"],
+    "올리브영": ["cosmetics store", "beauty shop", "retail shelves"],
+    "휴가": ["vacation", "airport", "travel", "beach"],
+    "여행": ["travel", "airport", "suitcase", "tourist"],
+    "명절": ["korean holiday", "traditional market", "gift set"],
+    "농산물": ["vegetables", "produce market", "farm"],
+    "축산": ["meat", "butcher", "livestock"],
+}
+
+# 위 SUBJECT 계열은 '카테고리 매핑이 없어도' 온디맨드 소싱을 허용한다.
+# 검색어가 구체적이라(종이컵 = paper cup) 엉뚱한 사진이 올 위험이 낮기 때문.
+# (반대로 '고용' 같은 막연한 개념은 여전히 소싱하지 않는다 — 유럽 인쇄소 사고)
+SPECIFIC_SUBJECTS = {
+    "종이컵", "일회용", "플라스틱", "카페", "커피", "배달", "편의점",
+    "신용점수", "신용", "대출심사", "전기요금", "전기", "가스요금",
+    "가전", "휴가", "여행", "명절", "농산물", "축산",
+    "하이마트", "전자랜드", "이마트", "롯데마트", "홈플러스", "다이소", "올리브영",
 }
 
 # 개념 -> 사진 카테고리 직결 매핑.

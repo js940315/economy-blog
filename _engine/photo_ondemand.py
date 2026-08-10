@@ -21,7 +21,8 @@ import json
 import os
 
 from image_sourcing import stock_photo_candidates
-from photo_match import CONCEPT_CATEGORIES, CONCEPTS, article_concepts
+from photo_match import (CONCEPT_CATEGORIES, CONCEPTS, SPECIFIC_SUBJECTS,
+                         article_concepts)
 from photo_quality import (BRIGHT_LIMIT, brightness, is_duplicate_of_library,
                            library_entries)
 
@@ -64,6 +65,17 @@ def build_query(text):
     concepts = article_concepts(text)
     if not concepts:
         return None, None
+
+    # ① 구체 소재(종이컵·신용점수·가전 …)가 있으면 그것을 최우선으로 찾는다.
+    #    제목에 눈에 보이는 물건이 있는데 카테고리 사진(국회·거래소)을 쓰면
+    #    독자는 "왜 저 사진?" 이 된다. 검색어가 구체적이라 오소싱 위험도 낮다.
+    for c in concepts:
+        if c in SPECIFIC_SUBJECTS:
+            words = CONCEPTS.get(c, [])[:3]
+            if words:
+                return " ".join(words), CONCEPT_CATEGORIES.get(c) or c
+
+    # ② 그다음이 카테고리가 매핑된 일반 개념
     for c in concepts:
         cat = CONCEPT_CATEGORIES.get(c)
         if cat:

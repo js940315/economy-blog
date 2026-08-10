@@ -3043,5 +3043,31 @@
     "원본해상도": "5581x2806",
     "처리": "정사각 1400px + 시리즈 톤 + 비네트 (focus=top)",
     "검수": "기사 원문 대표사진 — 출처 확인 후 사용"
+  },
+  "종이컵_od1_pexels_0.jpg": {
+    "카테고리": "종이컵",
+    "source_api": "pexels",
+    "license": "Pexels License",
+    "credit": "Cup of  Couple / Pexels",
+    "photographer": "Cup of  Couple",
+    "attribution_required": false,
+    "원본해상도": "8192x5464",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "paper cup disposable cup coffee cup",
+    "source": "https://www.pexels.com/photo/a-mockup-of-disposable-cups-on-a-white-surface-8015710/",
+    "검수": "온디맨드 자동 소싱 — 육안 미검수(검수시트에서 확인할 것)"
+  },
+  "종이컵_od1_unsplash_1.jpg": {
+    "카테고리": "종이컵",
+    "source_api": "unsplash",
+    "license": "Unsplash License",
+    "credit": "Archer Fu / Unsplash",
+    "photographer": "Archer Fu",
+    "attribution_required": false,
+    "원본해상도": "2400x1602",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "paper cup disposable cup coffee cup",
+    "source": "https://unsplash.com/photos/three-different-colored-cups-with-designs-on-them-C-G22is3K-Y",
+    "검수": "온디맨드 자동 소싱 — 육안 미검수(검수시트에서 확인할 것)"
   }
 }
