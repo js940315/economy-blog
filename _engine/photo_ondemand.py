@@ -56,12 +56,29 @@ def _save(path, data):
     os.replace(tmp, path)
 
 
-def build_query(text):
-    """기사 텍스트에서 영어 검색어와 소속 카테고리를 만든다.
+def build_query(text, photo_query=None, category=None):
+    """검색어와 소속 카테고리를 만든다.
 
-    반환: (검색어, 카테고리) 또는 (None, None)
-    개념 사전을 그대로 재사용하므로 매칭 기준과 소싱 기준이 어긋나지 않는다 —
-    '이 개념이 부족해서 소싱했는데 정작 그 개념으로 안 찾는' 사고를 막는다."""
+    ⭐ photo_query(기사 JSON이 직접 준 영어 검색어)가 있으면 그것을 최우선으로 쓴다.
+
+    왜 이게 정답인가 (2026-08-10 실측):
+      '제목 키워드를 그대로 검색' 하는 방식은 한국어에서 무너진다.
+        물가 -> 수련·물가(水邊)   은행 -> 바구니·은행(銀杏)
+        코스피 -> 롤러코스터       '죄인 취급' -> 진짜 교도소 사진
+      동음이의어와 비유를 구분하려면 '의미'를 알아야 하는데, 규칙으로는 안 된다.
+      사전에 하나씩 넣는 방식은 새 소재마다 사람이 손대야 해서 자동화가 아니다.
+
+      그런데 의미를 아는 주체가 이미 있다 — 그 기사를 쓴 에이전트다.
+      기사를 쓰면서 영어 검색어 한 줄을 같이 적게 하면:
+        · 사전 유지보수가 0 (매번 새로 생성)
+        · 동음이의어·비유 문제 없음 (문맥을 아는 쪽이 판단)
+        · 어떤 새 소재가 와도 동작
+      아래 개념 사전은 photo_query 가 없을 때를 위한 안전망으로만 남긴다.
+
+    반환: (검색어, 카테고리) 또는 (None, None)"""
+    if photo_query and str(photo_query).strip():
+        return str(photo_query).strip(), (category or "기타")
+
     concepts = article_concepts(text)
     if not concepts:
         return None, None
@@ -90,12 +107,12 @@ def build_query(text):
     return None, None
 
 
-def source_for_article(text, verbose=True):
+def source_for_article(text, verbose=True, photo_query=None):
     """기사에 맞는 사진을 새로 받아 라이브러리에 등록하고 파일명을 돌려준다.
 
     실패하면 None — 호출부는 반드시 기존 라이브러리 사진으로 폴백해야 한다.
     (외부 API 장애가 발행 자체를 막으면 안 된다)"""
-    query, category = build_query(text)
+    query, category = build_query(text, photo_query)
     if not query:
         return None
 

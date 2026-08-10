@@ -215,7 +215,8 @@ def auto_portrait(*texts):
     return None
 
 
-def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=None):
+def resolve_photo(spec, date_tag, seq, used_in_post, article_text="",
+                  warnings=None, photo_query=None):
     """spec["photo"](파일명 직접 지정) 또는 spec["photo_category"](카테고리
     지정 — 날짜·순번 기반 순환)을 실제 파일명으로 해석한다.
 
@@ -286,7 +287,8 @@ def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=N
             # (매일 전부 소싱하면 저장소도 안 줄고 다양성도 안 생긴다 —
             #  photo_ondemand 모듈 주석의 실측 근거 참고)
             if score < MIN_SCORE and ENABLE_ONDEMAND:
-                fresh = source_for_article(article_text)
+                fresh = source_for_article(article_text,
+                                           photo_query=photo_query)
                 if fresh:
                     new_score, _ = review_match(fresh, article_text)
                     if new_score > score:
@@ -310,7 +312,8 @@ def resolve_photo(spec, date_tag, seq, used_in_post, article_text="", warnings=N
 
 
 def render_image(spec, date_tag=None, seq=None, used_in_post=None,
-                 article_text="", warnings=None, source_urls=None):
+                 article_text="", warnings=None, source_urls=None,
+                 photo_query=None):
     """images 배열의 한 원소를 SVG 문자열로 만든다.
 
     type 값에 따라 4종 카드 중 하나를 고른다. 전부 같은 배경·서체를 쓰기 때문에
@@ -375,7 +378,8 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None,
                            else auto_logo(spec.get("line1"), spec.get("line2"))))
 
         fname, category = resolve_photo(spec, date_tag, seq, used_in_post,
-                                        article_text, warnings)
+                                        article_text, warnings,
+                                        spec.get("photo_query") or photo_query)
         if not fname:
             raise ValueError("thumbnail: photo 또는 photo_category 중 하나가 필요합니다")
         used_in_post.add(fname)
@@ -405,7 +409,8 @@ def render_image(spec, date_tag=None, seq=None, used_in_post=None,
             accent_words=spec.get("accent_words"), series=spec.get("series"))
     if kind == "photo_card":
         fname, category = resolve_photo(spec, date_tag, seq, used_in_post,
-                                        article_text, warnings)
+                                        article_text, warnings,
+                                        spec.get("photo_query") or photo_query)
         if not fname:
             raise ValueError("photo_card: photo 또는 photo_category 중 하나가 필요합니다")
         used_in_post.add(fname)
@@ -705,7 +710,8 @@ def build_one(article, out_dir):
         svg = render_image(spec, date_tag=date_tag, seq=seq,
                            used_in_post=used_in_post,
                            article_text=match_text, warnings=img_warnings,
-                           source_urls=article.get("source_urls"))
+                           source_urls=article.get("source_urls"),
+                           photo_query=article.get("photo_query"))
         tmp_svg = os.path.join(out_dir, f"_tmp{idx}.svg")
         tmp_png = os.path.join(out_dir, f"_tmp{idx}.png")
         with open(tmp_svg, "w", encoding="utf-8") as f:
