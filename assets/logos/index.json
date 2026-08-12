@@ -133,5 +133,69 @@
       "license": "Public domain",
       "title": "File:Samsung Biologics Logo.svg"
     }
+  ],
+  "Korean Air": [
+    {
+      "file": "koreanair_0.png",
+      "license": "Public domain",
+      "title": "File:Korean Air Cargo logo.svg"
+    },
+    {
+      "file": "koreanair_1.png",
+      "license": "Public domain",
+      "title": "File:Korean Air logo (Hangul).svg"
+    },
+    {
+      "file": "koreanair_2.png",
+      "license": "Public domain",
+      "title": "File:Korean Air logo (Hangul, 1984-1994).svg"
+    },
+    {
+      "file": "koreanair_3.png",
+      "license": "Public domain",
+      "title": "File:Logo HYUNDAI Air Conditioning.png"
+    },
+    {
+      "file": "koreanair_4.png",
+      "license": "Public domain",
+      "title": "File:Logo of Air Seoul.svg"
+    },
+    {
+      "file": "koreanair_5.png",
+      "license": "South Korea-Gov",
+      "title": "File:Logo of the Republic of Korea Air Force.png"
+    }
+  ],
+  "Asiana Airlines": [
+    {
+      "file": "asiana_0.png",
+      "license": "Public domain",
+      "title": "File:Asiana Airlines-Logo New.svg"
+    },
+    {
+      "file": "asiana_1.png",
+      "license": "Public domain",
+      "title": "File:Asiana Airlines.svg"
+    },
+    {
+      "file": "asiana_2.png",
+      "license": "Public domain",
+      "title": "File:Asiana Airlines (2024).svg"
+    },
+    {
+      "file": "asiana_3.png",
+      "license": "CC BY-SA 2.0",
+      "title": "File:Asiana Tails at ICN (29983573366).jpg"
+    },
+    {
+      "file": "asiana_4.png",
+      "license": "CC BY-SA 4.0",
+      "title": "File:아시아나에어포트.png"
+    },
+    {
+      "file": "asiana_5.png",
+      "license": "CC BY-SA 4.0",
+      "title": "File:아시아나항공 국문CI.png"
+    }
   ]
 }
