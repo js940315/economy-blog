@@ -482,6 +482,13 @@ def strip_markdown(text):
     return text.strip()
 
 
+def normalize_tag(raw):
+    """해시태그 한 개를 네이버가 온전히 태그로 인식하는 형태로 고친다."""
+    text = strip_markdown(str(raw)).lstrip("#").strip()
+    text = re.sub(r"[^가-힣a-zA-Z0-9_]", "", text)
+    return "#" + text if text else ""
+
+
 def flow_group(sentences):
     """문장들을 이어 한 문단으로 만든다. 문장 중간엔 절대 줄바꿈하지 않는다.
 
@@ -772,7 +779,11 @@ def build_one(article, out_dir):
         lines += [SPACER] + to_blocks(article["disclaimer"])
     # 해시태그는 '한 줄'로 합친다. 한 줄에 하나씩 두면 네이버에서 각각 문단이 되어
     # 태그 8개가 화면 한 바닥을 잡아먹고 스팸처럼 보인다(실측: 8건 모두 8줄).
-    tags = [strip_markdown(h) for h in article.get("hashtags", []) if str(h).strip()]
+    # 네이버는 #부터 한글·영문·숫자·_ 까지만 태그로 먹는다. # 없이 오면 맨 단어로
+    # 노출되고(실측: 0824 10건 전부 앞 6개가 맨 단어), %·공백 등이 끼면 거기서
+    # 끊겨 찌꺼기 글자가 남으므로 여기서 강제로 정규화한다.
+    tags = [normalize_tag(h) for h in article.get("hashtags", [])]
+    tags = [t for t in tags if t]
     if tags:
         lines += [SPACER, " ".join(tags)]
 
