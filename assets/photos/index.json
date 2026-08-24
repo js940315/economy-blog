@@ -1091,7 +1091,7 @@
     "검수": "스톡 API(워터마크 없음) — 스팟체크"
   },
   "은행_5_pexels_0.jpg": {
-    "카테고리": "은행",
+    "카테고리": "물가소비",
     "source_api": "pexels",
     "license": "Pexels License",
     "credit": "Nataliya Vaitkevich / Pexels",
@@ -1101,7 +1101,8 @@
     "처리": "정사각 1400px + 시리즈 톤 + 비네트",
     "검색어": "credit card and wallet close up",
     "source": "https://www.pexels.com/photo/a-close-up-shot-of-a-digital-tablet-beside-credit-cards-6214152/",
-    "검수": "스톡 API(워터마크 없음) — 스팟체크"
+    "검수": "스톡 API(워터마크 없음) — 스팟체크",
+    "_재분류": "2026-08-25 검수: 신용카드+쇼핑 태블릿 사진이 은행으로 잘못 분류돼 대출/은행 기사에 오매칭됨 → 물가소비로 이동"
   },
   "은행_5_unsplash_1.jpg": {
     "카테고리": "은행",
@@ -1572,7 +1573,7 @@
     "검수": "스톡 API(워터마크 없음) — 스팟체크"
   },
   "환율_2_pexels_0.jpg": {
-    "카테고리": "환율",
+    "카테고리": "가상자산",
     "source_api": "pexels",
     "license": "Pexels License",
     "credit": "Rafael Minguet Delgado / Pexels",
@@ -1582,7 +1583,8 @@
     "처리": "정사각 1400px + 시리즈 톤 + 비네트",
     "검색어": "exchange rate board digital display",
     "source": "https://www.pexels.com/photo/financial-chart-showing-cryptocurrency-market-trends-38782892/",
-    "검수": "스톡 API(워터마크 없음) — 스팟체크"
+    "검수": "스톡 API(워터마크 없음) — 스팟체크",
+    "_재분류": "2026-08-25 검수: 검색어(환율판)와 달리 실제로는 암호화폐(ONBUSDT) 캔들차트 스크린샷 — 가상자산으로 이동"
   },
   "환율_2_pexels_2.jpg": {
     "카테고리": "환율",
