@@ -1,1454 +1,1514 @@
 [
- {
-  "date": "0802",
-  "url": "https://www.hankyung.com/article/202608019176i",
-  "title": "수출 989억 달러 역대 2위.. 41%는 반도체 혼자 벌었습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0802",
-  "url": "https://www.hankyung.com/article/202607316975i",
-  "title": "초고가주택 세금 올린다는데, 정작 집주인은 안 팝니다",
-  "category": "부동산"
- },
- {
-  "date": "0802",
-  "url": "https://www.hankyung.com/article/202607305882i",
-  "title": "정부는 알고 있었는데... 세 모녀는 못 받았습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0802",
-  "url": "https://www.hankyung.com/article/2026080194177",
-  "title": "삼전닉스 ETF 후폭풍, 경질 찬성이 56%나 나왔습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0802",
-  "url": "https://www.hankyung.com/article/2026073186461",
-  "title": "환율 뛸까 걱정했는데... 되레 9개월 만에 최저였습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0802",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/383707",
-  "title": "5년 전 만든 지갑에서... 1367개 비트코인이 사라졌습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0802",
-  "url": "https://www.blockmedia.co.kr/archives/1123213",
-  "title": "어제는 돈이 들어왔는데, 비트코인 ETF 하루 만에 뒤집혔죠",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0802",
-  "url": "https://www.hankyung.com/article/2026080192337",
-  "title": "경남은 벌써 가물어서... 정부가 21억원 더 투입했습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0802",
-  "url": "https://www.hankyung.com/article/2026080200287",
-  "title": "레버리지 ETF 갖고 있다면.. 배율, 내 동의 없이 낮아집니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0802",
-  "url": "https://www.blockmedia.co.kr/archives/1123302",
-  "title": "멈췄던 세일러의 비트코인 매수.. 오렌지 차트가 다시 떴습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0802",
-  "url": "https://www.blockmedia.co.kr/archives/1123274",
-  "title": "코어위브 부도확률 50%.. 월가는 이미 AI 대출부터 발 뺍니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0802",
-  "url": "https://www.hankyung.com/article/2026080201721",
-  "title": "물가 3%대 붕괴 눈앞인데.. 최고가격제가 만든 숫자입니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0804",
-  "url": "https://www.hankyung.com/article/2026080319876",
-  "title": "사상 최대 폭등 다음날... 코스피 5% 급락에 개미만 4.6조 담았습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0804",
-  "url": "https://www.hankyung.com/article/2026080324001",
-  "title": "미국이 중국 로봇 막자... 국내 로봇주가 무더기 상한가 갔습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0804",
-  "url": "https://www.hankyung.com/article/2026080320016",
-  "title": "강남 집 오래 갖고만 있으면... 2028년부터 세금이 더 나옵니다",
-  "category": "부동산"
- },
- {
-  "date": "0804",
-  "url": "https://www.hankyung.com/article/2026080324651",
-  "title": "가맹점주 30명만 뭉치면... 본사에 협상 요구할 수 있습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0804",
-  "url": "https://www.hankyung.com/article/2026080325741",
-  "title": "내년부터 청년이라면... 저축만 해도 소득공제 10% 받습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0804",
-  "url": "https://www.hankyung.com/article/2026080325801",
-  "title": "'금보다 주식'이라더니... 한국은행이 13년 만에 태세 바꿨습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0804",
-  "url": "https://www.hankyung.com/article/202608032125i",
-  "title": "2년 전 그날처럼... '엔캐리 청산' 공포가 한국 증시에 돌아왔습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0804",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/384494",
-  "title": "마스터카드가 스테이블코인 회사를... 18억 달러에 인수했습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0804",
-  "url": "https://www.hankyung.com/article/2026080446221",
-  "title": "다주택자만 막았는데... 서울 아파트 절반이 생애 첫 집이었습니다",
-  "category": "부동산"
- },
- {
-  "date": "0804",
-  "url": "https://www.blockmedia.co.kr/archives/1124163",
-  "title": "스테이블코인 대신... 웰스파고는 '토큰화 예금'을 택했습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0806",
-  "url": "https://www.tokenpost.kr/news/policy/385985",
-  "title": "단일종목 레버리지 ETF 논란에... 여당이 결국 국정조사 꺼냈습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0806",
-  "url": "https://www.hankyung.com/article/2026080570331",
-  "title": "5% 룰 지켰는데... 상생임대인들이 날벼락 맞았습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0806",
-  "url": "https://www.hankyung.com/article/2026080569581",
-  "title": "같은 경기도인데... 김포 6채 팔아야 동탄 1채 삽니다",
-  "category": "부동산"
- },
- {
-  "date": "0806",
-  "url": "https://www.hankyung.com/article/202608056365i",
-  "title": "5억 약속받고 집 샀는데... 대출 한도 2억으로 줄었습니다",
-  "category": "부동산"
- },
- {
-  "date": "0806",
-  "url": "https://www.hankyung.com/article/2026080568326",
-  "title": "무상증자 반영해도... 알테오젠, 하루 만에 28% 뛰었습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0806",
-  "url": "https://www.tokenpost.kr/news/economy/385995",
-  "title": "영업이익 89조 찍고... 삼성전자, 연내 주주환원 키웁니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0806",
-  "url": "https://www.tokenpost.kr/news/economy/385983",
-  "title": "국제유가 이틀 연속 미끄러지자... 국고채 금리도 뚝 떨어졌습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0806",
-  "url": "https://www.hankyung.com/article/202608057326i",
-  "title": "호르무즈 풀릴 기대에... S&P500·다우, 이틀째 사상 최고치 썼습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0806",
-  "url": "https://www.blockmedia.co.kr/archives/1124712",
-  "title": "하드웨어 지갑도 뚫렸다... 비트코인 1816개가 사라졌습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0806",
-  "url": "https://www.blockmedia.co.kr/archives/1124704",
-  "title": "이더리움 스테이킹 보상, 앞으로 54% 줄어듭니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0807",
-  "url": "https://www.hankyung.com/article/202608069369i",
-  "title": "예외 신청은 겨우 4건인데... 정부가 먼저 52시간을 흔듭니다",
-  "category": "경제정책"
- },
- {
-  "date": "0807",
-  "url": "https://www.tokenpost.kr/news/economy/386339",
-  "title": "세입자 낀 집 사도... 정부가 실거주 의무부터 미뤄줍니다",
-  "category": "부동산"
- },
- {
-  "date": "0807",
-  "url": "https://www.hankyung.com/article/202608068900i",
-  "title": "월세 150만원에도 방이 없다는 용인·평택, 반도체 훈풍의 그림자",
-  "category": "부동산"
- },
- {
-  "date": "0807",
-  "url": "https://www.tokenpost.kr/news/market/386374",
-  "title": "삼성전자 6.30%, 하이닉스 10.37%... 코스피가 하루 만에 무너졌습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0807",
-  "url": "https://www.blockmedia.co.kr/archives/1125079",
-  "title": "헤지펀드는 67% 손실 냈는데... 따라 한 개미 5천명은 웃었습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0807",
-  "url": "",
-  "title": "월 519만원 넘게 벌어도... 국민연금은 이제 안 깎입니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0807",
-  "url": "https://www.tokenpost.kr/news/economy/386391",
-  "title": "한 달 새 30bp 빠졌던 국고채 금리, 하루 만에 되돌아옵니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0807",
-  "url": "https://www.tokenpost.kr/news/market/386456",
-  "title": "어제는 사상 최고치더니... 하루 만에 호르무즈가 다시 뉴욕증시를 흔듭니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0807",
-  "url": "https://www.blockmedia.co.kr/archives/1125104",
-  "title": "찬성 44표뿐인데... 비트코인은 클래리티법만 쳐다보고 있습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0807",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/386425",
-  "title": "가격은 잠잠해도... 솔라나는 웨스턴유니온까지 끌어들였습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0808",
-  "url": "https://www.hankyung.com/article/2026080713361",
-  "title": "상위 1.1%만 오른다는데... 다주택자는 3년 뒤부터 더 냅니다",
-  "category": "경제정책"
- },
- {
-  "date": "0808",
-  "url": "https://www.tokenpost.kr/news/society/386851",
-  "title": "농작물 다 타들어가자... 농협이 3천억 뭉치 돈 풀었습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0808",
-  "url": "https://www.hankyung.com/article/2026080713371",
-  "title": "시세 35억인데 대출은 13억... 그래도 '숨통 트였다'고 합니다",
-  "category": "부동산"
- },
- {
-  "date": "0808",
-  "url": "https://www.hankyung.com/article/2026080712661",
-  "title": "영업이익 266조 찍는다는데... 하이닉스, 54조를 또 투자합니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0808",
-  "url": "https://www.hankyung.com/article/202608070440g",
-  "title": "적자 1.2조 vs 흑자 1.1조... 쿠팡·네이버 희비 갈렸습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0808",
-  "url": "https://www.tokenpost.kr/news/economy/386820",
-  "title": "가계대출 목표 1조 넘기자... 하나은행이 대출 문부터 닫았습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0808",
-  "url": "https://www.blockmedia.co.kr/archives/1125495",
-  "title": "8월26일까지 소명하라는데... 트럼프, 연준이사 또 흔듭니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0808",
-  "url": "https://www.blockmedia.co.kr/archives/1125504",
-  "title": "일자리 2.3만개 사라졌는데... 뉴욕증시는 오히려 웃었습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0808",
-  "url": "https://www.hankyung.com/article/2026080712741",
-  "title": "중국산 폴리실리콘 15% 관세... 한화·OCI엔 오히려 호재입니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0808",
-  "url": "https://www.tokenpost.kr/news/policy/386877",
-  "title": "이란 혁명수비대로 흘러갔다... 미국이 코인거래소 두 곳 제재합니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0809",
-  "url": "https://www.hankyung.com/article/202608069562g",
-  "title": "대법원은 아니라는데... 하이닉스 성과급, 결국 노사정 다 붙었습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0809",
-  "url": "https://www.hankyung.com/article/202608071080i",
-  "title": "6대 산업엔 세액공제 준다는데... 정작 '얼마'는 아직 없습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0809",
-  "url": "https://www.hankyung.com/article/2026080715721",
-  "title": "5만가구 늘리려... 이주비부터 중도금까지 대출규제 다 풀었습니다",
-  "category": "부동산"
- },
- {
-  "date": "0809",
-  "url": "https://www.hankyung.com/article/202608070347H",
-  "title": "경작도 안 했는데 직불금... 부정수급 1300억이 이렇게 샜습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0809",
-  "url": "https://www.hankyung.com/article/202608071015i",
-  "title": "코스피 코스닥 동반 하락인데... 삼성전자만 홀로 웃었습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0809",
-  "url": "https://www.hankyung.com/article/2026080710996",
-  "title": "HBM5보다 8배 빠른데... 삼성전자, zHBM으로 승부수 던졌습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0809",
-  "url": "https://www.hankyung.com/article/2026080713441",
-  "title": "새벽 5시 오픈런인데... 카카오뱅크 대출, 10분 만에 마감됩니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0809",
-  "url": "https://www.hankyung.com/article/202608071101i",
-  "title": "한국이 먼저 부과했는데... 일본도 포스코에 반덤핑 맞불 놨습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0809",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/387049",
-  "title": "60표 넘기면 통과인데... 클래리티법, 9월 표결 넘어갑니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0809",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/387040",
-  "title": "4개월 만에 최대인데... 비트코인 ETF에 1조2000억 몰렸습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0810",
-  "url": "https://www.tokenpost.kr/news/economy/387201",
-  "title": "'준비 부족했다'... ISA 개편안, 정부가 직접 멈춰 세웠습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0810",
-  "url": "https://www.hankyung.com/article/2026080927731",
-  "title": "3년 전엔 접었는데... 카페 종이컵, 또 금지하겠답니다",
-  "category": "경제정책"
- },
- {
-  "date": "0810",
-  "url": "https://www.hankyung.com/article/2026080927751",
-  "title": "남편이 대표인데... 부인 앞세운 '여성기업', 나랏돈 타갑니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0810",
-  "url": "https://www.fnnews.com/news/202608080700390118",
-  "title": "매물 3.4% 늘었는데... 강남 집주인들, 전세부터 거둬들입니다",
-  "category": "부동산"
- },
- {
-  "date": "0810",
-  "url": "https://www.hankyung.com/article/2026080928281",
-  "title": "신용점수 950점인데 퇴짜... 은행 문턱, 역대 최고로 높아졌습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0810",
-  "url": "https://www.hankyung.com/article/2026080926427",
-  "title": "1555원 찍더니 열흘도 안 돼... 환율 변동폭, 금융위기 이후 최대입니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0810",
-  "url": "https://www.hankyung.com/article/202608092701i",
-  "title": "국내엔 54조 붓는데... SK하이닉스, 中 공장은 4조에 내놓습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0810",
-  "url": "https://www.hankyung.com/article/202608067949i",
-  "title": "PBR 0.2배인데 죄인 취급... 하이마트는 억울하다고 합니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0810",
-  "url": "https://www.blockmedia.co.kr/archives/1125768",
-  "title": "낙관론이 9.7까지... 뱅크오브아메리카, 21세기 최고 매도신호 띄웠습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0810",
-  "url": "https://www.blockmedia.co.kr/archives/1125775",
-  "title": "비트코인 안 팔고 7억5천만달러... 마라톤, 담보로 돈 빌렸습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0814",
-  "url": "https://www.hankyung.com/article/2026081300261",
-  "title": "적자 9.9조 줄었는데... 당신 아닌 코스피가 채웠습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0814",
-  "url": "https://www.hankyung.com/article/2026081300581",
-  "title": "석달 새 세 번째... 국세청, 국민은행 정조준했습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0814",
-  "url": "https://www.hankyung.com/article/202608130271H",
-  "title": "그린벨트 풀어 10만가구... 대출도 30조 더 풀어줍니다",
-  "category": "부동산"
- },
- {
-  "date": "0814",
-  "url": "https://www.hankyung.com/article/2026081301041",
-  "title": "MSCI가 갈랐다... LG이노텍은 웃고 HLB는 울었죠",
-  "category": "주식·증시"
- },
- {
-  "date": "0814",
-  "url": "https://www.hankyung.com/article/2026081300561",
-  "title": "삼성생명·화재, 반년만에 3.3조... KB금융을 넘었습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0814",
-  "url": "https://www.hankyung.com/article/2026081301811",
-  "title": "생색은 컸는데... 마을기업 1500억, 결국 대출이었습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0814",
-  "url": "https://www.tokenpost.kr/news/economy/390364",
-  "title": "국채 50년물 나홀로... 사상 최고치 찍었습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0814",
-  "url": "https://www.hankyung.com/article/2026081304191",
-  "title": "빌 게이츠 1년 만에 방한... SK·HD현대와 만납니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0814",
-  "url": "https://www.tokenpost.kr/news/economy/390341",
-  "title": "영국 0.4% 성장인데... 전문가는 벌써 걱정합니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0814",
-  "url": "https://www.blockmedia.co.kr/archives/1127601",
-  "title": "수년간 의혹 시달린 테더... 첫 정식감사서 적정 받았습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0815",
-  "url": "https://www.hankyung.com/article/2026081416297",
-  "title": "보너스 절반 넣었는데... 하이닉스 개미는 반토막 났습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0815",
-  "url": "https://www.hankyung.com/article/2026081424901",
-  "title": "거래량 뚝 끊기자... 두나무 순이익 4분의 1토막 났습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0815",
-  "url": "https://www.hankyung.com/article/2026081425081",
-  "title": "작년 1년치를 7개월 만에... 가계대출, 벌써 턱밑까지 찼습니다",
-  "category": "부동산"
- },
- {
-  "date": "0815",
-  "url": "https://www.hankyung.com/article/2026081424556",
-  "title": "제도 끊기자 손님 30% 뚝... 외국인 성형 환급 재추진됩니다",
-  "category": "경제정책"
- },
- {
-  "date": "0815",
-  "url": "https://www.hankyung.com/article/2026062825427",
-  "title": "16일 뒤면 사라집니다... 고유가 지원금, 아직 안 쓰셨다면",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0815",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/391151",
-  "title": "매파 워시의 말과 달리... 9월 금리인상 확률 22%p 뚝 떨어졌습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0815",
-  "url": "https://www.hankyung.com/article/2026081425271",
-  "title": "구글·아마존이 캐나다서 45조 쓸어담자... 현지 기업들 밀려났습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0815",
-  "url": "https://www.tokenpost.kr/news/policy/391198",
-  "title": "1120억달러 어긋났다... 미국, 중국 우회수출 40개국 정조준",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0815",
-  "url": "https://www.blockmedia.co.kr/archives/1128054",
-  "title": "6.3만달러 무너졌다... ETF도 빠지고 MSCI도 등 돌렸습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0815",
-  "url": "https://www.blockmedia.co.kr/archives/1128031",
-  "title": "1달러 무너졌다... XRP, 0.60달러까지 밀릴 수 있다는 경고",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0816",
-  "url": "https://www.hankyung.com/article/202608153191i",
-  "title": "한미 관세협상 3500억달러 코앞인데... 통상 사령탑이 전격 경질됐습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0816",
-  "url": "https://www.hankyung.com/article/2026081398806",
-  "title": "로또 줍줍이 사라집니다... 정부가 꺼낸 파격 카드에 청약족 술렁였습니다",
-  "category": "부동산"
- },
- {
-  "date": "0816",
-  "url": "https://www.hankyung.com/article/202608141821i",
-  "title": "하루 만에 6.1% 뛰었습니다... DB손보, 상반기 순이익 1조원 코앞",
-  "category": "주식·증시"
- },
- {
-  "date": "0816",
-  "url": "https://www.blockmedia.co.kr/archives/1128166",
-  "title": "버핏지표 239%... 닷컴버블 뛰어넘었다는 경고, 흘려들으면 안 됩니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0816",
-  "url": "https://www.hankyung.com/article/202608142436i",
-  "title": "AI가 다 잡아먹는다더니... 500억달러 베팅에 월가 태도가 바뀌었습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0816",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/391493",
-  "title": "컨테이너 하나에 1698만원... 이란 봉쇄가 밀어올린 물류비의 실체",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0816",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/391484",
-  "title": "9월 동결에 66.9% 걸렸습니다... 매파 발언에도 시장은 안 흔들렸습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0816",
-  "url": "https://www.hankyung.com/article/202608092419v",
-  "title": "함평·의령은 50만원입니다... 추석 앞두고 지자체 지원금이 쏟아집니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0816",
-  "url": "https://www.blockmedia.co.kr/archives/1128213",
-  "title": "다들 손절할 때... 하버드와 UAE는 비트코인을 팔지 않았습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0816",
-  "url": "https://www.blockmedia.co.kr/archives/1128220",
-  "title": "비트코인 100만달러는 수학적으로 불가능하다는데... 근거가 명확했습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0817",
-  "url": "https://www.hankyung.com/article/2026081641291",
-  "title": "회장보다 3억 더 받았다... 신한은행장 보수, 이렇게 역전됐습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0817",
-  "url": "https://www.hankyung.com/article/202608163814i",
-  "title": "6만 건 9.3조원 걸렸는데... 전세대출 규제, 반전이 있었습니다",
-  "category": "부동산"
- },
- {
-  "date": "0817",
-  "url": "https://www.hankyung.com/article/2026081641711",
-  "title": "90척 중 52척은 중국이... K조선 텃밭까지 뚫렸습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0817",
-  "url": "",
-  "title": "27일에 최대 330만원... 근로장려금, 신청자라면 곧 들어옵니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0817",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/391753",
-  "title": "5.25% 찍었습니다... 美 초장기 국채금리, 심상치 않습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0817",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/391764",
-  "title": "88달러 넘었습니다... 이란발 '전례 없는 조치'가 변수입니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0817",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/391742",
-  "title": "8개월 만에 40%↑... 엔비디아 GPU, 매진 사태 났습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0817",
-  "url": "https://www.hankyung.com/article/2026081641901",
-  "title": "수출은 2배 늘었는데... '검은 반도체' 김, 중국에 뺏기고 있습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0817",
-  "url": "https://www.blockmedia.co.kr/archives/1128270",
-  "title": "한 달 새 2배... 토큰화 주식 투자자, 131만명 넘었습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0817",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/391737",
-  "title": "1년 수익률 -79%인데... 이번엔 3배짜리가 심사대에 올랐습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0818",
-  "url": "https://www.hankyung.com/article/2026081753061",
-  "title": "ISA 가입자면 2억까지 넣으세요... 종부세는 국회로 넘겼습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0818",
-  "url": "https://www.hankyung.com/article/2026081753931",
-  "title": "1주새 0.55%... 대출 규제 피해 몰린 곳, 여기였습니다",
-  "category": "부동산"
- },
- {
-  "date": "0818",
-  "url": "https://www.hankyung.com/article/2026081753671",
-  "title": "용산공원이냐, 7만 가구냐... 국토부·서울시 동상이몽입니다",
-  "category": "부동산"
- },
- {
-  "date": "0818",
-  "url": "https://www.hankyung.com/article/2026081754867",
-  "title": "개미가 7조 던질 때... 외국인은 삼전닉스에 5조 담았습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0818",
-  "url": "https://www.hankyung.com/article/2026081752107",
-  "title": "9646억 팔고 1조5339억 샀다... 국민연금의 SK 갈아타기",
-  "category": "주식·증시"
- },
- {
-  "date": "0818",
-  "url": "https://www.hankyung.com/article/202608175567i",
-  "title": "최대 5000만원까지... 집중호우 이재민, 은행이 손 내밀었습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0818",
-  "url": "https://www.hankyung.com/article/202608175594i",
-  "title": "경제학자 80%가 그랬다... 올해 美 금리인상은 없습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0818",
-  "url": "https://www.blockmedia.co.kr/archives/1128669",
-  "title": "오만이 끼어들면... 트럼프, 호르무즈서 폭격 경고했습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0818",
-  "url": "https://www.hankyung.com/article/202608175454i",
-  "title": "자동차 -21%, 부동산 -19%... 중국 경제에 빨간불 켜졌습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0818",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/392117",
-  "title": "200주선 아래로... 비트코인, 2022년과 똑같이 움직입니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0820",
-  "url": "https://www.hankyung.com/article/2026081999136",
-  "title": "하루 만에 5.8% 급락... 코스피 6471까지 밀렸습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0820",
-  "url": "https://www.hankyung.com/article/202608199187i",
-  "title": "코스피 급락장에서... 상위 1%는 하이닉스를 담았습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0820",
-  "url": "https://www.hankyung.com/article/2026081880957",
-  "title": "서울 아파트값 1.27% 상승... 올해 들어 가장 많이 올랐습니다",
-  "category": "부동산"
- },
- {
-  "date": "0820",
-  "url": "https://www.hankyung.com/article/2026081878336",
-  "title": "서울에 4억대 아파트가... 2030세대는 그마저도 못 삽니다",
-  "category": "부동산"
- },
- {
-  "date": "0820",
-  "url": "https://www.hankyung.com/article/2026081877981",
-  "title": "8월31일까지... 청년 이사비 최대 40만원 신청하세요",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0820",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/393696",
-  "title": "10년간 5495억원... 4대 은행 금융사고, 절반이 사기였습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0820",
-  "url": "https://www.hankyung.com/article/2026081994447",
-  "title": "1399원... 원달러 환율, 10개월 반 만에 이렇게 내렸습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0820",
-  "url": "https://www.hankyung.com/article/202608190710i",
-  "title": "베선트가 나섰다... 美 국채 바이백, 두 배로 늘립니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0820",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/393680",
-  "title": "40조달러... 美 국가부채, 이자만 연 1조달러 넘었습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0820",
-  "url": "https://www.blockmedia.co.kr/archives/1129528",
-  "title": "SC \"연말 10만달러\" 전망... 비트코인, 근거가 있었습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0821",
-  "url": "https://www.hankyung.com/article/2026082029991",
-  "title": "대출목표 '0'이던 새마을금고... 대출 숨통 트였습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0821",
-  "url": "https://www.hankyung.com/article/2026082030551",
-  "title": "공공기관 350곳이 떠난다... 서울 잔류는 최소화합니다",
-  "category": "경제정책"
- },
- {
-  "date": "0821",
-  "url": "https://www.hankyung.com/article/202608202623i",
-  "title": "40억 아파트인데 대출 3배로... 디에이치방배 잔금 풀립니다",
-  "category": "부동산"
- },
- {
-  "date": "0821",
-  "url": "https://www.hankyung.com/article/2026082030401",
-  "title": "150조원, 역대 최대... 삼성전자가 통 크게 풀었습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0821",
-  "url": "https://www.hankyung.com/article/2026082029781",
-  "title": "성과급 60%가 주식... SK하이닉스 직원만 부럽습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0821",
-  "url": "https://www.hankyung.com/article/2026041138027",
-  "title": "8월31일 자정 지나면... 고유가 지원금 그냥 사라집니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0821",
-  "url": "https://www.hankyung.com/article/2026082033731",
-  "title": "56세 국제통이 왔다... 한국은행, 사람부터 바꿨습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0821",
-  "url": "https://www.blockmedia.co.kr/archives/1130089",
-  "title": "다우 703포인트 출렁... 국채금리 4.7%가 방아쇠였습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0821",
-  "url": "https://www.hankyung.com/article/2026082031211",
-  "title": "6895억달러 증발... 한국 순대외자산 12년 만에 최저입니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0821",
-  "url": "https://www.tokenpost.kr/news/briefing/394466",
-  "title": "이틀 만에 12% 급등... 비트코인, 7만2000달러 넘었습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0822",
-  "url": "https://www.hankyung.com/article/2026082156601",
-  "title": "110조 통 크게 풀었다... 삼성전자, 역대 최고 환원입니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0822",
-  "url": "https://www.hankyung.com/article/2026082144106",
-  "title": "AI 지각생 승부수라는데... 카카오, 발표 당일 11% 빠졌습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0822",
-  "url": "https://www.hankyung.com/article/2026082155181",
-  "title": "고등학교 전학은 되고 중학교는 안된다는데... 비거주 1주택자, 세금 더 냅니다",
-  "category": "부동산"
- },
- {
-  "date": "0822",
-  "url": "https://www.hankyung.com/article/202608215678i",
-  "title": "1만5149건, 서울 사람이 샀다... 경기도 아파트, 왜 인기일까요",
-  "category": "부동산"
- },
- {
-  "date": "0822",
-  "url": "https://www.hankyung.com/article/2026082154891",
-  "title": "세수 150조 남았다더니... 정부, 200조 미래기금 만듭니다",
-  "category": "경제정책"
- },
- {
-  "date": "0822",
-  "url": "",
-  "title": "매달 70만원 넣으면... 청년도약계좌, 정부가 이만큼 더 얹어줍니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0822",
-  "url": "https://www.hankyung.com/article/202608215112i",
-  "title": "30조원 풀렸다... 2금융권 중금리대출, 총량서 100% 빠집니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0822",
-  "url": "https://www.hankyung.com/article/2026082155171",
-  "title": "20년 호황 끝났나... 美 국채, 안전자산 지위 흔들립니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0822",
-  "url": "https://www.blockmedia.co.kr/archives/1130638",
-  "title": "일주일 새 24% 뛰었다... 비트코인, 7만9000달러 넘었습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0822",
-  "url": "https://www.blockmedia.co.kr/archives/1130659",
-  "title": "1~5년 내 터진다는데... 달리오, 금·비트코인 담으라 했습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0823",
-  "url": "https://www.hankyung.com/article/202608215002i",
-  "title": "브렌트유 93달러인데... 휘발유값은 4주 더 묶였다",
-  "category": "경제정책"
- },
- {
-  "date": "0823",
-  "url": "https://www.hankyung.com/article/2026082029571",
-  "title": "보증금 70%만 내면 강남·서초 신혼집도 삽니다",
-  "category": "부동산"
- },
- {
-  "date": "0823",
-  "url": "https://www.hankyung.com/article/202608214912i",
-  "title": "5050가구 분당 샛별마을 재건축, 상가 발목 잡을 판입니다",
-  "category": "부동산"
- },
- {
-  "date": "0823",
-  "url": "https://www.hankyung.com/article/2026082260327",
-  "title": "6.8조 실탄 채운 中 YMTC, 삼성전자·SK하이닉스 코앞까지 왔다",
-  "category": "주식·증시"
- },
- {
-  "date": "0823",
-  "url": "https://www.blockmedia.co.kr/archives/1130911",
-  "title": "SK하이닉스, 캐시 우드는 거들떠도 안 봤습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0823",
-  "url": "https://www.energyv.or.kr/info/apl_info.do",
-  "title": "최대 70만원 에너지바우처, 12월31일 지나면 못 받습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0823",
-  "url": "https://www.hankyung.com/article/202608214399i",
-  "title": "美 국채금리 19년 만에 최고, 中은 거꾸로 1.68%까지 떨어졌습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0823",
-  "url": "https://www.hankyung.com/article/2026082261517",
-  "title": "美, 캐나다에 관세 50% 꽂았다... 200억달러 무역전쟁 터졌습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0823",
-  "url": "https://www.blockmedia.co.kr/archives/1130952",
-  "title": "일주일 새 26억달러 몰렸다... 비트코인은 아직 마이너스입니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0823",
-  "url": "https://www.blockmedia.co.kr/archives/1130944",
-  "title": "비트코인 8만달러 앞두고... 고래는 7770BTC 던졌습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0824",
-  "url": "https://www.hankyung.com/article/2026082371031",
-  "title": "역대 최대 50조 삭감... 내년 교육예산부터 잘렸습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0824",
-  "url": "https://www.hankyung.com/article/2026082371041",
-  "title": "법인주택 2639채 조사하니.. 42%는 사주가 살고 있었습니다",
-  "category": "부동산"
- },
- {
-  "date": "0824",
-  "url": "https://www.hankyung.com/article/2026082371741",
-  "title": "이사는 포기했다.. 대신 주방에 3억 쓰는 사람들 늘었습니다",
-  "category": "부동산"
- },
- {
-  "date": "0824",
-  "url": "https://www.hankyung.com/article/2026082371711",
-  "title": "따상 기대하고 샀는데.. 석 달 만에 평균 34% 물렸습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0824",
-  "url": "https://www.hankyung.com/article/2026082371691",
-  "title": "코넥스에서 코스닥 간 회사, 올해 단 한 곳도 없었습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0824",
-  "url": "",
-  "title": "9월1일부터 15일까지... 최대 330만원 신청, 놓치지 마세요",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0824",
-  "url": "https://www.hankyung.com/article/2026082371081",
-  "title": "전문가 63%가 말한다... 한은, 두 달 연속 금리 올릴 것",
-  "category": "금리·통화"
- },
- {
-  "date": "0824",
-  "url": "https://www.hankyung.com/article/2026082372491",
-  "title": "G7 나라빚, GDP의 124%.. 일본은 벌써 204%입니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0824",
-  "url": "https://www.blockmedia.co.kr/archives/1131045",
-  "title": "일주일 새 51% 폭등... 리플, 21개월 만에 최대 상승폭입니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0824",
-  "url": "https://www.blockmedia.co.kr/archives/1131021",
-  "title": "채굴량의 3.6배를 쓸어담았다... 비트코인, 공급이 달립니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0825",
-  "url": "https://www.hankyung.com/article/2026082490067",
-  "title": "카드공제 깎였다... 소상공인, 5년간 4740억 더 냅니다",
-  "category": "경제정책"
- },
- {
-  "date": "0825",
-  "url": "https://www.hankyung.com/article/2026082494661",
-  "title": "통화량 231% 늘 때 집값 204%... 서울 아파트, 돈이 밀었습니다",
-  "category": "부동산"
- },
- {
-  "date": "0825",
-  "url": "https://www.hankyung.com/article/2026082138936",
-  "title": "다음 달까지 2억 갚으라니... 다주택자 대출, 은행마다 딴소리입니다",
-  "category": "부동산"
- },
- {
-  "date": "0825",
-  "url": "https://www.hankyung.com/article/2026082487246",
-  "title": "110조 준다는데 왜 떨어지나... 삼성전자, 하루 만에 8.7% 폭락",
-  "category": "주식·증시"
- },
- {
-  "date": "0825",
-  "url": "https://www.hankyung.com/article/2026082478186",
-  "title": "따상 기대하고 청약했는데... 니어스랩, 상장 첫날 10% 급락",
-  "category": "주식·증시"
- },
- {
-  "date": "0825",
-  "url": "",
-  "title": "올해부터 600만원... 노란우산공제, 소득공제 한도 늘었습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0825",
-  "url": "https://www.hankyung.com/article/2026082474237",
-  "title": "30년물 금리 2007년來 최고인데... 매파는 문제없다 했습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0825",
-  "url": "https://www.hankyung.com/article/2026082495101",
-  "title": "40년 만에 최저... 엔화, 이러다 일본 금리 진짜 오릅니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0825",
-  "url": "https://www.blockmedia.co.kr/archives/1131629",
-  "title": "8만달러 코앞인데... 비트코인, 여기서 숨고르기 들어갔습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0825",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/396926",
-  "title": "450억달러가 100억으로... 잘나가던 AI 펀드도 물렸습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0826",
-  "url": "https://www.hankyung.com/article/2026082520851",
-  "title": "9억 이하는 반값입니다... 성남시, 재산세 한시 감면 나섰습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0826",
-  "url": "https://www.hankyung.com/article/2026082494241",
-  "title": "4억 이하 빌라는 80%까지... 무주택자에게 새 징검다리 놓였습니다",
-  "category": "부동산"
- },
- {
-  "date": "0826",
-  "url": "https://www.hankyung.com/article/202608226081i",
-  "title": "은행 대신 집주인에게 빌린다... 부동산 사적 대출, 뒤탈도 만만찮습니다",
-  "category": "부동산"
- },
- {
-  "date": "0826",
-  "url": "https://www.hankyung.com/article/202608251696i",
-  "title": "장중 4%대 급락했는데... 코스피, 결국 6700선 지켰습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0826",
-  "url": "https://www.hankyung.com/article/202608252053i",
-  "title": "4번 찾아갔는데 문전박대... 공정위, 쿠팡 조사서 빈손 철수했습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0826",
-  "url": "https://www.hankyung.com/article/2026082497557",
-  "title": "31일 자정 지나면 끝... 고유가지원금 950억, 아직 안 쓰셨다면",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0826",
-  "url": "https://www.tokenpost.kr/news/economy/397734",
-  "title": "4곳이나 올리자 했는데... 연준, 재할인율 인상 결국 막았습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0826",
-  "url": "https://www.tokenpost.kr/news/economy/397731",
-  "title": "40조달러 넘었다... IMF, 미국 등에 재정계획 다시 요구했습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0826",
-  "url": "https://www.blockmedia.co.kr/archives/1132084",
-  "title": "5거래일 연속 몰렸다... 솔라나 ETF, 올해 최대 유입 찍었습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0826",
-  "url": "https://www.tokenpost.kr/news/blockchain/397741",
-  "title": "언젠가 뚫린다는데... 비트고 CEO, 비트코인 양자리스크 짚었습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0827",
-  "url": "https://www.hankyung.com/article/2026082647641",
-  "title": "영호남 전기료 내리는데... 민간발전사, 법적대응까지 예고했습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0827",
-  "url": "https://www.hankyung.com/article/202608264444i",
-  "title": "46만7840명... 7월 이사 건수, 4년 만에 최저로 뚝 떨어졌습니다",
-  "category": "부동산"
- },
- {
-  "date": "0827",
-  "url": "https://www.hankyung.com/article/2026082649191",
-  "title": "고정금리 31.9%로 뚝... 12년5개월 만에 최저, 다들 변동금리 갑니다",
-  "category": "부동산"
- },
- {
-  "date": "0827",
-  "url": "https://www.hankyung.com/article/202608264504i",
-  "title": "엔비디아·AMD 다음은 삼성... 오픈AI, HBM4 단독 공급받습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0827",
-  "url": "https://www.hankyung.com/article/202608264553i",
-  "title": "7세대 HBM4E까지... SK하이닉스, 델 포럼서 AI메모리 다 꺼냈습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0827",
-  "url": "https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0047M0.do",
-  "title": "실직·육아로 못 냈어도... 국민연금, 최대 119개월 추납됩니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0827",
-  "url": "https://www.tokenpost.kr/news/economy/398473",
-  "title": "1387원 찍었다... 美 물가에 밀린 원화, 심상치 않습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0827",
-  "url": "https://www.blockmedia.co.kr/archives/1132650",
-  "title": "역대급 실적인데 주가는 하락... 엔비디아, 눈높이가 문제였습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0827",
-  "url": "https://www.tokenpost.kr/news/international/398475",
-  "title": "20리터 제한에 주유소 폐쇄... 테헤란은 난리인데 유가는 내렸습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0827",
-  "url": "https://www.blockmedia.co.kr/archives/1132621",
-  "title": "미국인 77%가 말렸다... 401(k)에 코인 담기, 정부는 밀어붙입니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0828",
-  "url": "https://www.hankyung.com/article/2026082776571",
-  "title": "내년 800조 쓴다는데... 한은은 되레 금리부터 올렸습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0828",
-  "url": "https://www.hankyung.com/article/2026082776051",
-  "title": "빚투 몰리자... 카드론, 상반기에만 21% 불었습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0828",
-  "url": "https://www.hankyung.com/article/2026082775041",
-  "title": "강남은 3주째 빠지는데... 중랑·성북은 역대 최고로 올랐습니다",
-  "category": "부동산"
- },
- {
-  "date": "0828",
-  "url": "https://www.hankyung.com/article/2026082775151",
-  "title": "내년 '청년미래보금자리론' 나온다는데... 서울 빌라 65%는 이미 조건 맞습니다",
-  "category": "부동산"
- },
- {
-  "date": "0828",
-  "url": "https://www.hankyung.com/article/2026082777291",
-  "title": "5.36조 들이부었다... SK하이닉스, 美 인디애나에 첫 삽 떴습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0828",
-  "url": "https://www.hankyung.com/article/2026082773896",
-  "title": "엔비디아 실적 나오자... 삼성전자·하이닉스 동시에 웃었습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0828",
-  "url": "https://www.hankyung.com/article/202608277817i",
-  "title": "70%만 받던 기초연금... 상한, 소득 90%로 바뀔 수 있습니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0828",
-  "url": "https://www.blockmedia.co.kr/archives/1133103",
-  "title": "국채금리 19년래 최고인데... 미 재무부, 연준 건너뛰고 손 댔습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0828",
-  "url": "https://www.blockmedia.co.kr/archives/1133122",
-  "title": "엔비디아 하루 만에 8.74% 급등... 나스닥도 기술주 전체가 폭등했습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0828",
-  "url": "https://www.blockmedia.co.kr/archives/1133131",
-  "title": "달러 대신 금·비트코인... 닷새간 70억달러가 움직였습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/2026082800821",
-  "title": "합의 다 끝났다더니... 美, 대미투자 7조원 더 내라 통보했습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/2026082800881",
-  "title": "코로나 3년 전 빚인데... 정부, 154조 소상공인 대출 손봅니다",
-  "category": "경제정책"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/202608289036i",
-  "title": "5년5개월 만에 최저... 9월 입주 물량, 1만4174가구뿐입니다",
-  "category": "부동산"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/202608289394i",
-  "title": "본청약자도 됩니다... 뉴홈 40년 초저리대출, 형평성 시끄럽습니다",
-  "category": "부동산"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/2026082800541",
-  "title": "58년째 흑자인데... 상폐 위기, 삼성전자만 웃고 있습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/202608289340i",
-  "title": "두 달 만에 반토막... 현대백화점, 58% 주저앉았습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/2026082800861",
-  "title": "0살부터 쌓입니다... 18세까지 최대 1억4057만원, 정부가 넣어줍니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/202608290452i",
-  "title": "트럼프가 원했는데... 워시, 오히려 매파로 돌아섰습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0829",
-  "url": "https://www.hankyung.com/article/2026082801501",
-  "title": "9월24일 워싱턴에서 만난다... 美中, 무역전쟁 1년 더 휴전합니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0829",
-  "url": "https://www.tokenpost.kr/news/cryptocurrency/400092",
-  "title": "일주일 새 45% 급등... 리플, ETF 거래량도 터졌습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0830",
-  "url": "https://www.hankyung.com/article/202608290877i",
-  "title": "2억개 수입해도... 계란 한 판, 여전히 7300원입니다",
-  "category": "경제정책"
- },
- {
-  "date": "0830",
-  "url": "https://www.tokenpost.kr/news/policy/400468",
-  "title": "3.3%로 올랐는데... 정부는 되레 '체감경제'부터 꺼냈습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0830",
-  "url": "https://www.hankyung.com/article/2026082631556",
-  "title": "비거주자는 9억으로 낮춘다는데... 서울 집주인들, 매물부터 쏟아냈습니다",
-  "category": "부동산"
- },
- {
-  "date": "0830",
-  "url": "https://www.hankyung.com/article/2026081301081",
-  "title": "동의율 5%p 낮췄다... 재건축 속도전, 진짜 시작됩니다",
-  "category": "부동산"
- },
- {
-  "date": "0830",
-  "url": "https://www.hankyung.com/article/202608290490i",
-  "title": "1800조원 몰린다... AI 데이터센터, 돈은 이렇게 갑니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0830",
-  "url": "https://www.hankyung.com/article/2026082907347",
-  "title": "반년 만에 16조 벌었다... 중국 D램업체, 삼전닉스급 됐습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0830",
-  "url": "https://www.hankyung.com/article/202608092419v",
-  "title": "함평·의령은 50만원... 추석 앞두고 지자체 지원금 쏟아집니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0830",
-  "url": "https://www.hankyung.com/article/2026082898616",
-  "title": "예금엔 37조 몰리는데... 적금은 8000억 빠져나갔습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0830",
-  "url": "https://www.hankyung.com/article/2026082801381",
-  "title": "1년 이자만 1500조원... '천조국'이 아니라 시한폭탄이었습니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0830",
-  "url": "https://www.blockmedia.co.kr/archives/1133793",
-  "title": "이익의 절반, 240명이 가져갔다... 영국 코인부자 민낯 나왔습니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0831",
-  "url": "https://www.hankyung.com/article/202608301847i",
-  "title": "노란봉투법 시행되자... 기업들, 사람 대신 로봇부터 늘렸습니다",
-  "category": "경제정책"
- },
- {
-  "date": "0831",
-  "url": "https://www.hankyung.com/article/2026083019151",
-  "title": "강남 아니었다... 수원 영통, 일주일 새 0.75% 뛰었습니다",
-  "category": "부동산"
- },
- {
-  "date": "0831",
-  "url": "https://www.hankyung.com/article/2026083013397",
-  "title": "20년 살았으니 내 집이라는데... 서울시는 절대 안 된다고 합니다",
-  "category": "부동산"
- },
- {
-  "date": "0831",
-  "url": "https://www.hankyung.com/article/2026083019061",
-  "title": "이름도 생소한 소재인데... 수출은 반년 새 42% 뛰었습니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0831",
-  "url": "https://www.tokenpost.kr/news/market/400753",
-  "title": "2026년 것 벌써 다 팔렸다는데... 마이크론 목표가는 엇갈립니다",
-  "category": "주식·증시"
- },
- {
-  "date": "0831",
-  "url": "https://www.hankyung.com/article/2026082906527",
-  "title": "신청 안 해도 통장에 쏙... 국민연금, 이제 알아서 넣어줍니다",
-  "category": "지원금·정부보조금"
- },
- {
-  "date": "0831",
-  "url": "https://www.hankyung.com/article/202608301053i",
-  "title": "연 200억달러 나가는데... 한은 총재, \"감당 가능하다\" 밝혔습니다",
-  "category": "금리·통화"
- },
- {
-  "date": "0831",
-  "url": "https://www.tokenpost.kr/news/market/400756",
-  "title": "AI반도체 매출 108억달러인데... 이번 주가 뉴욕증시 최대 분수령입니다",
-  "category": "해외경제·글로벌매크로"
- },
- {
-  "date": "0831",
-  "url": "https://www.blockmedia.co.kr/archives/1133893",
-  "title": "'우리가 돌아왔다'는데... 세일러, 진짜 비트코인 다시 삽니다",
-  "category": "비트코인·가상자산"
- },
- {
-  "date": "0831",
-  "url": "https://www.blockmedia.co.kr/archives/1133868",
-  "title": "친코인 인사만 셋인데... 금융위원장은 쏙 빠졌습니다",
-  "category": "비트코인·가상자산"
- }
+  {
+    "date": "0802",
+    "url": "https://www.hankyung.com/article/202608019176i",
+    "title": "수출 989억 달러 역대 2위.. 41%는 반도체 혼자 벌었습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.hankyung.com/article/202607316975i",
+    "title": "초고가주택 세금 올린다는데, 정작 집주인은 안 팝니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.hankyung.com/article/202607305882i",
+    "title": "정부는 알고 있었는데... 세 모녀는 못 받았습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.hankyung.com/article/2026080194177",
+    "title": "삼전닉스 ETF 후폭풍, 경질 찬성이 56%나 나왔습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.hankyung.com/article/2026073186461",
+    "title": "환율 뛸까 걱정했는데... 되레 9개월 만에 최저였습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/383707",
+    "title": "5년 전 만든 지갑에서... 1367개 비트코인이 사라졌습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.blockmedia.co.kr/archives/1123213",
+    "title": "어제는 돈이 들어왔는데, 비트코인 ETF 하루 만에 뒤집혔죠",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.hankyung.com/article/2026080192337",
+    "title": "경남은 벌써 가물어서... 정부가 21억원 더 투입했습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.hankyung.com/article/2026080200287",
+    "title": "레버리지 ETF 갖고 있다면.. 배율, 내 동의 없이 낮아집니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.blockmedia.co.kr/archives/1123302",
+    "title": "멈췄던 세일러의 비트코인 매수.. 오렌지 차트가 다시 떴습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.blockmedia.co.kr/archives/1123274",
+    "title": "코어위브 부도확률 50%.. 월가는 이미 AI 대출부터 발 뺍니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0802",
+    "url": "https://www.hankyung.com/article/2026080201721",
+    "title": "물가 3%대 붕괴 눈앞인데.. 최고가격제가 만든 숫자입니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.hankyung.com/article/2026080319876",
+    "title": "사상 최대 폭등 다음날... 코스피 5% 급락에 개미만 4.6조 담았습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.hankyung.com/article/2026080324001",
+    "title": "미국이 중국 로봇 막자... 국내 로봇주가 무더기 상한가 갔습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.hankyung.com/article/2026080320016",
+    "title": "강남 집 오래 갖고만 있으면... 2028년부터 세금이 더 나옵니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.hankyung.com/article/2026080324651",
+    "title": "가맹점주 30명만 뭉치면... 본사에 협상 요구할 수 있습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.hankyung.com/article/2026080325741",
+    "title": "내년부터 청년이라면... 저축만 해도 소득공제 10% 받습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.hankyung.com/article/2026080325801",
+    "title": "'금보다 주식'이라더니... 한국은행이 13년 만에 태세 바꿨습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.hankyung.com/article/202608032125i",
+    "title": "2년 전 그날처럼... '엔캐리 청산' 공포가 한국 증시에 돌아왔습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/384494",
+    "title": "마스터카드가 스테이블코인 회사를... 18억 달러에 인수했습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.hankyung.com/article/2026080446221",
+    "title": "다주택자만 막았는데... 서울 아파트 절반이 생애 첫 집이었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0804",
+    "url": "https://www.blockmedia.co.kr/archives/1124163",
+    "title": "스테이블코인 대신... 웰스파고는 '토큰화 예금'을 택했습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.tokenpost.kr/news/policy/385985",
+    "title": "단일종목 레버리지 ETF 논란에... 여당이 결국 국정조사 꺼냈습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.hankyung.com/article/2026080570331",
+    "title": "5% 룰 지켰는데... 상생임대인들이 날벼락 맞았습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.hankyung.com/article/2026080569581",
+    "title": "같은 경기도인데... 김포 6채 팔아야 동탄 1채 삽니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.hankyung.com/article/202608056365i",
+    "title": "5억 약속받고 집 샀는데... 대출 한도 2억으로 줄었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.hankyung.com/article/2026080568326",
+    "title": "무상증자 반영해도... 알테오젠, 하루 만에 28% 뛰었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.tokenpost.kr/news/economy/385995",
+    "title": "영업이익 89조 찍고... 삼성전자, 연내 주주환원 키웁니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.tokenpost.kr/news/economy/385983",
+    "title": "국제유가 이틀 연속 미끄러지자... 국고채 금리도 뚝 떨어졌습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.hankyung.com/article/202608057326i",
+    "title": "호르무즈 풀릴 기대에... S&P500·다우, 이틀째 사상 최고치 썼습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.blockmedia.co.kr/archives/1124712",
+    "title": "하드웨어 지갑도 뚫렸다... 비트코인 1816개가 사라졌습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0806",
+    "url": "https://www.blockmedia.co.kr/archives/1124704",
+    "title": "이더리움 스테이킹 보상, 앞으로 54% 줄어듭니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.hankyung.com/article/202608069369i",
+    "title": "예외 신청은 겨우 4건인데... 정부가 먼저 52시간을 흔듭니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.tokenpost.kr/news/economy/386339",
+    "title": "세입자 낀 집 사도... 정부가 실거주 의무부터 미뤄줍니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.hankyung.com/article/202608068900i",
+    "title": "월세 150만원에도 방이 없다는 용인·평택, 반도체 훈풍의 그림자",
+    "category": "부동산"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.tokenpost.kr/news/market/386374",
+    "title": "삼성전자 6.30%, 하이닉스 10.37%... 코스피가 하루 만에 무너졌습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.blockmedia.co.kr/archives/1125079",
+    "title": "헤지펀드는 67% 손실 냈는데... 따라 한 개미 5천명은 웃었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0807",
+    "url": "",
+    "title": "월 519만원 넘게 벌어도... 국민연금은 이제 안 깎입니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.tokenpost.kr/news/economy/386391",
+    "title": "한 달 새 30bp 빠졌던 국고채 금리, 하루 만에 되돌아옵니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.tokenpost.kr/news/market/386456",
+    "title": "어제는 사상 최고치더니... 하루 만에 호르무즈가 다시 뉴욕증시를 흔듭니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.blockmedia.co.kr/archives/1125104",
+    "title": "찬성 44표뿐인데... 비트코인은 클래리티법만 쳐다보고 있습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0807",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/386425",
+    "title": "가격은 잠잠해도... 솔라나는 웨스턴유니온까지 끌어들였습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.hankyung.com/article/2026080713361",
+    "title": "상위 1.1%만 오른다는데... 다주택자는 3년 뒤부터 더 냅니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.tokenpost.kr/news/society/386851",
+    "title": "농작물 다 타들어가자... 농협이 3천억 뭉치 돈 풀었습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.hankyung.com/article/2026080713371",
+    "title": "시세 35억인데 대출은 13억... 그래도 '숨통 트였다'고 합니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.hankyung.com/article/2026080712661",
+    "title": "영업이익 266조 찍는다는데... 하이닉스, 54조를 또 투자합니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.hankyung.com/article/202608070440g",
+    "title": "적자 1.2조 vs 흑자 1.1조... 쿠팡·네이버 희비 갈렸습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.tokenpost.kr/news/economy/386820",
+    "title": "가계대출 목표 1조 넘기자... 하나은행이 대출 문부터 닫았습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.blockmedia.co.kr/archives/1125495",
+    "title": "8월26일까지 소명하라는데... 트럼프, 연준이사 또 흔듭니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.blockmedia.co.kr/archives/1125504",
+    "title": "일자리 2.3만개 사라졌는데... 뉴욕증시는 오히려 웃었습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.hankyung.com/article/2026080712741",
+    "title": "중국산 폴리실리콘 15% 관세... 한화·OCI엔 오히려 호재입니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0808",
+    "url": "https://www.tokenpost.kr/news/policy/386877",
+    "title": "이란 혁명수비대로 흘러갔다... 미국이 코인거래소 두 곳 제재합니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.hankyung.com/article/202608069562g",
+    "title": "대법원은 아니라는데... 하이닉스 성과급, 결국 노사정 다 붙었습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.hankyung.com/article/202608071080i",
+    "title": "6대 산업엔 세액공제 준다는데... 정작 '얼마'는 아직 없습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.hankyung.com/article/2026080715721",
+    "title": "5만가구 늘리려... 이주비부터 중도금까지 대출규제 다 풀었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.hankyung.com/article/202608070347H",
+    "title": "경작도 안 했는데 직불금... 부정수급 1300억이 이렇게 샜습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.hankyung.com/article/202608071015i",
+    "title": "코스피 코스닥 동반 하락인데... 삼성전자만 홀로 웃었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.hankyung.com/article/2026080710996",
+    "title": "HBM5보다 8배 빠른데... 삼성전자, zHBM으로 승부수 던졌습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.hankyung.com/article/2026080713441",
+    "title": "새벽 5시 오픈런인데... 카카오뱅크 대출, 10분 만에 마감됩니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.hankyung.com/article/202608071101i",
+    "title": "한국이 먼저 부과했는데... 일본도 포스코에 반덤핑 맞불 놨습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/387049",
+    "title": "60표 넘기면 통과인데... 클래리티법, 9월 표결 넘어갑니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0809",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/387040",
+    "title": "4개월 만에 최대인데... 비트코인 ETF에 1조2000억 몰렸습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.tokenpost.kr/news/economy/387201",
+    "title": "'준비 부족했다'... ISA 개편안, 정부가 직접 멈춰 세웠습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.hankyung.com/article/2026080927731",
+    "title": "3년 전엔 접었는데... 카페 종이컵, 또 금지하겠답니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.hankyung.com/article/2026080927751",
+    "title": "남편이 대표인데... 부인 앞세운 '여성기업', 나랏돈 타갑니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.fnnews.com/news/202608080700390118",
+    "title": "매물 3.4% 늘었는데... 강남 집주인들, 전세부터 거둬들입니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.hankyung.com/article/2026080928281",
+    "title": "신용점수 950점인데 퇴짜... 은행 문턱, 역대 최고로 높아졌습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.hankyung.com/article/2026080926427",
+    "title": "1555원 찍더니 열흘도 안 돼... 환율 변동폭, 금융위기 이후 최대입니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.hankyung.com/article/202608092701i",
+    "title": "국내엔 54조 붓는데... SK하이닉스, 中 공장은 4조에 내놓습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.hankyung.com/article/202608067949i",
+    "title": "PBR 0.2배인데 죄인 취급... 하이마트는 억울하다고 합니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.blockmedia.co.kr/archives/1125768",
+    "title": "낙관론이 9.7까지... 뱅크오브아메리카, 21세기 최고 매도신호 띄웠습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0810",
+    "url": "https://www.blockmedia.co.kr/archives/1125775",
+    "title": "비트코인 안 팔고 7억5천만달러... 마라톤, 담보로 돈 빌렸습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.hankyung.com/article/2026081300261",
+    "title": "적자 9.9조 줄었는데... 당신 아닌 코스피가 채웠습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.hankyung.com/article/2026081300581",
+    "title": "석달 새 세 번째... 국세청, 국민은행 정조준했습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.hankyung.com/article/202608130271H",
+    "title": "그린벨트 풀어 10만가구... 대출도 30조 더 풀어줍니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.hankyung.com/article/2026081301041",
+    "title": "MSCI가 갈랐다... LG이노텍은 웃고 HLB는 울었죠",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.hankyung.com/article/2026081300561",
+    "title": "삼성생명·화재, 반년만에 3.3조... KB금융을 넘었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.hankyung.com/article/2026081301811",
+    "title": "생색은 컸는데... 마을기업 1500억, 결국 대출이었습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.tokenpost.kr/news/economy/390364",
+    "title": "국채 50년물 나홀로... 사상 최고치 찍었습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.hankyung.com/article/2026081304191",
+    "title": "빌 게이츠 1년 만에 방한... SK·HD현대와 만납니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.tokenpost.kr/news/economy/390341",
+    "title": "영국 0.4% 성장인데... 전문가는 벌써 걱정합니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0814",
+    "url": "https://www.blockmedia.co.kr/archives/1127601",
+    "title": "수년간 의혹 시달린 테더... 첫 정식감사서 적정 받았습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.hankyung.com/article/2026081416297",
+    "title": "보너스 절반 넣었는데... 하이닉스 개미는 반토막 났습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.hankyung.com/article/2026081424901",
+    "title": "거래량 뚝 끊기자... 두나무 순이익 4분의 1토막 났습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.hankyung.com/article/2026081425081",
+    "title": "작년 1년치를 7개월 만에... 가계대출, 벌써 턱밑까지 찼습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.hankyung.com/article/2026081424556",
+    "title": "제도 끊기자 손님 30% 뚝... 외국인 성형 환급 재추진됩니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.hankyung.com/article/2026062825427",
+    "title": "16일 뒤면 사라집니다... 고유가 지원금, 아직 안 쓰셨다면",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/391151",
+    "title": "매파 워시의 말과 달리... 9월 금리인상 확률 22%p 뚝 떨어졌습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.hankyung.com/article/2026081425271",
+    "title": "구글·아마존이 캐나다서 45조 쓸어담자... 현지 기업들 밀려났습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.tokenpost.kr/news/policy/391198",
+    "title": "1120억달러 어긋났다... 미국, 중국 우회수출 40개국 정조준",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.blockmedia.co.kr/archives/1128054",
+    "title": "6.3만달러 무너졌다... ETF도 빠지고 MSCI도 등 돌렸습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0815",
+    "url": "https://www.blockmedia.co.kr/archives/1128031",
+    "title": "1달러 무너졌다... XRP, 0.60달러까지 밀릴 수 있다는 경고",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.hankyung.com/article/202608153191i",
+    "title": "한미 관세협상 3500억달러 코앞인데... 통상 사령탑이 전격 경질됐습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.hankyung.com/article/2026081398806",
+    "title": "로또 줍줍이 사라집니다... 정부가 꺼낸 파격 카드에 청약족 술렁였습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.hankyung.com/article/202608141821i",
+    "title": "하루 만에 6.1% 뛰었습니다... DB손보, 상반기 순이익 1조원 코앞",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.blockmedia.co.kr/archives/1128166",
+    "title": "버핏지표 239%... 닷컴버블 뛰어넘었다는 경고, 흘려들으면 안 됩니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.hankyung.com/article/202608142436i",
+    "title": "AI가 다 잡아먹는다더니... 500억달러 베팅에 월가 태도가 바뀌었습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/391493",
+    "title": "컨테이너 하나에 1698만원... 이란 봉쇄가 밀어올린 물류비의 실체",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/391484",
+    "title": "9월 동결에 66.9% 걸렸습니다... 매파 발언에도 시장은 안 흔들렸습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.hankyung.com/article/202608092419v",
+    "title": "함평·의령은 50만원입니다... 추석 앞두고 지자체 지원금이 쏟아집니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.blockmedia.co.kr/archives/1128213",
+    "title": "다들 손절할 때... 하버드와 UAE는 비트코인을 팔지 않았습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0816",
+    "url": "https://www.blockmedia.co.kr/archives/1128220",
+    "title": "비트코인 100만달러는 수학적으로 불가능하다는데... 근거가 명확했습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.hankyung.com/article/2026081641291",
+    "title": "회장보다 3억 더 받았다... 신한은행장 보수, 이렇게 역전됐습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.hankyung.com/article/202608163814i",
+    "title": "6만 건 9.3조원 걸렸는데... 전세대출 규제, 반전이 있었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.hankyung.com/article/2026081641711",
+    "title": "90척 중 52척은 중국이... K조선 텃밭까지 뚫렸습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0817",
+    "url": "",
+    "title": "27일에 최대 330만원... 근로장려금, 신청자라면 곧 들어옵니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/391753",
+    "title": "5.25% 찍었습니다... 美 초장기 국채금리, 심상치 않습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/391764",
+    "title": "88달러 넘었습니다... 이란발 '전례 없는 조치'가 변수입니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/391742",
+    "title": "8개월 만에 40%↑... 엔비디아 GPU, 매진 사태 났습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.hankyung.com/article/2026081641901",
+    "title": "수출은 2배 늘었는데... '검은 반도체' 김, 중국에 뺏기고 있습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.blockmedia.co.kr/archives/1128270",
+    "title": "한 달 새 2배... 토큰화 주식 투자자, 131만명 넘었습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0817",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/391737",
+    "title": "1년 수익률 -79%인데... 이번엔 3배짜리가 심사대에 올랐습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.hankyung.com/article/2026081753061",
+    "title": "ISA 가입자면 2억까지 넣으세요... 종부세는 국회로 넘겼습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.hankyung.com/article/2026081753931",
+    "title": "1주새 0.55%... 대출 규제 피해 몰린 곳, 여기였습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.hankyung.com/article/2026081753671",
+    "title": "용산공원이냐, 7만 가구냐... 국토부·서울시 동상이몽입니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.hankyung.com/article/2026081754867",
+    "title": "개미가 7조 던질 때... 외국인은 삼전닉스에 5조 담았습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.hankyung.com/article/2026081752107",
+    "title": "9646억 팔고 1조5339억 샀다... 국민연금의 SK 갈아타기",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.hankyung.com/article/202608175567i",
+    "title": "최대 5000만원까지... 집중호우 이재민, 은행이 손 내밀었습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.hankyung.com/article/202608175594i",
+    "title": "경제학자 80%가 그랬다... 올해 美 금리인상은 없습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.blockmedia.co.kr/archives/1128669",
+    "title": "오만이 끼어들면... 트럼프, 호르무즈서 폭격 경고했습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.hankyung.com/article/202608175454i",
+    "title": "자동차 -21%, 부동산 -19%... 중국 경제에 빨간불 켜졌습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0818",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/392117",
+    "title": "200주선 아래로... 비트코인, 2022년과 똑같이 움직입니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.hankyung.com/article/2026081999136",
+    "title": "하루 만에 5.8% 급락... 코스피 6471까지 밀렸습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.hankyung.com/article/202608199187i",
+    "title": "코스피 급락장에서... 상위 1%는 하이닉스를 담았습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.hankyung.com/article/2026081880957",
+    "title": "서울 아파트값 1.27% 상승... 올해 들어 가장 많이 올랐습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.hankyung.com/article/2026081878336",
+    "title": "서울에 4억대 아파트가... 2030세대는 그마저도 못 삽니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.hankyung.com/article/2026081877981",
+    "title": "8월31일까지... 청년 이사비 최대 40만원 신청하세요",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/393696",
+    "title": "10년간 5495억원... 4대 은행 금융사고, 절반이 사기였습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.hankyung.com/article/2026081994447",
+    "title": "1399원... 원달러 환율, 10개월 반 만에 이렇게 내렸습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.hankyung.com/article/202608190710i",
+    "title": "베선트가 나섰다... 美 국채 바이백, 두 배로 늘립니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/393680",
+    "title": "40조달러... 美 국가부채, 이자만 연 1조달러 넘었습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0820",
+    "url": "https://www.blockmedia.co.kr/archives/1129528",
+    "title": "SC \"연말 10만달러\" 전망... 비트코인, 근거가 있었습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.hankyung.com/article/2026082029991",
+    "title": "대출목표 '0'이던 새마을금고... 대출 숨통 트였습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.hankyung.com/article/2026082030551",
+    "title": "공공기관 350곳이 떠난다... 서울 잔류는 최소화합니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.hankyung.com/article/202608202623i",
+    "title": "40억 아파트인데 대출 3배로... 디에이치방배 잔금 풀립니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.hankyung.com/article/2026082030401",
+    "title": "150조원, 역대 최대... 삼성전자가 통 크게 풀었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.hankyung.com/article/2026082029781",
+    "title": "성과급 60%가 주식... SK하이닉스 직원만 부럽습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.hankyung.com/article/2026041138027",
+    "title": "8월31일 자정 지나면... 고유가 지원금 그냥 사라집니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.hankyung.com/article/2026082033731",
+    "title": "56세 국제통이 왔다... 한국은행, 사람부터 바꿨습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.blockmedia.co.kr/archives/1130089",
+    "title": "다우 703포인트 출렁... 국채금리 4.7%가 방아쇠였습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.hankyung.com/article/2026082031211",
+    "title": "6895억달러 증발... 한국 순대외자산 12년 만에 최저입니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0821",
+    "url": "https://www.tokenpost.kr/news/briefing/394466",
+    "title": "이틀 만에 12% 급등... 비트코인, 7만2000달러 넘었습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.hankyung.com/article/2026082156601",
+    "title": "110조 통 크게 풀었다... 삼성전자, 역대 최고 환원입니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.hankyung.com/article/2026082144106",
+    "title": "AI 지각생 승부수라는데... 카카오, 발표 당일 11% 빠졌습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.hankyung.com/article/2026082155181",
+    "title": "고등학교 전학은 되고 중학교는 안된다는데... 비거주 1주택자, 세금 더 냅니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.hankyung.com/article/202608215678i",
+    "title": "1만5149건, 서울 사람이 샀다... 경기도 아파트, 왜 인기일까요",
+    "category": "부동산"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.hankyung.com/article/2026082154891",
+    "title": "세수 150조 남았다더니... 정부, 200조 미래기금 만듭니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0822",
+    "url": "",
+    "title": "매달 70만원 넣으면... 청년도약계좌, 정부가 이만큼 더 얹어줍니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.hankyung.com/article/202608215112i",
+    "title": "30조원 풀렸다... 2금융권 중금리대출, 총량서 100% 빠집니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.hankyung.com/article/2026082155171",
+    "title": "20년 호황 끝났나... 美 국채, 안전자산 지위 흔들립니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.blockmedia.co.kr/archives/1130638",
+    "title": "일주일 새 24% 뛰었다... 비트코인, 7만9000달러 넘었습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0822",
+    "url": "https://www.blockmedia.co.kr/archives/1130659",
+    "title": "1~5년 내 터진다는데... 달리오, 금·비트코인 담으라 했습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.hankyung.com/article/202608215002i",
+    "title": "브렌트유 93달러인데... 휘발유값은 4주 더 묶였다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.hankyung.com/article/2026082029571",
+    "title": "보증금 70%만 내면 강남·서초 신혼집도 삽니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.hankyung.com/article/202608214912i",
+    "title": "5050가구 분당 샛별마을 재건축, 상가 발목 잡을 판입니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.hankyung.com/article/2026082260327",
+    "title": "6.8조 실탄 채운 中 YMTC, 삼성전자·SK하이닉스 코앞까지 왔다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.blockmedia.co.kr/archives/1130911",
+    "title": "SK하이닉스, 캐시 우드는 거들떠도 안 봤습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.energyv.or.kr/info/apl_info.do",
+    "title": "최대 70만원 에너지바우처, 12월31일 지나면 못 받습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.hankyung.com/article/202608214399i",
+    "title": "美 국채금리 19년 만에 최고, 中은 거꾸로 1.68%까지 떨어졌습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.hankyung.com/article/2026082261517",
+    "title": "美, 캐나다에 관세 50% 꽂았다... 200억달러 무역전쟁 터졌습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.blockmedia.co.kr/archives/1130952",
+    "title": "일주일 새 26억달러 몰렸다... 비트코인은 아직 마이너스입니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0823",
+    "url": "https://www.blockmedia.co.kr/archives/1130944",
+    "title": "비트코인 8만달러 앞두고... 고래는 7770BTC 던졌습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.hankyung.com/article/2026082371031",
+    "title": "역대 최대 50조 삭감... 내년 교육예산부터 잘렸습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.hankyung.com/article/2026082371041",
+    "title": "법인주택 2639채 조사하니.. 42%는 사주가 살고 있었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.hankyung.com/article/2026082371741",
+    "title": "이사는 포기했다.. 대신 주방에 3억 쓰는 사람들 늘었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.hankyung.com/article/2026082371711",
+    "title": "따상 기대하고 샀는데.. 석 달 만에 평균 34% 물렸습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.hankyung.com/article/2026082371691",
+    "title": "코넥스에서 코스닥 간 회사, 올해 단 한 곳도 없었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0824",
+    "url": "",
+    "title": "9월1일부터 15일까지... 최대 330만원 신청, 놓치지 마세요",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.hankyung.com/article/2026082371081",
+    "title": "전문가 63%가 말한다... 한은, 두 달 연속 금리 올릴 것",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.hankyung.com/article/2026082372491",
+    "title": "G7 나라빚, GDP의 124%.. 일본은 벌써 204%입니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.blockmedia.co.kr/archives/1131045",
+    "title": "일주일 새 51% 폭등... 리플, 21개월 만에 최대 상승폭입니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0824",
+    "url": "https://www.blockmedia.co.kr/archives/1131021",
+    "title": "채굴량의 3.6배를 쓸어담았다... 비트코인, 공급이 달립니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.hankyung.com/article/2026082490067",
+    "title": "카드공제 깎였다... 소상공인, 5년간 4740억 더 냅니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.hankyung.com/article/2026082494661",
+    "title": "통화량 231% 늘 때 집값 204%... 서울 아파트, 돈이 밀었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.hankyung.com/article/2026082138936",
+    "title": "다음 달까지 2억 갚으라니... 다주택자 대출, 은행마다 딴소리입니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.hankyung.com/article/2026082487246",
+    "title": "110조 준다는데 왜 떨어지나... 삼성전자, 하루 만에 8.7% 폭락",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.hankyung.com/article/2026082478186",
+    "title": "따상 기대하고 청약했는데... 니어스랩, 상장 첫날 10% 급락",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0825",
+    "url": "",
+    "title": "올해부터 600만원... 노란우산공제, 소득공제 한도 늘었습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.hankyung.com/article/2026082474237",
+    "title": "30년물 금리 2007년來 최고인데... 매파는 문제없다 했습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.hankyung.com/article/2026082495101",
+    "title": "40년 만에 최저... 엔화, 이러다 일본 금리 진짜 오릅니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.blockmedia.co.kr/archives/1131629",
+    "title": "8만달러 코앞인데... 비트코인, 여기서 숨고르기 들어갔습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0825",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/396926",
+    "title": "450억달러가 100억으로... 잘나가던 AI 펀드도 물렸습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.hankyung.com/article/2026082520851",
+    "title": "9억 이하는 반값입니다... 성남시, 재산세 한시 감면 나섰습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.hankyung.com/article/2026082494241",
+    "title": "4억 이하 빌라는 80%까지... 무주택자에게 새 징검다리 놓였습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.hankyung.com/article/202608226081i",
+    "title": "은행 대신 집주인에게 빌린다... 부동산 사적 대출, 뒤탈도 만만찮습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.hankyung.com/article/202608251696i",
+    "title": "장중 4%대 급락했는데... 코스피, 결국 6700선 지켰습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.hankyung.com/article/202608252053i",
+    "title": "4번 찾아갔는데 문전박대... 공정위, 쿠팡 조사서 빈손 철수했습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.hankyung.com/article/2026082497557",
+    "title": "31일 자정 지나면 끝... 고유가지원금 950억, 아직 안 쓰셨다면",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.tokenpost.kr/news/economy/397734",
+    "title": "4곳이나 올리자 했는데... 연준, 재할인율 인상 결국 막았습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.tokenpost.kr/news/economy/397731",
+    "title": "40조달러 넘었다... IMF, 미국 등에 재정계획 다시 요구했습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.blockmedia.co.kr/archives/1132084",
+    "title": "5거래일 연속 몰렸다... 솔라나 ETF, 올해 최대 유입 찍었습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0826",
+    "url": "https://www.tokenpost.kr/news/blockchain/397741",
+    "title": "언젠가 뚫린다는데... 비트고 CEO, 비트코인 양자리스크 짚었습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.hankyung.com/article/2026082647641",
+    "title": "영호남 전기료 내리는데... 민간발전사, 법적대응까지 예고했습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.hankyung.com/article/202608264444i",
+    "title": "46만7840명... 7월 이사 건수, 4년 만에 최저로 뚝 떨어졌습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.hankyung.com/article/2026082649191",
+    "title": "고정금리 31.9%로 뚝... 12년5개월 만에 최저, 다들 변동금리 갑니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.hankyung.com/article/202608264504i",
+    "title": "엔비디아·AMD 다음은 삼성... 오픈AI, HBM4 단독 공급받습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.hankyung.com/article/202608264553i",
+    "title": "7세대 HBM4E까지... SK하이닉스, 델 포럼서 AI메모리 다 꺼냈습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.nps.or.kr/pnsinfo/ntpsklg/getOHAF0047M0.do",
+    "title": "실직·육아로 못 냈어도... 국민연금, 최대 119개월 추납됩니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.tokenpost.kr/news/economy/398473",
+    "title": "1387원 찍었다... 美 물가에 밀린 원화, 심상치 않습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.blockmedia.co.kr/archives/1132650",
+    "title": "역대급 실적인데 주가는 하락... 엔비디아, 눈높이가 문제였습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.tokenpost.kr/news/international/398475",
+    "title": "20리터 제한에 주유소 폐쇄... 테헤란은 난리인데 유가는 내렸습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0827",
+    "url": "https://www.blockmedia.co.kr/archives/1132621",
+    "title": "미국인 77%가 말렸다... 401(k)에 코인 담기, 정부는 밀어붙입니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.hankyung.com/article/2026082776571",
+    "title": "내년 800조 쓴다는데... 한은은 되레 금리부터 올렸습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.hankyung.com/article/2026082776051",
+    "title": "빚투 몰리자... 카드론, 상반기에만 21% 불었습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.hankyung.com/article/2026082775041",
+    "title": "강남은 3주째 빠지는데... 중랑·성북은 역대 최고로 올랐습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.hankyung.com/article/2026082775151",
+    "title": "내년 '청년미래보금자리론' 나온다는데... 서울 빌라 65%는 이미 조건 맞습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.hankyung.com/article/2026082777291",
+    "title": "5.36조 들이부었다... SK하이닉스, 美 인디애나에 첫 삽 떴습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.hankyung.com/article/2026082773896",
+    "title": "엔비디아 실적 나오자... 삼성전자·하이닉스 동시에 웃었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.hankyung.com/article/202608277817i",
+    "title": "70%만 받던 기초연금... 상한, 소득 90%로 바뀔 수 있습니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.blockmedia.co.kr/archives/1133103",
+    "title": "국채금리 19년래 최고인데... 미 재무부, 연준 건너뛰고 손 댔습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.blockmedia.co.kr/archives/1133122",
+    "title": "엔비디아 하루 만에 8.74% 급등... 나스닥도 기술주 전체가 폭등했습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0828",
+    "url": "https://www.blockmedia.co.kr/archives/1133131",
+    "title": "달러 대신 금·비트코인... 닷새간 70억달러가 움직였습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/2026082800821",
+    "title": "합의 다 끝났다더니... 美, 대미투자 7조원 더 내라 통보했습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/2026082800881",
+    "title": "코로나 3년 전 빚인데... 정부, 154조 소상공인 대출 손봅니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/202608289036i",
+    "title": "5년5개월 만에 최저... 9월 입주 물량, 1만4174가구뿐입니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/202608289394i",
+    "title": "본청약자도 됩니다... 뉴홈 40년 초저리대출, 형평성 시끄럽습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/2026082800541",
+    "title": "58년째 흑자인데... 상폐 위기, 삼성전자만 웃고 있습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/202608289340i",
+    "title": "두 달 만에 반토막... 현대백화점, 58% 주저앉았습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/2026082800861",
+    "title": "0살부터 쌓입니다... 18세까지 최대 1억4057만원, 정부가 넣어줍니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/202608290452i",
+    "title": "트럼프가 원했는데... 워시, 오히려 매파로 돌아섰습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.hankyung.com/article/2026082801501",
+    "title": "9월24일 워싱턴에서 만난다... 美中, 무역전쟁 1년 더 휴전합니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0829",
+    "url": "https://www.tokenpost.kr/news/cryptocurrency/400092",
+    "title": "일주일 새 45% 급등... 리플, ETF 거래량도 터졌습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.hankyung.com/article/202608290877i",
+    "title": "2억개 수입해도... 계란 한 판, 여전히 7300원입니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.tokenpost.kr/news/policy/400468",
+    "title": "3.3%로 올랐는데... 정부는 되레 '체감경제'부터 꺼냈습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.hankyung.com/article/2026082631556",
+    "title": "비거주자는 9억으로 낮춘다는데... 서울 집주인들, 매물부터 쏟아냈습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.hankyung.com/article/2026081301081",
+    "title": "동의율 5%p 낮췄다... 재건축 속도전, 진짜 시작됩니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.hankyung.com/article/202608290490i",
+    "title": "1800조원 몰린다... AI 데이터센터, 돈은 이렇게 갑니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.hankyung.com/article/2026082907347",
+    "title": "반년 만에 16조 벌었다... 중국 D램업체, 삼전닉스급 됐습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.hankyung.com/article/202608092419v",
+    "title": "함평·의령은 50만원... 추석 앞두고 지자체 지원금 쏟아집니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.hankyung.com/article/2026082898616",
+    "title": "예금엔 37조 몰리는데... 적금은 8000억 빠져나갔습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.hankyung.com/article/2026082801381",
+    "title": "1년 이자만 1500조원... '천조국'이 아니라 시한폭탄이었습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0830",
+    "url": "https://www.blockmedia.co.kr/archives/1133793",
+    "title": "이익의 절반, 240명이 가져갔다... 영국 코인부자 민낯 나왔습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.hankyung.com/article/202608301847i",
+    "title": "노란봉투법 시행되자... 기업들, 사람 대신 로봇부터 늘렸습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.hankyung.com/article/2026083019151",
+    "title": "강남 아니었다... 수원 영통, 일주일 새 0.75% 뛰었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.hankyung.com/article/2026083013397",
+    "title": "20년 살았으니 내 집이라는데... 서울시는 절대 안 된다고 합니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.hankyung.com/article/2026083019061",
+    "title": "이름도 생소한 소재인데... 수출은 반년 새 42% 뛰었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.tokenpost.kr/news/market/400753",
+    "title": "2026년 것 벌써 다 팔렸다는데... 마이크론 목표가는 엇갈립니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.hankyung.com/article/2026082906527",
+    "title": "신청 안 해도 통장에 쏙... 국민연금, 이제 알아서 넣어줍니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.hankyung.com/article/202608301053i",
+    "title": "연 200억달러 나가는데... 한은 총재, \"감당 가능하다\" 밝혔습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.tokenpost.kr/news/market/400756",
+    "title": "AI반도체 매출 108억달러인데... 이번 주가 뉴욕증시 최대 분수령입니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.blockmedia.co.kr/archives/1133893",
+    "title": "'우리가 돌아왔다'는데... 세일러, 진짜 비트코인 다시 삽니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0831",
+    "url": "https://www.blockmedia.co.kr/archives/1133868",
+    "title": "친코인 인사만 셋인데... 금융위원장은 쏙 빠졌습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.hankyung.com/article/2026083145901",
+    "title": "벌써 41조 더 걷혔다는데... 정부 곳간엔 남는 게 없습니다",
+    "category": "경제정책"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.hankyung.com/article/202608291042i",
+    "title": "전세사기 당한 집인데... 이제 500만원까지 수리비 나옵니다",
+    "category": "지원금·정부보조금"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.hankyung.com/article/2026083144611",
+    "title": "9월 서울 분양 딱 한 곳... 그마저 85가구뿐입니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.hankyung.com/article/2026083146011",
+    "title": "20억 아니었다... 성북구 전세도 10억 넘었습니다",
+    "category": "부동산"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.hankyung.com/article/202608314180i",
+    "title": "1.5조 수주 터지자... SK이노베이션 하루만에 7% 뛰었습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.hankyung.com/article/2026083143326",
+    "title": "330만원 보던 목표가... 하루아침에 240만원 됐습니다",
+    "category": "주식·증시"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.hankyung.com/article/202608314942i",
+    "title": "美 국채금리 4.76%... 1년반 만에 최고치 찍었습니다",
+    "category": "금리·통화"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.hankyung.com/article/2026083146221",
+    "title": "美, 이란 또 때렸다... 국제유가 90달러 뚫었습니다",
+    "category": "해외경제·글로벌매크로"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.blockmedia.co.kr/archives/1134400",
+    "title": "코인베이스의 272배... 비트코인 숏이 이렇게 쌓였습니다",
+    "category": "비트코인·가상자산"
+  },
+  {
+    "date": "0901",
+    "url": "https://www.blockmedia.co.kr/archives/1134411",
+    "title": "크라켄 제쳤다... 월가 큰손들, 리플에 몰렸습니다",
+    "category": "비트코인·가상자산"
+  }
 ]

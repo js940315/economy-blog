@@ -197,5 +197,49 @@
       "license": "CC BY-SA 4.0",
       "title": "File:아시아나항공 국문CI.png"
     }
+  ],
+  "SK Innovation": [
+    {
+      "file": "skinnovation_0.png",
+      "license": "CC BY-SA 3.0",
+      "title": "File:HyundaiMotorsCompany KiaMotorsCompany.jpg"
+    },
+    {
+      "file": "skinnovation_1.png",
+      "license": "Public domain",
+      "title": "File:Logo of the Skolkovo Foundation.svg"
+    },
+    {
+      "file": "skinnovation_2.png",
+      "license": "CC BY 4.0",
+      "title": "File:Logo of the Skolkovo Foundation (new).svg"
+    },
+    {
+      "file": "skinnovation_3.png",
+      "license": "Public domain",
+      "title": "File:SK Innovation.svg"
+    },
+    {
+      "file": "skinnovation_4.png",
+      "license": "Public domain",
+      "title": "File:Skolkovo-logo eng.jpg"
+    }
+  ],
+  "Ripple XRP": [
+    {
+      "file": "ripple_0.png",
+      "license": "CC BY-SA 4.0",
+      "title": "File:Aidos Kuneen (ADK), Bitcoin (BTC), Ripple (XRP) and Neo(NEO) drinks.jpg"
+    },
+    {
+      "file": "ripple_1.png",
+      "license": "CC BY-SA 4.0",
+      "title": "File:Aidos Kuneen (ADK), Bitcoin (BTC) and Ripple (XRP) drinks.jpg"
+    },
+    {
+      "file": "ripple_2.png",
+      "license": "CC BY-SA 4.0",
+      "title": "File:Bitcoin (BTC) and Ripple (XRP) drinks.jpg"
+    }
   ]
 }

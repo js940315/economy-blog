@@ -2,6 +2,8 @@
   "_comment": "썸네일 카피에 이 키워드가 있으면 해당 로고를 자동으로 좌상단에 붙인다. build_posts.py 의 auto_logo()가 읽는다. 긴 키워드가 먼저 매칭되므로 '삼성바이오로직스'가 '삼성'보다 우선한다. 파일은 assets/tickers/ 를 먼저, 없으면 assets/logos/ 를 찾는다.",
   "SK하이닉스": "skhynix_0.png",
   "하이닉스": "skhynix_0.png",
+  "SK이노베이션": "skinnovation_3.png",
+  "SK이노": "skinnovation_3.png",
   "삼성바이오로직스": "sambio_2.png",
   "삼성전자": "samsung_0.png",
   "삼성": "samsung_0.png",
