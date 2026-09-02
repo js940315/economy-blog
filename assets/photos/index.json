@@ -2003,7 +2003,7 @@
     "검수": "스톡 API(워터마크 없음) — 스팟체크"
   },
   "금리통화_5_pexels_2.jpg": {
-    "카테고리": "금리통화",
+    "카테고리": "가상자산",
     "source_api": "pexels",
     "license": "Pexels License",
     "credit": "Rafael Minguet Delgado / Pexels",
@@ -2011,9 +2011,9 @@
     "attribution_required": false,
     "원본해상도": "8640x5760",
     "처리": "정사각 1400px + 시리즈 톤 + 비네트",
-    "검색어": "economic graph rising interest",
+    "검색어": "cryptocurrency exchange candlestick chart binance",
     "source": "https://www.pexels.com/photo/cryptocurrency-market-graph-showing-bnb-trends-38796151/",
-    "검수": "스톡 API(워터마크 없음) — 스팟체크"
+    "검수": "2026-09-03 육안검수: 실제로는 Binance USDT 거래화면 — 금리통화 아닌 가상자산으로 재분류"
   },
   "물가소비_1_pexels_2.jpg": {
     "카테고리": "물가소비",
