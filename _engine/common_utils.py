@@ -861,7 +861,12 @@ def build_photo_card_svg(photo_path, eyebrow, headline_lines, credit="",
              f'opacity="0.92">{escape_html(eyebrow)}</text>')
 
     # 카피는 아래에서부터 쌓아 올린다 (사진 주제가 위쪽에 오는 경우가 많아서)
-    bottom = CARD_H - 76
+    # ⚠ 헤드리스 크로미움이 --window-size 그대로 렌더하지 못하고 실제 뷰포트가
+    #   약 90px(1x 기준) 모자라게 찍히는 환경이 있다(2026-09-04 실측, 이 환경에서
+    #   photo_card 2줄 헤드라인 10건 전부 하단 글자가 잘려 나감 — crop_letterbox가
+    #   그 빈 자리의 마젠타를 걷어내면서 진짜 텍스트까지 함께 잘려나간 것으로 확인).
+    #   바닥 기준선을 여유 있게 올려 이 환경 편차에도 안전하게 만든다.
+    bottom = CARD_H - 170
     y = bottom - 84 * (len(headline_lines) - 1)
     if number:
         y -= 150
