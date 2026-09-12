@@ -370,5 +370,18 @@
     ],
     "사유": "Commons에 대표 로고가 없거나 검색으로 안 잡힘",
     "대안": "해당 종목 기사에는 로고 대신 사물 사진(반도체·항만·전광판)이나 숫자·차트 카드를 쓴다"
+  },
+  "체인링크": {
+    "그룹": "가상자산",
+    "검색어": "Chainlink logo",
+    "후보": [
+      {
+        "file": "chainlink_0.png",
+        "title": "File:Chainlink logo icon (hexagon).svg",
+        "license": "trademark/free-use brand asset",
+        "score": 9
+      }
+    ],
+    "검수": "2026-09-13 육안 확인 완료"
   }
 }
