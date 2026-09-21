@@ -3225,5 +3225,27 @@
     "원본해상도": "1536x1024",
     "처리": "정사각 1400px + 시리즈 톤 + 비네트 (focus=top)",
     "검수": "기사 원문 대표사진 — 출처 확인 후 사용"
+  },
+  "부동산_9_wikimedia_0.jpg": {
+    "카테고리": "부동산",
+    "license": "CC0",
+    "credit": "사진 : Rice Terrace in Namhae, South Korea / CC0 / Wikimedia Commons",
+    "attribution_required": false,
+    "원본해상도": "4032x3024",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "Korean rice paddy field",
+    "용도": "농지·상속농지·고령농가 주제",
+    "검수": "Read로 육안 확인 완료 — 남해 계단식 논, 인물/타사로고 없음, 한국 농지 특징 뚜렷"
+  },
+  "부동산_9_wikimedia_1.jpg": {
+    "카테고리": "부동산",
+    "license": "CC BY-SA 2.0",
+    "credit": "사진 : Korea-Gyeongju-Rice paddy field-01 / CC BY-SA 2.0 / Wikimedia Commons",
+    "attribution_required": true,
+    "원본해상도": "3008x2000",
+    "처리": "정사각 1400px + 시리즈 톤 + 비네트",
+    "검색어": "Korean rice paddy field valley",
+    "용도": "농지·상속농지·고령농가 주제(실물카드용, 썸네일과 다른 컷)",
+    "검수": "Read로 육안 확인 완료 — 경주 인근 논밭 계곡, 인물/타사로고 없음"
   }
 }
