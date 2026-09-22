@@ -270,5 +270,27 @@
       "license": "Public domain",
       "title": "File:Nike logo 1978.svg"
     }
+  ],
+  "Bitcoin Cash": [
+    {
+      "file": "bch_0.png",
+      "license": "CC BY-SA 4.0",
+      "title": "File:Bitcoin-cash-logo-horizontal.svg"
+    },
+    {
+      "file": "bch_1.png",
+      "license": "Public domain",
+      "title": "File:BitcoinCash.svg"
+    },
+    {
+      "file": "bch_2.png",
+      "license": "CC0",
+      "title": "File:Bitcoin Cash.svg"
+    },
+    {
+      "file": "bch_4.png",
+      "license": "CC BY-SA 4.0",
+      "title": "File:Bitcoin Cash logo.svg"
+    }
   ]
 }
