@@ -3247,5 +3247,14 @@
     "검색어": "Korean rice paddy field valley",
     "용도": "농지·상속농지·고령농가 주제(실물카드용, 썸네일과 다른 컷)",
     "검수": "Read로 육안 확인 완료 — 경주 인근 논밭 계곡, 인물/타사로고 없음"
+  },
+  "물가소비_gwangjang_0.jpg": {
+    "license": "CC0",
+    "credit": "사진 : Gwangjang Market, Seoul / CC0 / Wikimedia Commons",
+    "attribution_required": false,
+    "원본해상도": "5184x3456(1920px 축소본 사용)",
+    "처리": "원본 그대로(prepare_photo 정사각 크롭은 빌더가 처리)",
+    "용도": "전통시장·소상공인 주제",
+    "카테고리": "물가소비"
   }
 }
